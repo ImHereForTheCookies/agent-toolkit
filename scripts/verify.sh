@@ -45,4 +45,12 @@ else
   echo "no tickets/ markdown files; skipping"
 fi
 
+# --- Step 5: fixture project verifies on its own (ROB-7) ---
+step "5. fixture: make -C fixtures/demo-project verify"
+make -C fixtures/demo-project verify
+
+# --- Step 6: seeded bug is caught by exactly one named test (ROB-7) ---
+step "6. fixture: seeded bug is detected"
+bash scripts/check_seeded_bug.sh
+
 step "verify: OK"

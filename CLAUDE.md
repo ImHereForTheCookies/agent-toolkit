@@ -11,6 +11,7 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 - `scripts/verify.sh` - step runner behind `make verify`; extend at the marked block
 - `scripts/smoke_install.sh` - add + install all plugins in a temp CLAUDE_CONFIG_DIR
 - `tests/` - pytest tests (`test_*.py`)
+- `fixtures/demo-project/` - small FastAPI + SQLite app, sample tickets and `fixtures/seeded-bug.patch` for testing the toolkit (`scripts/check_seeded_bug.sh`)
 - `.github/workflows/ci.yml` - runs `make verify` on push and PR
 - `PROGRESS.md` - append-only session log
 
