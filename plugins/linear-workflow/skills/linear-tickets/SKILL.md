@@ -28,7 +28,7 @@ Label **Needs Human** = escalated. Skip any ticket that has it.
 
 ## Find Ready work
 
-1. `list_issues(project="agent-toolkit", state="Todo", fields=["title","status","labels"])`. Drop tickets labeled Needs Human. Oldest/lowest number first.
+1. `list_issues(project="agent-toolkit", state="Todo", fields=["title","status","labels"])`. Drop tickets labeled Needs Human. Sort the rest by ticket number yourself (lowest first); the tool only orders by createdAt/updatedAt.
 2. For each candidate `get_issue(id, includeRelations=true)`. `relations.blockedBy` lists blockers but **not their state**, so call `get_issue(blockerId, fields=["status"])` on each one.
 3. The ticket is workable only when every blocker is `Done`. A blocker in Canceled or Duplicate does not count as Done: escalate (below) instead of working it.
 4. Read the whole description. If it is ambiguous or contradicts the code, escalate; do not guess.
@@ -83,7 +83,7 @@ Escalate when criteria are ambiguous, a gate failed twice, an action is irrevers
 * State: <branch / PR, what is done, what is untouched>
 ```
 
-3. Leave the state as it was (Todo or In Progress) and move on to the next ticket. A human removes the label after answering.
+3. Leave the state as it was (Todo, In Progress or In Review) and move on to the next ticket. A human removes the label after answering.
 
 ## Rules
 
