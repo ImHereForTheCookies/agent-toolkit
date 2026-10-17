@@ -4,7 +4,7 @@ The scheduled nightly task follows this file until the `nightly-run` skill (ROB-
 You are the **orchestrator**. You never write feature code yourself: Sonnet subagents implement and review; you dispatch, read their short reports, post verdicts, merge, and keep Linear honest. Keep your own context small.
 
 ## Setup (once per run)
-1. Attach repos with push access (`add_repo`, tool `mcp__claude-code-remote__add_repo`): `ImHereForTheCookies/agent-toolkit` and every repo in the project map below. Clone each into `~/work/<repo>` with `git clone --depth 50`. `TOOLKIT=~/work/agent-toolkit`.
+1. The scheduled session already has GitHub access to the repos in the project map plus agent-toolkit; `add_repo` is NOT available in scheduled runs, so don't call it. Clone with `git clone --depth 50 https://github.com/<repo> ~/work/<name>`. `TOOLKIT=~/work/agent-toolkit`. If a needed repo isn't accessible, comment the exact error on the Linear project and end the run (a person must add the repo to the scheduled task).
 2. `pip install --break-system-packages -q fastapi uvicorn httpx pytest` (add a project's requirements if it has them). The QA subagent installs `playwright` itself if it needs it.
 3. Load Linear tools via ToolSearch: `select:mcp__Linear__list_issues,mcp__Linear__get_issue,mcp__Linear__save_issue,mcp__Linear__save_comment,mcp__Linear__list_projects`.
 
@@ -43,7 +43,7 @@ If the superpowers skills are available, implementers should follow its `test-dr
 ## One ticket per run (fresh context every ticket)
 Each run handles exactly ONE ticket, then hands off to a brand-new run, so every ticket starts with a clean orchestrator context. This replaces in-session compaction: a fresh session carries no leftover tool output at all, and Linear + git hold all the state.
 1. Pick the single next ticket (see Picking work) and take it through steps A–E, including the merge or escalation and the Linear update.
-2. Then decide whether to chain: re-check Linear. If at least one ticket is still eligible AND this run made progress (a ticket moved to Done, or got Needs Human), fire the next run: load `mcp__claude-code-remote__fire_trigger` via ToolSearch and call it with `trigger_id` `trig_01AxwrWtN8WovQGq3R4ygAsF` and `text` "Chained run: continue with the next eligible ticket." Then end this run.
+2. Then decide whether to chain: re-check Linear. If at least one ticket is still eligible AND this run made progress (a ticket moved to Done, or got Needs Human), fire the next run: load `mcp__claude-code-remote__fire_trigger` via ToolSearch and call it with `trigger_id` `trig_01R5kFZkhgrQ9k2RGqBKzogY` and `text` "Chained run: continue with the next eligible ticket." Then end this run.
 3. Do not chain if this run made no progress (that would loop), or if main is red. If `fire_trigger` is unavailable or refused, continue in this same session with the next ticket instead (auto-compaction will handle context) and say so in the summary.
 - Never stop between merge and the Linear update.
 - Never force-push, never delete branches or repos, never touch secrets, never deploy. Anything irreversible or outside these repos → Needs Human.
@@ -52,6 +52,8 @@ Each run handles exactly ONE ticket, then hands off to a brand-new run, so every
 Keep it short; there is one run per ticket. Post a Linear comment on the ticket (already done in step D) and, only when NOT chaining (the chain is finished), a project summary comment on each touched project (`save_comment` with `projectId`) summarising: merged PRs, tickets escalated and why, what is next. Then send the user a short summary with SendUserMessage (load via ToolSearch) if available.
 
 ## Known environment facts
+- Scheduled runs: repo access is fixed when the scheduled task is created (the repos attached to the session that created it). To add a project repo, recreate the scheduled task from a session that has that repo attached.
+- The cajunt repo may contain other task lists (e.g. TASKS.md); the Linear ticket is the spec.
 - `gh` GraphQL commands (`gh pr create`, `gh pr merge`) are blocked; `gh api` REST works — that's what ghpr.sh uses.
 - Subagents may be blocked from merging by the permission classifier; that's why the orchestrator merges.
 - Linear renders markdown bullets as `*`; the ticket linter accepts `-`, `*`, `+`.
