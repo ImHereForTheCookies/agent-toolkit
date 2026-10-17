@@ -6,7 +6,7 @@ Run from a scratch file in `$QA`, never inside the repo. Use the preinstalled br
 import glob, os, sys
 from playwright.sync_api import sync_playwright
 
-BASE = os.environ.get("QA_BASE", "http://127.0.0.1:8000")
+BASE = os.environ.get("QA_BASE") or f"http://127.0.0.1:{os.environ['PORT']}"  # PORT: the port found in SKILL.md section 2
 SHOTS = os.path.join(os.environ["QA"], "shots")
 os.makedirs(SHOTS, exist_ok=True)
 chrome = (glob.glob("/opt/pw-browsers/chromium-*/chrome-linux/chrome") or [None])[0]
