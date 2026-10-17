@@ -53,4 +53,8 @@ make -C fixtures/demo-project verify
 step "6. fixture: seeded bug is detected"
 bash scripts/check_seeded_bug.sh
 
+# --- Step 7: example tickets form a DAG with no missing blockers (ROB-8) ---
+step "7. ticket graph (examples/cajunt/tickets)"
+python3 scripts/check_ticket_graph.py examples/cajunt/tickets
+
 step "verify: OK"
