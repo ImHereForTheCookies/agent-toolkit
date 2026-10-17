@@ -28,7 +28,7 @@ Traps that cost time once; add new ones as you hit them.
 ## Workflow
 Session start, in this order:
 1. Read `PROGRESS.md` and the last 20 commits (`git log --oneline -20`).
-2. Run `make dev` and a smoke test to confirm the app actually works.
+2. Start `make dev` in the background (it may be a long-running server), smoke-test it, then stop it.
 3. Only then read your ticket and start on it.
 
 Rules:
