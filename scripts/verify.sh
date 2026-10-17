@@ -64,4 +64,12 @@ python3 plugins/project-template/scripts/harness_init.py "$harness_tmp/proj"
 make -C "$harness_tmp/proj" verify
 rm -rf "$harness_tmp"
 
+# --- Step 9: repo_map.py maps the fixture project (ROB-10) ---
+step "9. repo_map.py on fixtures/demo-project"
+map_tmp="$(mktemp -d)"
+python3 plugins/code-navigation/scripts/repo_map.py fixtures/demo-project --out "$map_tmp/symbols.md"
+test -s "$map_tmp/symbols.md"
+echo "mapped $(($(wc -l < "$map_tmp/symbols.md") - 1)) file(s)"
+rm -rf "$map_tmp"
+
 step "verify: OK"

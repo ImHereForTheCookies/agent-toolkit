@@ -8,6 +8,7 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 - `plugins/<name>/.claude-plugin/plugin.json` - one manifest per plugin
 - `plugins/<name>/README.md` - one-paragraph purpose of the plugin
 - Plugins: `agentic-workflow`, `code-navigation`, `linear-workflow`, `project-template`
+- `plugins/code-navigation/scripts/repo_map.py` - symbol index writer (`docs/symbols.md`); skill `navigate-codebase`
 - `scripts/verify.sh` - step runner behind `make verify`; extend at the marked block
 - `scripts/smoke_install.sh` - add + install all plugins in a temp CLAUDE_CONFIG_DIR
 - `tests/` - pytest tests (`test_*.py`)
