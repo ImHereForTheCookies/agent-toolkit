@@ -2,4 +2,4 @@
 
 How work is planned, done, judged and escalated. This plugin will hold the ticket spec, decomposition guidance, the escalation policy, the implementer, reviewer and QA subagents, the verify gate, and the nightly orchestrator.
 
-Install: `/plugin install agentic-workflow --marketplace ImHereForTheCookies/agent-toolkit`
+Install: `/plugin marketplace add ImHereForTheCookies/agent-toolkit`, then `/plugin install agentic-workflow@agent-toolkit`
