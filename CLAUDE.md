@@ -11,6 +11,7 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 - `plugins/code-navigation/scripts/repo_map.py` - symbol index writer (`docs/symbols.md`); skill `navigate-codebase`
 - `plugins/linear-workflow/skills/linear-tickets/SKILL.md` + `.mcp.json` - Linear status mapping, claiming, evidence and escalation; Linear MCP for headless runs
 - `plugins/agentic-workflow/skills/human-in-the-loop/SKILL.md` - the six escalation triggers, comment template, reviewer guard
+- `plugins/agentic-workflow/skills/qa-ticket/SKILL.md` - QA subagent protocol run after review PASS, before merge (curl/Playwright, PASS/FAIL/SKIPPED)
 - `evals/hitl/` - scenarios + `run_eval.py` for that skill (`make eval-hitl`, costs API calls, not in verify)
 - `scripts/verify.sh` - step runner behind `make verify`; extend at the marked block
 - `scripts/smoke_install.sh` - add + install all plugins in a temp CLAUDE_CONFIG_DIR

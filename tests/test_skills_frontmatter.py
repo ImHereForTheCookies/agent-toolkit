@@ -23,7 +23,7 @@ def frontmatter(text):
 
 def test_skills_exist():
     names = {p.parent.name for p in SKILLS}
-    assert {"ticket-spec", "decompose-project", "navigate-codebase", "linear-tickets", "human-in-the-loop"} <= names
+    assert {"ticket-spec", "decompose-project", "navigate-codebase", "linear-tickets", "human-in-the-loop", "qa-ticket"} <= names
 
 
 @pytest.mark.parametrize("path", SKILLS, ids=lambda p: p.parent.name)
