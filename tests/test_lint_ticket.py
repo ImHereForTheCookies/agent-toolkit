@@ -153,3 +153,14 @@ def test_cli_unreadable_file(tmp_path):
     r = run_cli(str(tmp_path / "nope.md"))
     assert r.returncode == 1
     assert "nope.md" in r.stdout
+
+
+def test_star_bullets_accepted():
+    """Linear renders bullets as '*'; the linter must accept '*' and '+' markers."""
+    text = (
+        "## Goal\nx\n## Context\nx\n## Acceptance criteria\n"
+        "* [ ] a thing — checked by: make verify\n"
+        "+ another — checked by: tests/test_x.py\n"
+        "## Verify\nmake verify\n## Out of scope\nx\n## Escalation\nnone\n"
+    )
+    assert lint_ticket.lint(text) == []

@@ -19,7 +19,7 @@ REQUIRED_SECTIONS = [
 ]
 ESCALATION_VALUES = {"none", "taste-checkpoint", "security", "irreversible"}
 
-_ITEM_RE = re.compile(r"^\s*-\s")
+_ITEM_RE = re.compile(r"^\s*[-*+]\s")
 _CHECK_RE = re.compile(r"checked by:\s*\S", re.IGNORECASE)
 
 
