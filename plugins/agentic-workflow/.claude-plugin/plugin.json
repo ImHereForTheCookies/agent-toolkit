@@ -1,0 +1,16 @@
+{
+  "name": "agentic-workflow",
+  "description": "How work is planned, done, judged and escalated: ticket spec, decomposition, escalation policy, implementer/reviewer/QA subagents, verify gate and nightly orchestrator.",
+  "author": {
+    "name": "Robert Meyer"
+  },
+  "homepage": "https://github.com/ImHereForTheCookies/agent-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "agents",
+    "tickets",
+    "orchestration",
+    "verification"
+  ]
+}

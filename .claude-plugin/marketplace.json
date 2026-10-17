@@ -1,0 +1,29 @@
+{
+  "name": "agent-toolkit",
+  "owner": {
+    "name": "Robert Meyer"
+  },
+  "description": "Robert Meyer's agentic prototyping toolkit: workflow, code navigation, Linear integration and a project template.",
+  "plugins": [
+    {
+      "name": "agentic-workflow",
+      "source": "./plugins/agentic-workflow",
+      "description": "How work is planned, done, judged and escalated: ticket spec, decomposition, escalation policy, implementer/reviewer/QA subagents, verify gate and nightly orchestrator."
+    },
+    {
+      "name": "code-navigation",
+      "source": "./plugins/code-navigation",
+      "description": "Low-token ways to find code: a navigation skill and a repo-map symbol index."
+    },
+    {
+      "name": "linear-workflow",
+      "source": "./plugins/linear-workflow",
+      "description": "How agents read, claim and report on Linear tickets."
+    },
+    {
+      "name": "project-template",
+      "source": "./plugins/project-template",
+      "description": "Scaffolds a new project repo that loads this toolkit."
+    }
+  ]
+}

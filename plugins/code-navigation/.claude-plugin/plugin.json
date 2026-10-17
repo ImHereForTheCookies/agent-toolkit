@@ -1,0 +1,15 @@
+{
+  "name": "code-navigation",
+  "description": "Low-token ways to find code: a navigation skill and a repo-map symbol index.",
+  "author": {
+    "name": "Robert Meyer"
+  },
+  "homepage": "https://github.com/ImHereForTheCookies/agent-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "code-navigation",
+    "repo-map",
+    "symbols",
+    "search"
+  ]
+}
