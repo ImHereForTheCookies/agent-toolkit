@@ -31,4 +31,18 @@ fi
 
 # --- extra steps (added by later tickets) ---
 
+# --- Step 4: lint every tickets/**/*.md against the ticket contract (ROB-6) ---
+step "4. lint tickets (tickets/**/*.md)"
+ticket_files=()
+while IFS= read -r f; do
+  ticket_files+=("$f")
+done < <(find . \( -name .git -o -name node_modules \) -prune -o \
+  -type f -name '*.md' -path '*/tickets/*' -print | sort)
+if [ "${#ticket_files[@]}" -gt 0 ]; then
+  python3 scripts/lint_ticket.py "${ticket_files[@]}"
+  echo "linted ${#ticket_files[@]} ticket file(s)"
+else
+  echo "no tickets/ markdown files; skipping"
+fi
+
 step "verify: OK"
