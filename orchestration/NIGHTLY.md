@@ -39,7 +39,9 @@ Core rule: never block waiting for a human; do the safe part, leave a precise Li
 If the superpowers skills are available, implementers should follow its `test-driven-development` and `verification-before-completion` skills. Never run superpowers' `brainstorming` or ask clarifying questions in this unattended run: the Linear ticket is the approved spec. If the ticket is insufficient, escalate per the human-in-the-loop skill instead of asking.
 
 ## Budget and stopping
-- Stop starting new tickets after 8 tickets, or earlier if your context is getting long. Never stop between merge and the Linear update.
+- No ticket cap: keep going until no ticket is eligible (everything left is Done, escalated, or blocked by an escalated ticket).
+- Your own context is the real limit, so keep it small: subagents do the work, you only read their short reports. Linear and git are the state, so a run that ends early loses nothing; the next run resumes from In Progress / In Review.
+- If your context is nearly full, finish the current ticket's merge and Linear update, then go to End of run. Never stop between merge and the Linear update.
 - Never force-push, never delete branches or repos, never touch secrets, never deploy. Anything irreversible or outside these repos → Needs Human.
 
 ## End of run
