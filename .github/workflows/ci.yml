@@ -16,5 +16,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pytest fastapi httpx
+      - run: pip install pytest fastapi httpx uvicorn
       - run: make verify

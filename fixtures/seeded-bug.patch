@@ -1,0 +1,13 @@
+diff --git a/app/main.py b/app/main.py
+index 188eb60..860a471 100644
+--- a/app/main.py
++++ b/app/main.py
+@@ -59,8 +59,6 @@ def create_app(db_path):
+     @app.patch("/items/{item_id}")
+     def patch_item(item_id: int, body: ItemUpdate):
+         fields = body.model_dump(exclude_unset=True)
+-        if fields.get("quantity") is not None and fields["quantity"] < 0:
+-            raise HTTPException(status_code=422, detail="quantity must be >= 0")
+         if any(v is None for v in fields.values()):
+             raise HTTPException(status_code=422, detail="fields may not be null")
+         item = db.update_item(db_path, item_id, fields)
