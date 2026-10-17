@@ -12,7 +12,7 @@ Repo guide for agents. Keep this file under 60 lines; link out for detail.
 - `make test` - fast unit tests
 - `make e2e` - end-to-end smoke test against a running app
 - `make verify` - `test` then `e2e`; the gate every ticket must pass
-- `make symbols` - regenerate the repo map (symbol index) for code navigation
+- `make symbols` - regenerate `docs/symbols.md` (needs `TOOLKIT=<agent-toolkit checkout>`; skips otherwise)
 
 Targets that still print "TODO: define <target> for this project" are not
 wired up yet; define them before relying on `make verify`.

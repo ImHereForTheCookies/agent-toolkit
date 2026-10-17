@@ -83,3 +83,20 @@ def test_makefile_contract(tmp_path):
         assert r.returncode == 0, (target, r.stderr)
     out = subprocess.run(["make", "-s", "-C", str(tmp_path), "test"], capture_output=True, text=True).stdout
     assert "TODO: define test for this project" in out
+
+
+def test_symbols_target(tmp_path):
+    run(tmp_path)
+    (tmp_path / "m.py").write_text("def hello(): pass\n")
+    make = lambda *a: subprocess.run(["make", "-s", "-C", str(tmp_path), "symbols", *a],
+                                     capture_output=True, text=True)
+    r = make()
+    assert r.returncode == 0 and "skip symbols" in r.stdout
+    assert not (tmp_path / "docs/symbols.md").exists()
+    r = make("REPO_MAP=/nonexistent/repo_map.py")
+    assert r.returncode == 0 and "skip symbols" in r.stdout
+    r = make(f"TOOLKIT={ROOT}")
+    assert r.returncode == 0, r.stderr
+    assert "hello(L1)" in (tmp_path / "docs/symbols.md").read_text()
+    # make verify stays green with no toolkit present
+    assert subprocess.run(["make", "-s", "-C", str(tmp_path), "verify"], capture_output=True).returncode == 0
