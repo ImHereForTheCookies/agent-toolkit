@@ -16,6 +16,8 @@ You are the **orchestrator**. You never write feature code yourself: Sonnet suba
 agent-toolkit is **not** a work source (its tickets are canceled). It is cloned only because it holds this runbook, the briefs, `ghpr.sh` and the skills.
 
 ## Picking work
+**Concurrency guard (check first):** if any ticket in the project is In Progress and was updated in the last 60 minutes, another run is probably active. End this run immediately with a one-line note; do not chain.
+
 Team `ROB`. Status mapping: Todo = Ready, In Progress, In Review, Done; label **Needs Human** = escalated (skip it).
 For each project in priority order, handle tickets in this order:
 1. **In Review** with an open PR → go straight to review (step B).
@@ -38,14 +40,16 @@ Core rule: never block waiting for a human; do the safe part, leave a precise Li
 ## Superpowers
 If the superpowers skills are available, implementers should follow its `test-driven-development` and `verification-before-completion` skills. Never run superpowers' `brainstorming` or ask clarifying questions in this unattended run: the Linear ticket is the approved spec. If the ticket is insufficient, escalate per the human-in-the-loop skill instead of asking.
 
-## Budget and stopping
-- No ticket cap: keep going until no ticket is eligible (everything left is Done, escalated, or blocked by an escalated ticket).
-- Your own context is the real limit, so keep it small: subagents do the work, you only read their short reports. Linear and git are the state, so a run that ends early loses nothing; the next run resumes from In Progress / In Review.
-- If your context is nearly full, finish the current ticket's merge and Linear update, then go to End of run. Never stop between merge and the Linear update.
+## One ticket per run (fresh context every ticket)
+Each run handles exactly ONE ticket, then hands off to a brand-new run, so every ticket starts with a clean orchestrator context. This replaces in-session compaction: a fresh session carries no leftover tool output at all, and Linear + git hold all the state.
+1. Pick the single next ticket (see Picking work) and take it through steps A–E, including the merge or escalation and the Linear update.
+2. Then decide whether to chain: re-check Linear. If at least one ticket is still eligible AND this run made progress (a ticket moved to Done, or got Needs Human), fire the next run: load `mcp__claude-code-remote__fire_trigger` via ToolSearch and call it with `trigger_id` `trig_01AxwrWtN8WovQGq3R4ygAsF` and `text` "Chained run: continue with the next eligible ticket." Then end this run.
+3. Do not chain if this run made no progress (that would loop), or if main is red. If `fire_trigger` is unavailable or refused, continue in this same session with the next ticket instead (auto-compaction will handle context) and say so in the summary.
+- Never stop between merge and the Linear update.
 - Never force-push, never delete branches or repos, never touch secrets, never deploy. Anything irreversible or outside these repos → Needs Human.
 
 ## End of run
-Post a Linear comment on each touched project (`save_comment` with `projectId`) summarising: merged PRs, tickets escalated and why, what is next. Then send the user a short summary with SendUserMessage (load via ToolSearch) if available.
+Keep it short; there is one run per ticket. Post a Linear comment on the ticket (already done in step D) and, only when NOT chaining (the chain is finished), a project summary comment on each touched project (`save_comment` with `projectId`) summarising: merged PRs, tickets escalated and why, what is next. Then send the user a short summary with SendUserMessage (load via ToolSearch) if available.
 
 ## Known environment facts
 - `gh` GraphQL commands (`gh pr create`, `gh pr merge`) are blocked; `gh api` REST works — that's what ghpr.sh uses.
