@@ -15,7 +15,7 @@ Let a client list only the items that are running low.
 - [ ] A negative or non-integer `low_stock` is rejected with 422 — checked by: tests/test_items.py::test_low_stock_rejects_invalid_values
 
 ## Verify
-`make -C fixtures/demo-project verify`
+`make verify`
 
 ## Out of scope
 Pagination, sorting, filtering by name or unit.

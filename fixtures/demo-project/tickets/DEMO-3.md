@@ -14,12 +14,11 @@ Let the pantry track items we owe to someone else by allowing an item's quantity
 - [ ] `test_quantity_cannot_go_negative` keeps passing unchanged — checked by: tests/test_items.py::test_quantity_cannot_go_negative
 
 ## Verify
-`make -C fixtures/demo-project verify`
+`make verify`
 
 ## Out of scope
 Any UI; reporting on owed items.
 
 ## Escalation
-taste-checkpoint
+none
 
-<!-- fixture: contradictory on purpose, an agent should escalate -->

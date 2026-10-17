@@ -15,7 +15,7 @@ Let a client use up some of an item without computing the new quantity itself.
 - [ ] `amount` must be a positive integer, otherwise 422; unknown id returns 404 — checked by: tests/test_items.py::test_consume_validates_amount_and_id
 
 ## Verify
-`make -C fixtures/demo-project verify`
+`make verify`
 
 ## Out of scope
 Bulk consume, an audit log of consumptions, restocking endpoint.
