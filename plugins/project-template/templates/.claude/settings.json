@@ -1,0 +1,16 @@
+{
+  "extraKnownMarketplaces": {
+    "agent-toolkit": {
+      "source": {
+        "source": "github",
+        "repo": "ImHereForTheCookies/agent-toolkit"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "agentic-workflow@agent-toolkit": true,
+    "code-navigation@agent-toolkit": true,
+    "linear-workflow@agent-toolkit": true,
+    "project-template@agent-toolkit": true
+  }
+}

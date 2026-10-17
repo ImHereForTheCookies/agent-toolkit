@@ -57,4 +57,11 @@ bash scripts/check_seeded_bug.sh
 step "7. ticket graph (examples/cajunt/tickets)"
 python3 scripts/check_ticket_graph.py examples/cajunt/tickets
 
+# --- Step 8: harness-init produces a repo whose make verify runs (ROB-9) ---
+step "8. harness-init smoke (empty dir -> make verify)"
+harness_tmp="$(mktemp -d)"
+python3 plugins/project-template/scripts/harness_init.py "$harness_tmp/proj"
+make -C "$harness_tmp/proj" verify
+rm -rf "$harness_tmp"
+
 step "verify: OK"
