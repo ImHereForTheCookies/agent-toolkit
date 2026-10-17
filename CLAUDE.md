@@ -10,6 +10,8 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 - Plugins: `agentic-workflow`, `code-navigation`, `linear-workflow`, `project-template`
 - `plugins/code-navigation/scripts/repo_map.py` - symbol index writer (`docs/symbols.md`); skill `navigate-codebase`
 - `plugins/linear-workflow/skills/linear-tickets/SKILL.md` + `.mcp.json` - Linear status mapping, claiming, evidence and escalation; Linear MCP for headless runs
+- `plugins/agentic-workflow/skills/human-in-the-loop/SKILL.md` - the six escalation triggers, comment template, reviewer guard
+- `evals/hitl/` - scenarios + `run_eval.py` for that skill (`make eval-hitl`, costs API calls, not in verify)
 - `scripts/verify.sh` - step runner behind `make verify`; extend at the marked block
 - `scripts/smoke_install.sh` - add + install all plugins in a temp CLAUDE_CONFIG_DIR
 - `tests/` - pytest tests (`test_*.py`)
@@ -20,6 +22,7 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 
 ## Commands
 - `make verify` - validate marketplace and each plugin, run tests if present. Fast; run it often.
+- `make eval-hitl` - run the human-in-the-loop eval via `claude -p` (needs login; not part of verify)
 - `make smoke` - local marketplace add + install of all plugins. Slower; not part of verify.
 
 ## Conventions
