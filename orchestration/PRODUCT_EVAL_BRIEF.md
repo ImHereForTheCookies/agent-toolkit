@@ -10,7 +10,7 @@ You judge a finished POC the way its first real user would meet it. You did not 
 - Round 2: also read your round-1 report (project comment) and check each finding first.
 
 ## 2. Use it as the target user (Playwright, phone viewport 390x844, plus one desktop pass)
-Write the user's first session as a short script from the spec ("a home cook opens it for the first time to plan this week"), then do it, screenshotting each step. Then: come back after a reload, go offline and reload, try the empty state, enter something messy (long text, duplicate, emoji), and use the feature most likely to be half-wired. Also run `make -C <folder> build` and serve `dist/` statically; the built site must work, not just the dev server.
+First build a **feature checklist**: one line per user-visible feature in the spec or brief, taken sentence by sentence (headline mechanics too, e.g. "perishables decay by shelf life"). For each, find the screen and steps a user would take and do them in the browser; an API call or a database column does not count as reachable. Record `reachable: yes/no` with a screenshot or page text, and carry the checklist into the Spec coverage row. Then write the user's first session as a short script from the spec ("a home cook opens it for the first time to plan this week"), then do it, screenshotting each step. Then: come back after a reload, go offline and reload, try the empty state, enter something messy (long text, duplicate, emoji), and use the feature most likely to be half-wired. Also run `make -C <folder> build` and serve `dist/` statically; the built site must work, not just the dev server.
 
 ## 3. Grade (each criterion PASS or FAIL with evidence; core criteria marked *)
 | Criterion | PASS when |
@@ -34,7 +34,7 @@ Verdict: **PASS** only if every criterion passes (or is `N/A` as allowed above).
   Screenshots: <paths>
   Top 3 things a real user would hit first: <...>
   ```
-- On FAIL in round 1: file one fix ticket per distinct problem (at most 6; merge small ones), following `$TOOLKIT/plugins/agentic-workflow/skills/ticket-spec/SKILL.md`, linted with `python3 $TOOLKIT/scripts/lint_ticket.py`, milestone `Eval fixes`, Todo. Each ticket names the failing criterion and the exact reproduction.
+- On FAIL in round 1: file one fix ticket per distinct problem (at most 8; merge only items on the same screen), following `$TOOLKIT/plugins/agentic-workflow/skills/ticket-spec/SKILL.md`, linted with `python3 $TOOLKIT/scripts/lint_ticket.py`, milestone `Eval fixes`, Todo. Each ticket names the failing criterion and the exact reproduction. Every `reachable: no` item and every FAIL row in your report must be covered by a ticket; anything you leave out goes in the report as `Not ticketed: <item> (<reason>)`, so nothing found in round 1 can first resurface in round 2.
 - On FAIL in round 2: file nothing new; list what still fails and mark whether any core (*) criterion failed.
 - Taste (colors, wording you'd personally prefer) is never a FAIL; mention it under "Top 3" only if a user would actually stumble on it.
 - Stop the app, leave the repo clean (`git status --short` empty).
