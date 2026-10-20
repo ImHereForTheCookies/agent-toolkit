@@ -4,6 +4,8 @@
 
 **Target:** each night takes one POC from validated idea to a launch kit Robert can act on: plan → build → skeptical product evaluation → first release → launch kit → retro. Time and tokens left over go to keeping validated ideas in reserve, then to speculative next-best features on finished POCs, then to improving the loop itself.
 
+**The discovery loop feeds itself.** When no ticket is eligible and no higher unit holds, units 7 (validate) and 8 (ideate) keep the Idea Lab stocked and unit 5 turns validated ideas into POCs. Discovery is the default sink for leftover time, so it must not stall just because the launch queue is full: the reserve targets in units 7 and 8 sit above what unit 5 consumes.
+
 **Always a deployable version.** Every POC that has passed product evaluation has a release: an annotated git tag `<slug>-vN` and a branch `release/<slug>` pointing at the last commit that passed the release gate (`make verify`, `make build`, and a release check of the whole app). Work keeps landing on `main`; the release branch only moves forward, and only when a new increment passes the gate. Robert hosts from `release/<slug>`, never from `main`, so whatever is mid-build never reaches users. A POC that isn't finished when the usage limit or the cutoff hits simply continues the next night (depth before breadth: never start a second POC while one is mid-build).
 
 **What pre-launch validation can and can't do.** Desk research (complaint mining, competitor reviews) is a cheap filter for whether the *problem* is real. It cannot show that people want *this* app; LLM "synthetic users" are not evidence of demand either (they flatten and stereotype real preferences). The real test is launching, which only Robert can do. So: research filters ideas, a skeptical evaluator playing the target user checks the product works and makes sense, and grow passes after launch use real feedback only.
@@ -36,7 +38,7 @@ Delegate every unit to one Sonnet subagent (Agent tool, `model: sonnet`, effort 
 **Do:** subagent with `$TOOLKIT/orchestration/LAUNCH_BRIEF.md`. Then set `Stage: kit ready`.
 
 ### 4. Retro
-**Condition:** a POC that reached `kit ready` or `parked` and has `Retro: not run`.
+**Condition:** a POC that reached `kit ready` or `parked` and has `Retro: not run`, and no `orchestration/retros/*-<slug>.md` exists on agent-toolkit `origin/main`. If that file already exists, the retro is done: skip the subagent and only retry the Linear update `Retro: not run` -> `Retro: done` (a refused write must never make a retro run twice).
 **Do:** subagent with `$TOOLKIT/orchestration/RETRO_BRIEF.md` for that project. It writes `orchestration/retros/<date>-<slug>.md`, updates `orchestration/LESSONS.md`, and opens at most one PR to agent-toolkit with up to 3 evidence-backed process changes. Take that PR through review (`REVIEWER_BRIEF.md`, plus: "This changes the loop itself. FAIL it if it touches `HARD_LIMITS.md`, weakens any review/QA/eval gate, or lacks retro evidence for a change.") and merge it via `ghpr.sh` (run from `~/work/agent-toolkit`). No QA step for process PRs. Set `Retro: done`. Changes take effect from the next chained run, which re-clones the toolkit.
 
 ### 5. Start tonight's POC
@@ -51,19 +53,19 @@ Then create, in order: the Linear project (team ROB, label `POC`, name = slug, d
 **Do:** subagent with `$TOOLKIT/orchestration/GROWTH_BRIEF.md`. Real feedback outranks research. Feedback-driven tickets always outrank speculative ones (unit 9).
 
 ### 7. Keep the idea reserve stocked: validate
-**Condition:** Idea Lab has fewer than 2 In Review ideas and has a Backlog candidate.
+**Condition:** Idea Lab has fewer than **4** In Review ideas and has a Backlog candidate.
 **Do:** oldest candidate → In Progress → subagent with `$TOOLKIT/orchestration/RESEARCH_BRIEF.md`, mode **validate**. Score ≥ 70 and no hard gate failed → In Review. Otherwise → Canceled with `Killed: <score>/100, <reason>`.
 
 ### 8. Ideate
-**Condition:** Idea Lab has fewer than 2 In Review ideas and fewer than 3 Backlog candidates.
+**Condition:** Idea Lab has fewer than **4** In Review ideas and fewer than **5** Backlog candidates.
 **Do:** subagent with `RESEARCH_BRIEF.md`, mode **ideate** (reads `LESSONS.md` for what kinds of ideas worked or failed).
 
 ### 9. Speculative next-best feature (leftovers)
-**Condition:** the idea reserve has 2+ validated ideas (or Idea Lab research is exhausted for tonight), fewer than **2** Speculative tickets were filed tonight across all POCs, and some POC has a release, no open tickets, and `Stage` not `parked`. Pick the POC greenlit most recently; tie → the one with the fewest Speculative tickets ever.
+**Condition:** the idea reserve has 4+ validated ideas (units 7 and 8 no longer hold; or Idea Lab research is exhausted for tonight), fewer than **2** Speculative tickets were filed tonight across all POCs, and some POC has a release, no open tickets, and `Stage` not `parked`. Pick the POC greenlit most recently; tie → the one with the fewest Speculative tickets ever.
 **Do:** subagent with `$TOOLKIT/orchestration/GROWTH_BRIEF.md`, mode **speculative**. It files exactly one ticket labelled `Speculative`, which the next runs build through the normal implement → review → QA → merge flow; the release-cut unit then puts it through the release check before it can reach `release/<slug>`. A speculative feature that fails the release check twice is reverted on `main` by a fix ticket rather than patched further.
 
 ### 10. Process research (leftovers)
-**Condition:** none of the above holds, the reserve has 2+ validated ideas, and no process-research PR was opened tonight.
+**Condition:** none of the above holds, the reserve has 4+ validated ideas, and no process-research PR was opened tonight.
 **Do:** subagent with `$TOOLKIT/orchestration/RETRO_BRIEF.md`, mode **research**: look across all retros for the weakest metric and research one concrete fix (published harness/eval practices, agent-building case studies, validation methods), then open one PR through the same review as unit 3. If there are no retros yet, end the night instead.
 
 When no unit's condition holds, the night is done.
