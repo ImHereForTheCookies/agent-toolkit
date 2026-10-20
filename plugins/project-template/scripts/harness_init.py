@@ -3,7 +3,7 @@
 
 Copies the templates (CLAUDE.md, PROGRESS.md, Makefile, .claude/settings.json)
 into <dir>, substituting {{PROJECT_NAME}}, and runs `git init` if <dir> is not
-already a git repo. Existing files are never overwritten unless --force.
+already a git repo or inside one (a folder in a monorepo, e.g. cajunt/pocs/<slug>). Existing files are never overwritten unless --force.
 
 Usage: harness_init.py <dir> [--name NAME] [--force]
 """
@@ -19,6 +19,15 @@ PLACEHOLDER = "{{PROJECT_NAME}}"
 def template_files():
     """Relative paths of every file under templates/, sorted."""
     return sorted(p.relative_to(TEMPLATES) for p in TEMPLATES.rglob("*") if p.is_file())
+
+
+def _inside_work_tree(path):
+    """True when path sits inside an existing git work tree (e.g. a monorepo subfolder)."""
+    probe = subprocess.run(
+        ["git", "-C", str(path), "rev-parse", "--is-inside-work-tree"],
+        capture_output=True, text=True,
+    )
+    return probe.returncode == 0 and probe.stdout.strip() == "true"
 
 
 def init(target, name=None, force=False):
@@ -38,7 +47,7 @@ def init(target, name=None, force=False):
         dest.write_text(text, encoding="utf-8")
         (overwritten if existed else created).append(str(rel))
     git_inited = False
-    if not (target / ".git").exists():
+    if not (target / ".git").exists() and not _inside_work_tree(target):
         subprocess.run(["git", "init", "-q", str(target)], check=True)
         git_inited = True
     return created, overwritten, skipped, git_inited
@@ -58,7 +67,7 @@ def main(argv=None):
     for label, files in (("created", created), ("overwritten", overwritten), ("skipped (exists)", skipped)):
         for f in files:
             print(f"{label}: {f}")
-    print("git: initialized new repo" if git_inited else "git: already a repo, left alone")
+    print("git: initialized new repo" if git_inited else "git: already a repo (or inside one), left alone")
     return 0
 
 

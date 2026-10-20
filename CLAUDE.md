@@ -18,7 +18,7 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 - `tests/` - pytest tests (`test_*.py`)
 - `fixtures/demo-project/` - small FastAPI + SQLite app, sample tickets and `fixtures/seeded-bug.patch` for testing the toolkit (`scripts/check_seeded_bug.sh`)
 - `.github/workflows/ci.yml` - runs `make verify` on push and PR
-- `orchestration/` - nightly runbook (`NIGHTLY.md`), implementer/reviewer briefs, REST PR helper `ghpr.sh`
+- `orchestration/` - nightly runbook (`NIGHTLY.md`: build first, then one R&D unit per run from `RND.md`), implementer/reviewer briefs, R&D briefs (`RESEARCH_BRIEF.md`, `GROWTH_BRIEF.md`, `LAUNCH_BRIEF.md`), REST PR helper `ghpr.sh`
 - `PROGRESS.md` - append-only session log
 
 ## Commands

@@ -100,3 +100,14 @@ def test_symbols_target(tmp_path):
     assert "hello(L1)" in (tmp_path / "docs/symbols.md").read_text()
     # make verify stays green with no toolkit present
     assert subprocess.run(["make", "-s", "-C", str(tmp_path), "verify"], capture_output=True).returncode == 0
+
+
+def test_subfolder_of_a_repo_gets_no_nested_git(tmp_path):
+    # Monorepo case (cajunt/pocs/<slug>): never create a nested repo.
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    sub = tmp_path / "pocs" / "demo"
+    r = run(sub)
+    assert r.returncode == 0, r.stderr
+    assert not (sub / ".git").exists(), "must not git init inside an existing work tree"
+    assert (sub / "Makefile").exists()
+    assert "already a repo" in r.stdout
