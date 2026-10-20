@@ -13,7 +13,7 @@ You get a built prototype ready to launch and hand Robert a launch kit he can ac
    The repo is private on GitHub Free, so GitHub Pages can't serve it. Options, cheapest effort first:
    * <free static host that can build from a private GitHub repo, with the build command `make -C <folder> build` and output dir `<folder>/dist`>
    * A separate public repo holding only the built site, served by GitHub Pages
-   Check the host's current free-tier terms before signing up. Then set the project description `Launch: live at <url>`.
+   Check the host's current free-tier terms before signing up. Then set the project description line `Stage: live at <url>`.
    ## 2. Post it (each takes about a minute)
    One section per community, best first (3-8 total):
    ### <community> - <link>
@@ -23,8 +23,12 @@ You get a built prototype ready to launch and hand Robert a launch kit he can ac
    * Title: <ready to paste>
    * Body: <ready to paste; written as Robert, says plainly he built it, free, no account, data stays on the phone; asks for feedback; no fake testimonials, no vote requests>
    ## 3. After posting
-   * Reply to comments yourself within the first few hours; paste useful feedback as a comment here so the next grow pass uses it.
-   * Rough traction signal for app stores: <a concrete bar for this audience, e.g. N people asking for a store version>. When it's met, set `Traction: yes` in the project description.
+   * Reply to comments yourself within the first few hours; paste useful feedback (and anything the feedback link brings in) as a comment on the project so the next grow pass uses it. Real feedback is the only thing grow passes build from.
+   ## 4. Did it work? (decided now, before posting, so the result can't be rationalized later)
+   * Measure: <what Robert can see at zero cost: post upvotes/comments, feedback messages, people asking for features or a store version, repeat visitors if he opts into a free analytics tier>
+   * Keep going if, within 14 days: <a concrete bar sized to these communities, e.g. 10+ substantive comments or 3+ feedback messages from strangers>
+   * Kill or park if: <the bar below which this idea is not worth more nights>
+   * Store-worthy if: <a higher bar>. When met, set `Traction: yes` in the project description.
    ```
    Research the communities live (rules pages change); skip any that ban self-promotion outright or require an account age or karma you can't verify. Never suggest posting from multiple accounts, astroturfing, or cross-posting the same text everywhere on one day.
 4. Comment on the project with the readiness tickets and the Launch issue link. Reply in at most 6 lines: readiness ticket IDs, Launch issue ID, any blocker.

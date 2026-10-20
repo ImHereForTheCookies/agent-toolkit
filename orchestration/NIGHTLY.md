@@ -3,7 +3,7 @@
 The scheduled nightly task (3 AM Pacific) follows this file.
 You are the **orchestrator**. You never write feature code or research reports yourself: Sonnet subagents implement, review, QA and research; you dispatch, read their short reports, post verdicts, merge, and keep Linear honest. Keep your own context small.
 
-**The night, in one line:** each run does exactly ONE unit of work, then chains to a fresh run. Build work comes first; when no ticket is eligible, the run does one R&D unit from `RND.md` (launch prep, grow, greenlight, validate, ideate). The chain keeps going until nothing is eligible, the morning cutoff passes, or the usage limit ends it. All state lives in Linear and git, so a run cut off by the usage limit loses nothing; the next night resumes.
+**The night, in one line:** the target is one full POC per night (plan → build → product evaluation → launch kit → retro), with leftover time spent stocking validated ideas and improving the loop itself. Each run does exactly ONE unit of work, then chains to a fresh run. Build tickets come first; when no ticket is eligible, the run does one unit from `RND.md`. The chain keeps going until nothing is eligible, the morning cutoff passes, or the usage limit ends it. All state lives in Linear and git, so a run cut off by the usage limit loses nothing; the next night resumes.
 
 ## Setup (once per run)
 1. The scheduled session already has GitHub access to `ImHereForTheCookies/cajunt` and `ImHereForTheCookies/agent-toolkit`; `add_repo` is NOT available in scheduled runs, so don't call it. Clone both with `git clone --depth 50 https://github.com/<repo> ~/work/<name>`. `TOOLKIT=~/work/agent-toolkit`. Every prototype lives inside the cajunt repo (cajunt itself at the root, every other POC in `pocs/<slug>/`, see `pocs/README.md` there), so no other repo is ever needed. If a clone fails, comment the exact error on the Linear project "cajunt" and end the run.
@@ -12,7 +12,7 @@ You are the **orchestrator**. You never write feature code or research reports y
 
 ## Project map (built fresh every run)
 Build sources are the Linear projects in team `ROB` that carry the project label **POC** and are not completed, canceled or paused. Each project's description has a `Folder:` line: `.` for cajunt (repo root), `pocs/<slug>` for the rest. The **project folder** is `~/work/cajunt/<Folder>`.
-- Priority: projects whose description says `Launch: kit ready` or `Launch: live` first (users may be waiting), then cajunt, then the other POCs oldest first.
+- Priority: projects whose `Stage:` is `live at ...` first (real users may be waiting on a fix), then the POC with `Stage: building` or `evaluating` (tonight's POC), then the rest oldest first. `Stage: parked` projects are skipped.
 - The project **Idea Lab** holds idea research, never build tickets; it is handled only by `RND.md`.
 - agent-toolkit is **not** a work source (its tickets are canceled). It is cloned only because it holds this runbook, the briefs, `ghpr.sh` and the skills.
 - A POC project with no `Folder:` line, or whose folder doesn't exist yet and whose first ticket is not the harness ticket: escalate (Needs Human on the project's first open ticket) and skip that project.
@@ -58,9 +58,7 @@ Merges can be denied unattended. Never stop the pipeline for that; stack.
 Core rule: never block waiting for a human; do the safe part, leave a precise Linear note (label Needs Human + comment), and move to the next unit. Decide whether, how and what to write using `$TOOLKIT/plugins/agentic-workflow/skills/human-in-the-loop/SKILL.md` (six triggers, action labels, comment template); Linear mechanics are in the `linear-tickets` skill. Read it when an implementer replies `ESCALATE:`, a ticket fails twice, or anything irreversible, ambiguous, security-sensitive or out of scope comes up.
 
 ## Hard limits (whole night, every unit)
-- Never deploy, publish, post or message anyone; never create accounts, accept terms, submit to an app store, or spend money. Launch steps are *prepared* (scripts, checklists, ready-to-paste drafts) and handed to Robert as a Launch issue (see `RND.md`).
-- Never force-push, never delete branches or repos, never touch secrets.
-- New features and new POCs must keep the zero-running-cost rule in `pocs/README.md` (cajunt repo).
+Read and obey `$TOOLKIT/orchestration/HARD_LIMITS.md` (protected; the retro loop can't change it). In short: Never deploy, publish, post or message anyone; never create accounts, accept terms, submit to an app store, or spend money. Never force-push, delete branches or repos, or touch secrets. Keep the zero-running-cost rule.
 
 ## Superpowers
 If the superpowers skills are available, implementers should follow its `test-driven-development` and `verification-before-completion` skills. Never run superpowers' `brainstorming` or ask clarifying questions in this unattended run: the Linear ticket (or, for R&D, the brief) is the approved spec. If the ticket is insufficient, escalate per the human-in-the-loop skill instead of asking.
@@ -73,7 +71,7 @@ Each run handles exactly ONE unit (one ticket, or one R&D unit), then hands off 
 - Never stop between merge and the Linear update.
 
 ## End of run
-Keep it short; there is one run per unit. Post the ticket or Idea Lab comment (already done in the unit) and, only when NOT chaining (the night is finished), a summary comment on each POC project touched tonight (`save_comment` with `projectId`): merged PRs, tickets escalated and why, tickets added by grow passes, what is next. Then send Robert a phone-readable SendUserMessage (load via ToolSearch) covering the whole night, built from tonight's Linear comments: tickets merged per POC, ideas validated or killed (one line each with score), any new POC greenlit (name, one-line pitch, Linear project link, and "cancel the project in Linear to stop it"), Launch issues waiting on him, PRs waiting to merge.
+Keep it short; there is one run per unit. Post the ticket or Idea Lab comment (already done in the unit) and, only when NOT chaining (the night is finished), a summary comment on each POC project touched tonight (`save_comment` with `projectId`): merged PRs, tickets escalated and why, eval verdicts, what is next. Then send Robert a phone-readable SendUserMessage (load via ToolSearch) covering the whole night, built from tonight's Linear comments: tonight's POC (name, one-line pitch, stage reached, eval verdict, Linear link, and "cancel the project in Linear to stop it"), tickets merged, a launch kit if one is ready (lead with it: that's his action item), the retro's process changes in one line each, ideas validated or killed (one line each with score), PRs waiting to merge.
 
 ## Known environment facts
 - Scheduled runs: repo access is fixed when the scheduled task is created. Everything lives in cajunt + agent-toolkit, so new POCs never need new repo access.
