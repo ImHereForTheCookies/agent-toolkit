@@ -22,7 +22,7 @@ Build sources are the Linear projects in team `ROB` that carry the project label
 ## Picking work
 **Concurrency guard (check first):** if any ticket in a POC project or in Idea Lab is In Progress and was updated in the last 60 minutes, another run is probably active. End this run immediately with a one-line note; do not chain.
 
-**Morning cutoff:** `TZ=America/Los_Angeles date +%H%M`. At 0830 or later (and before 1500), finish nothing new: do the reconcile step below, then end without chaining. This keeps the 9 AM job-application task and Robert's day from starting on an exhausted usage limit.
+**Morning cutoff:** `TZ=America/Los_Angeles date +%H%M`. At 0900 or later (and before 1500), finish nothing new: do the reconcile step below, then end without chaining. The 0900 cutoff lets a night run about six hours from the 3 AM start. The 9 AM job-application task now overlaps with the tail of the night and shares the same usage limit (Robert accepted this), so a run still in flight at 0900 may leave that task less headroom.
 
 Team `ROB`. Status mapping: Todo = Ready, In Progress, In Review, Done; label **Needs Human** = escalated (skip it).
 For each project in priority order, handle tickets in this order:
@@ -34,7 +34,7 @@ Issues labelled **Launch** are Robert's hand-off queue, never build tickets: ski
 One ticket at a time, sequentially (all projects share one repo).
 A blocker counts as satisfied when it is Done, or when it is In Review with an open PR whose last orchestrator comment is `Review PASS, QA PASS, waiting on merge` and whose head is unchanged and CI green (a "pending-merge" blocker). A ticket that depends on a pending-merge blocker is built stacked (next section).
 
-**No eligible ticket in any project → do one R&D unit:** read `$TOOLKIT/orchestration/RND.md` and run the first unit in its priority order whose condition holds. If no unit's condition holds either, the night is done: end without chaining.
+**No eligible ticket in any project → do one R&D unit:** read `$TOOLKIT/orchestration/RND.md` and run the first unit in its priority order whose condition holds. Discovery is the default sink for leftover time: when no ticket is eligible and no higher unit holds, units 7 (validate) and 8 (ideate) keep the Idea Lab stocked and unit 5 turns validated ideas into POCs, so the loop feeds itself until the cutoff. If no unit's condition holds either, the night is done: end without chaining.
 
 ## Per ticket
 A. **Implement.** Spawn a Sonnet subagent (Agent tool, `model: sonnet`, foreground): "Read and follow `$TOOLKIT/orchestration/IMPLEMENTER_BRIEF.md`. Ticket: <ID>. Repo path: <repo>. Project folder: <folder>. TOOLKIT=<path>." If it replies `ESCALATE:`, escalate (see Escalation) and move on.
@@ -66,8 +66,9 @@ If the superpowers skills are available, implementers should follow its `test-dr
 ## One unit per run (fresh context every unit)
 Each run handles exactly ONE unit (one ticket, or one R&D unit), then hands off to a brand-new run, so every unit starts with a clean orchestrator context. Linear + git hold all the state.
 1. Pick the single next unit (see Picking work) and finish it, including the merge or escalation and the Linear update.
-2. Then decide whether to chain. Chain when this run made progress (a ticket moved to Done, got Needs Human, or was stacked as pending-merge; or an R&D unit completed) AND it is before the morning cutoff AND either a ticket is still eligible or some R&D unit's condition holds. To chain: load `mcp__claude-code-remote__fire_trigger` via ToolSearch and call it with `trigger_id` `trig_01R5kFZkhgrQ9k2RGqBKzogY` and `text` "Chained run: continue with the next eligible unit." Then end this run.
-3. Do not chain if this run made no progress (that would loop) or the cutoff passed. A red main only blocks its own project. If `fire_trigger` is unavailable or refused, continue in this same session with the next unit instead (auto-compaction will handle context) and say so in the summary.
+2. Then decide whether to chain. Chain when this run made progress (a ticket moved to Done, got Needs Human, or was stacked as pending-merge; or an R&D unit completed) AND it is before the morning cutoff (0900 PT) AND either a ticket is still eligible or some R&D unit's condition holds. To chain: load `mcp__claude-code-remote__fire_trigger` via ToolSearch and call it with `trigger_id` `trig_01R5kFZkhgrQ9k2RGqBKzogY` and `text` "Chained run: continue with the next eligible unit." Then end this run.
+3. **Refused Linear write:** if a Linear write is refused (permission classifier or API error), retry it once. If it is still refused, record the pending write as a comment on the Linear project if that works, otherwise in the end-of-run summary, and still chain (do not end the night) as long as the unit's git-side artifact exists (merged PR, retro file, tag, release branch). Never redo a unit just because its Linear update is pending; `RND.md` conditions check git first.
+4. Do not chain if this run made no progress (that would loop) or the cutoff passed. A red main only blocks its own project. If `fire_trigger` is unavailable or refused, continue in this same session with the next unit instead (auto-compaction will handle context) and say so in the summary.
 - Never stop between merge and the Linear update.
 
 ## End of run
