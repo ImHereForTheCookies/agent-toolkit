@@ -47,7 +47,7 @@ def test_research_briefs_never_post():
 
 # Pinned so the self-improving retro loop cannot rewrite the hard limits.
 # Only Robert updates this hash, after reading the change himself.
-HARD_LIMITS_SHA256 = "e7c644c5dd2e4ee1a2b0f0859a8b9f922ab87331706d72e463ffc1252d0e322e"
+HARD_LIMITS_SHA256 = "f5b4392f90c4d8cdc07f373e11c24b6137730fc19b88596c0c23cfa03ca231f7"
 
 
 def test_hard_limits_unchanged():
@@ -65,3 +65,11 @@ def test_retro_loop_is_fenced():
     assert "make verify" in retro
     rnd = (ORCH / "RND.md").read_text(encoding="utf-8")
     assert "FAIL it if it touches `HARD_LIMITS.md`" in rnd
+
+
+def test_release_cut_is_gated():
+    rnd = (ORCH / "RND.md").read_text(encoding="utf-8")
+    assert "$TOOLKIT/orchestration/release.sh" in rnd
+    assert "release check" in rnd and "RELEASE: BLOCKED" in rnd
+    launch = (ORCH / "LAUNCH_BRIEF.md").read_text(encoding="utf-8")
+    assert "release/<slug>" in launch and "never `main`" in launch
