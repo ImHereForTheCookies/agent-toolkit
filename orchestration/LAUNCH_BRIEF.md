@@ -11,8 +11,8 @@ You get a built prototype ready to launch and hand Robert a launch kit he can ac
    ## Before you launch (blocked by: <readiness ticket IDs>)
    ## 1. Host it free (one-time, ~10 min)
    The repo is private on GitHub Free, so GitHub Pages can't serve it. Options, cheapest effort first:
-   * <free static host that can build from a private GitHub repo, with the build command `make -C <folder> build` and output dir `<folder>/dist`>
-   * A separate public repo holding only the built site, served by GitHub Pages
+   * <free static host that can build from a private GitHub repo: production branch `release/<slug>` (never `main`), build command `make -C <folder> build`, output dir `<folder>/dist`>. Pointing the host at `release/<slug>` means each release the nightly loop cuts goes live automatically; point it at a specific tag instead if Robert wants to promote releases by hand.
+   * A separate public repo holding only the built site from the latest `<slug>-vN` tag, served by GitHub Pages (updating it is a manual step for Robert)
    Check the host's current free-tier terms before signing up. Then set the project description line `Stage: live at <url>`.
    ## 2. Post it (each takes about a minute)
    One section per community, best first (3-8 total):

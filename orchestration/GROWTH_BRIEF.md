@@ -9,3 +9,11 @@ You find the next few features that would make one **launched** prototype more u
 5. **Never exceed 8 open non-Launch tickets** in the project. If it's already close, file fewer.
 6. Update the project description line `Last grow:` to today (edit only that line). Comment on the project: what you looked at, the tickets filed (IDs and titles), and the strongest idea you did not file and why.
 7. Reply in at most 8 lines: ticket IDs + titles, or `NO TICKETS: <reason>` if nothing had enough evidence (still update `Last grow:`).
+
+## Mode: speculative (leftover tokens, no user feedback yet)
+Robert wants spare tokens turned into the next most valuable feature even before users weigh in. Your job is to pick **one** feature and file **one** ticket.
+1. Do step 1 above (know the app), and also read `SPEC.md`'s "out of scope" list, the latest product-eval and release-check comments ("Top 3 things a real user would hit first"), and the Idea Lab report's competitor complaints.
+2. Rank candidates by: a first-time user would notice it within a week × it makes them come back or share × evidence it's wanted (Idea Lab report, competitor reviews, eval findings) ÷ build effort. Prefer finishing or deepening the core loop over adding a new surface. Never: accounts, sync, payments, anything needing a server, anything a human must click.
+3. Write one ticket (ticket-spec, linted, at most 8 acceptance criteria, Escalation `taste-checkpoint` if it adds a new screen), label `Speculative` (create it in team ROB if missing), milestone `Speculative`, Todo. In Context, give the one-paragraph case for it and the evidence links; in Out of scope, what you deliberately left for a later pass.
+4. Do not change `Last grow:` (that tracks feedback-driven passes). Comment on the project: the feature chosen, the two runner-ups and why they lost.
+5. Reply in at most 4 lines: the ticket ID and title.

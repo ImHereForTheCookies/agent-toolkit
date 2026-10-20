@@ -39,3 +39,10 @@ Verdict: **PASS** only if every criterion passes (or is `N/A` as allowed above).
 - Taste (colors, wording you'd personally prefer) is never a FAIL; mention it under "Top 3" only if a user would actually stumble on it.
 - Stop the app, leave the repo clean (`git status --short` empty).
 - Reply in at most 6 lines: `EVAL: PASS|FAIL`, `CORE: pass|fail`, fix ticket IDs.
+
+## Mode: release check (between releases)
+Same stance and setup, scoped to "is `main` safe to release over the last release tag?" The orchestrator gives you the last tag (`<slug>-vN`).
+1. `git -C ~/work/cajunt fetch -q --tags origin`, then list what changed: `git log --no-merges --oneline <tag>..origin/main -- <folder>` and the Linear tickets those commits name (including any labelled `Speculative`).
+2. Run the app from `main` (sections 1-2 above) and grade: every **core** criterion from the table (core loop, spec coverage, data survives, static and offline), plus each changed feature end to end as its ticket describes, plus data saved by the *previous* release still loading after the upgrade (start the last tag first, create data, then switch to `main` with the same storage and reload).
+3. Verdict: `RELEASE: OK` only if all of that passes. A regression in a core criterion or lost data → `RELEASE: BLOCKED`. File one fix ticket per regression (ticket-spec, linted, milestone `Release fixes`, Todo), naming the commit that likely caused it. A changed feature that merely feels unpolished is not a block; note it.
+4. Comment the graded table on the project, stop the app, leave the repo clean, and reply in at most 5 lines: `RELEASE: OK|BLOCKED`, fix ticket IDs.
