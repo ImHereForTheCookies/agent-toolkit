@@ -81,3 +81,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (direct request from Robert; stacked on PR #17)
 - Outcome: `orchestration/NIGHTLY.md`: the morning cutoff (0900, 'before 1500', chaining-rule step, reconcile-at-cutoff, intro and one-liner mentions) is removed; nights end only when nothing is eligible, the usage limit hits, or a hard failure; 60-minute concurrency guard kept; the 9 AM job-application task may overlap (accepted). 'Stacking when merges are blocked' now also covers retro, research and loop-change PRs to agent-toolkit (rule 7: waiting on merge, branch from newest pending process PR, cap 8, PushNotification). `orchestration/RND.md`: cutoff mention removed. HARD_LIMITS.md and all review/QA/eval gates untouched. Two LESSONS.md lines (status: watch).
 - Next step: check that a night runs until nothing is eligible or the usage limit, and that a denied process-PR merge stacks instead of stopping.
+
+## 2026-10-20 - Loop: process PRs not repeated while waiting on merge
+- Ticket: none (review finding on PR #18, stacked on #17)
+- Outcome: `orchestration/RND.md` unit 4 treats the retro as done when `orchestration/retros/????-??-??-<slug>.md` (exact slug) exists on `origin/main` or on the head branch of an open `waiting on merge` retro PR (only the Linear `Retro: done` line is retried); unit 10 counts an open waiting research PR as opened tonight. `orchestration/NIGHTLY.md` rule 7 states the same check for retro, research and loop-change units, so chained runs cannot open repeat stacked PRs up to the cap. HARD_LIMITS.md and all gates untouched.
+- Next step: confirm that a denied retro merge yields one waiting PR and later runs skip the subagent.

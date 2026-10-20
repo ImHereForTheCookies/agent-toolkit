@@ -38,7 +38,7 @@ Delegate every unit to one Sonnet subagent (Agent tool, `model: sonnet`, effort 
 **Do:** subagent with `$TOOLKIT/orchestration/LAUNCH_BRIEF.md`. Then set `Stage: kit ready`.
 
 ### 4. Retro
-**Condition:** a POC that reached `kit ready` or `parked` and has `Retro: not run`, and no `orchestration/retros/*-<slug>.md` exists on agent-toolkit `origin/main`. If that file already exists, the retro is done: skip the subagent and only retry the Linear update `Retro: not run` -> `Retro: done` (a refused write must never make a retro run twice).
+**Condition:** a POC that reached `kit ready` or `parked` and has `Retro: not run`, and no retro file `orchestration/retros/????-??-??-<slug>.md` (exact slug, so a slug that ends another slug does not match) exists on agent-toolkit `origin/main` **or** on the head branch of an open `waiting on merge` retro PR (check with `git ls-tree --name-only origin/<branch> orchestration/retros/` after `git fetch`, or `ghpr.sh url <branch>`; see NIGHTLY.md stacking rule 7). If such a file exists, the retro is done: skip the subagent and only retry the Linear update `Retro: not run` -> `Retro: done` (a refused write or an unmerged retro PR must never make a retro run twice).
 **Do:** subagent with `$TOOLKIT/orchestration/RETRO_BRIEF.md` for that project. It writes `orchestration/retros/<date>-<slug>.md`, updates `orchestration/LESSONS.md`, and opens at most one PR to agent-toolkit with up to 3 evidence-backed process changes. Take that PR through review (`REVIEWER_BRIEF.md`, plus: "This changes the loop itself. FAIL it if it touches `HARD_LIMITS.md`, weakens any review/QA/eval gate, or lacks retro evidence for a change.") and merge it via `ghpr.sh` (run from `~/work/agent-toolkit`). No QA step for process PRs. Set `Retro: done`. Changes take effect from the next chained run, which re-clones the toolkit.
 
 ### 5. Start tonight's POC
@@ -65,7 +65,7 @@ Then create, in order: the Linear project (team ROB, label `POC`, name = slug, d
 **Do:** subagent with `$TOOLKIT/orchestration/GROWTH_BRIEF.md`, mode **speculative**. It files exactly one ticket labelled `Speculative`, which the next runs build through the normal implement → review → QA → merge flow; the release-cut unit then puts it through the release check before it can reach `release/<slug>`. A speculative feature that fails the release check twice is reverted on `main` by a fix ticket rather than patched further.
 
 ### 10. Process research (leftovers)
-**Condition:** none of the above holds, the reserve has 4+ validated ideas, and no process-research PR was opened tonight.
+**Condition:** none of the above holds, the reserve has 4+ validated ideas, and no process-research PR was opened tonight (an open `waiting on merge` research PR counts as opened; it is not repeated, see NIGHTLY.md stacking rule 7).
 **Do:** subagent with `$TOOLKIT/orchestration/RETRO_BRIEF.md`, mode **research**: look across all retros for the weakest metric and research one concrete fix (published harness/eval practices, agent-building case studies, validation methods), then open one PR through the same review as unit 3. If there are no retros yet, end the night instead.
 
 When no unit's condition holds, the night is done.
