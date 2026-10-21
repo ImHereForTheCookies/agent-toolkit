@@ -97,3 +97,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (Robert asked to fix the test run if it gets stuck)
 - Outcome: RND.md Part A caps raised to 12 validations and 4 ideation passes per night (unit 7 shares them). The test run's first 3 validations were all killed (63, 65, 56/100) at about 9 min each.
 - Next step: see whether a later candidate (health-leaning ideation pass 2) reaches 70.
+
+## 2026-10-21 - Part A limits come from the runbook, not comments
+- Ticket: none (fix for the test run Robert asked me to watch)
+- Outcome: after PR #23 raised the caps, chained runs kept copying "of max 6" from earlier Idea Lab comments. RND.md Part A now says to count attempts from comments but take limits only from the file, and to write counts without a maximum.
+- Next step: confirm the next step after pacelog keeps validating (bpdiary) instead of declaring no POC tonight.
