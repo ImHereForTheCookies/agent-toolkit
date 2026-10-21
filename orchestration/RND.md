@@ -29,11 +29,11 @@ Delegate every step and unit to one Sonnet subagent (Agent tool, `model: sonnet`
 Then create, in order: the Linear project (team ROB, label `POC`, name = slug, description with `Folder: pocs/<slug>`, `Idea: <Idea Lab issue URL>`, `Greenlit: <today>`, `Stage: building`, `Eval: not run`, `Release: none`, `Retro: not run`, `Last grow: never`, `Traction: no`, then the spec), milestone `MVP`, the tickets (blockers first; unblocked ones Todo, the rest Backlog). Set the Idea Lab issue Done with a comment linking the project. If the brief is too vague to plan, do not create the project: comment the open questions on the idea, label it Needs Human, set it back to Backlog, and the next run tries the next In Review idea (or validates another one).
 
 ### A2. Validate a candidate
-**Condition:** no POC was greenlit tonight, Idea Lab has no In Review idea, it has a Backlog candidate, and fewer than **6** validations ran tonight.
+**Condition:** no POC was greenlit tonight, Idea Lab has no In Review idea, it has a Backlog candidate, and fewer than **12** validations ran tonight.
 **Do:** oldest candidate → In Progress → subagent with `$TOOLKIT/orchestration/RESEARCH_BRIEF.md`, mode **validate**. Score ≥ 70 and no hard gate failed → In Review (the next run greenlights it). Otherwise → Canceled with `Killed: <score>/100, <reason>`.
 
 ### A3. Ideate
-**Condition:** no POC was greenlit tonight, Idea Lab has no In Review idea and no Backlog candidate, and fewer than **2** ideation passes ran tonight.
+**Condition:** no POC was greenlit tonight, Idea Lab has no In Review idea and no Backlog candidate, and fewer than **4** ideation passes ran tonight.
 **Do:** subagent with `RESEARCH_BRIEF.md`, mode **ideate**, asking for 3-5 candidates (it reads `LESSONS.md` for what kinds of ideas worked or failed).
 
 **No POC tonight:** when no Part A step's condition holds and nothing was greenlit tonight (the validation or ideation caps were reached without a validated idea), tonight has no new POC. Post one `New POC pipeline: no POC tonight` comment on Idea Lab listing the ideas killed tonight with their scores, report it in the night summary, and carry on with build tickets and Part B. Do not post it twice in one night.
@@ -68,7 +68,7 @@ Then create, in order: the Linear project (team ROB, label `POC`, name = slug, d
 **Do:** subagent with `$TOOLKIT/orchestration/GROWTH_BRIEF.md`, mode **speculative**. It files exactly one ticket labelled `Speculative`, which the next runs build through the normal implement → review → QA → merge flow; the release-cut unit then puts it through the release check before it can reach `release/<slug>`. A speculative feature that fails the release check twice is reverted on `main` by a fix ticket rather than patched further.
 
 ### 7. Keep the idea reserve stocked
-**Condition:** Idea Lab has fewer than 2 In Review ideas, and fewer than 6 validations and 2 ideation passes ran tonight (Part A's included).
+**Condition:** Idea Lab has fewer than 2 In Review ideas, and fewer than 12 validations and 4 ideation passes ran tonight (Part A's included).
 **Do:** if Idea Lab has a Backlog candidate, validate the oldest one exactly as in A2; otherwise ideate as in A3. This lets tomorrow night greenlight straight away.
 
 ### 8. Process research (leftovers)
