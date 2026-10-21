@@ -87,3 +87,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (direct request from Robert)
 - Outcome: `RESEARCH_BRIEF.md` accepts any idea whose MVP fits about a week of nightly builds (10-25 tickets; zero-cost client-side rule unchanged), prefers health ideas (with the existing hard gates on medical advice), and browses idealab.ai without its capital/team/time filters. `RND.md` A1 planner and decomposer size the MVP for about a week (8-20 features, 10-25 tickets, core loop first); a health idea within 5 points of the top score wins greenlight.
 - Next step: watch the test run's ideation for health candidates.
+
+## 2026-10-21 - MVP size up to about 50 tickets
+- Ticket: none (direct request from Robert: 10-25 tickets undersized a week of building)
+- Outcome: RESEARCH_BRIEF and RND.md A1 size an MVP at up to about 50 tickets (features as many as needed, core loop first). Measured pace for reference: 14-25 min per ticket sequentially (2026-10-20: 11 tickets 03:15-05:50; 2026-10-21: 4 tickets 03:00-04:41).
+- Next step: parallel builds across POC folders if Robert wants 50 tickets a night.

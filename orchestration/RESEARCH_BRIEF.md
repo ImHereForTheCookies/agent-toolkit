@@ -3,7 +3,7 @@
 You research app ideas for Robert's prototype loop, unattended. The orchestrator gives you a **mode** (`ideate` or `validate`) and, for validate, an Idea Lab issue ID. Load Linear tools via ToolSearch: `select:mcp__Linear__list_issues,mcp__Linear__get_issue,mcp__Linear__save_issue,mcp__Linear__save_comment,mcp__Linear__list_projects`. Use WebSearch and WebFetch for evidence.
 
 ## What a good idea looks like here
-An app a specific group of people would actually use and tell others about, with an MVP the loop can reasonably build within about a week of nightly runs (roughly 10-25 feature-sized tickets), that runs at **zero running cost**: a static, installable PWA with all data on the device, no backend, no paid API, no accounts (full rules: `pocs/README.md` in the cajunt repo; this is a hard limit, not a preference).
+An app a specific group of people would actually use and tell others about, with an MVP the loop can reasonably build within about a week of nightly runs (up to about 50 feature-sized tickets), that runs at **zero running cost**: a static, installable PWA with all data on the device, no backend, no paid API, no accounts (full rules: `pocs/README.md` in the cajunt repo; this is a hard limit, not a preference).
 
 **Domain preference:** Robert prefers **health** ideas (fitness, nutrition, sleep, habits, wellbeing, chronic-condition self-tracking, caregiving logistics, appointment and medication schedules), but any domain is fine. Health ideas still pass the hard gates: no diagnosis, dosing or treatment advice, no claims that could hurt someone who relies on them.
 
@@ -41,7 +41,7 @@ An app a specific group of people would actually use and tell others about, with
    | 20 | Gap | Top 3-5 competitors named, with their review complaints, and a concrete reason a free/offline/private version beats them |
    | 20 | Zero-cost feasibility | Fully client-side; data on device; any model small enough for a phone browser; named libraries for the hard parts |
    | 15 | Reachable audience | 3+ named communities where the target users gather and where sharing a free tool you built is allowed (rule summarized + link to the rules page) |
-   | 10 | Buildable MVP | MVP within about a week of nightly builds (roughly 10-25 tickets), no native-only APIs, testable in Playwright |
+   | 10 | Buildable MVP | MVP within about a week of nightly builds (up to about 50 tickets), no native-only APIs, testable in Playwright |
    | 10 | Return or share hook | A concrete reason users come back weekly or show it to someone |
 5. Replace the issue description with the report (keep the original pitch at the top):
    ```
