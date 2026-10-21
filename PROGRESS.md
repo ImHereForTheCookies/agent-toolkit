@@ -82,3 +82,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (direct request from Robert)
 - Outcome: `RESEARCH_BRIEF.md` ideate mode may seed candidates from idealab.ai (no login; filtered for low capital, solo, fast time to market, client-side fit) and records the idea's source; AI-generated idea databases never count as demand evidence. `NIGHTLY.md` gains a manual daytime run: fire text `Manual run requested by Robert, stop at HH:MM` replaces the 08:30 cutoff for that chain (or `..., no stop time` removes it, running until the usage limit) and is passed on when chaining.
 - Next step: daytime test run to confirm Part A greenlights a POC and cajunt's first release cuts as `release/cajunt-v1`.
+
+## 2026-10-21 - Idea scope: week-long MVPs, health preferred
+- Ticket: none (direct request from Robert)
+- Outcome: `RESEARCH_BRIEF.md` accepts any idea whose MVP fits about a week of nightly builds (10-25 tickets; zero-cost client-side rule unchanged), prefers health ideas (with the existing hard gates on medical advice), and browses idealab.ai without its capital/team/time filters. `RND.md` A1 planner and decomposer size the MVP for about a week (8-20 features, 10-25 tickets, core loop first); a health idea within 5 points of the top score wins greenlight.
+- Next step: watch the test run's ideation for health candidates.
