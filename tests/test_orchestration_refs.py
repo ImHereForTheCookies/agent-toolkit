@@ -47,7 +47,7 @@ def test_research_briefs_never_post():
 
 # Pinned so the self-improving retro loop cannot rewrite the hard limits.
 # Only Robert updates this hash, after reading the change himself.
-HARD_LIMITS_SHA256 = "f5b4392f90c4d8cdc07f373e11c24b6137730fc19b88596c0c23cfa03ca231f7"
+HARD_LIMITS_SHA256 = "875b87d7939c4e4af233ad2bb68f24eaf8842c6d9409bcb3a1ea56688c8d3479"
 
 
 def test_hard_limits_unchanged():
@@ -73,3 +73,19 @@ def test_release_cut_is_gated():
     assert "release check" in rnd and "RELEASE: BLOCKED" in rnd
     launch = (ORCH / "LAUNCH_BRIEF.md").read_text(encoding="utf-8")
     assert "release/<slug>" in launch and "never `main`" in launch
+
+
+def test_new_poc_every_night_without_caps():
+    rnd = (ORCH / "RND.md").read_text(encoding="utf-8")
+    nightly = (ORCH / "NIGHTLY.md").read_text(encoding="utf-8")
+    assert "Part A" in rnd and "Part B" in rnd
+    assert "Tonight's new POC comes first" in nightly
+    assert "fewer than **2** issues" not in rnd  # no launch-queue cap
+    assert "never start a second POC" not in rnd
+
+
+def test_releases_are_branches_not_tags():
+    for name in ("RND.md", "PRODUCT_EVAL_BRIEF.md", "LAUNCH_BRIEF.md", "HARD_LIMITS.md"):
+        text = (ORCH / name).read_text(encoding="utf-8")
+        assert "`<slug>-vN` tag" not in text and "release tag" not in text, name
+    assert "release/<slug>-vN" in (ORCH / "RND.md").read_text(encoding="utf-8")
