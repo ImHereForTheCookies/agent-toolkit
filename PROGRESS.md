@@ -80,5 +80,5 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 
 ## 2026-10-21 - idealab.ai as an ideation lead source; manual daytime runs
 - Ticket: none (direct request from Robert)
-- Outcome: `RESEARCH_BRIEF.md` ideate mode may seed candidates from idealab.ai (no login; filtered for low capital, solo, fast time to market, client-side fit) and records the idea's source; AI-generated idea databases never count as demand evidence. `NIGHTLY.md` gains a manual daytime run: fire text `Manual run requested by Robert, stop at HH:MM` replaces the 08:30 cutoff for that chain and is passed on when chaining.
+- Outcome: `RESEARCH_BRIEF.md` ideate mode may seed candidates from idealab.ai (no login; filtered for low capital, solo, fast time to market, client-side fit) and records the idea's source; AI-generated idea databases never count as demand evidence. `NIGHTLY.md` gains a manual daytime run: fire text `Manual run requested by Robert, stop at HH:MM` replaces the 08:30 cutoff for that chain (or `..., no stop time` removes it, running until the usage limit) and is passed on when chaining.
 - Next step: daytime test run to confirm Part A greenlights a POC and cajunt's first release cuts as `release/cajunt-v1`.
