@@ -92,3 +92,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (direct request from Robert: 10-25 tickets undersized a week of building)
 - Outcome: RESEARCH_BRIEF and RND.md A1 size an MVP at up to about 50 tickets (features as many as needed, core loop first). Measured pace for reference: 14-25 min per ticket sequentially (2026-10-20: 11 tickets 03:15-05:50; 2026-10-21: 4 tickets 03:00-04:41).
 - Next step: parallel builds across POC folders if Robert wants 50 tickets a night.
+
+## 2026-10-21 - More validation tries per night
+- Ticket: none (Robert asked to fix the test run if it gets stuck)
+- Outcome: RND.md Part A caps raised to 12 validations and 4 ideation passes per night (unit 7 shares them). The test run's first 3 validations were all killed (63, 65, 56/100) at about 9 min each.
+- Next step: see whether a later candidate (health-leaning ideation pass 2) reaches 70.
