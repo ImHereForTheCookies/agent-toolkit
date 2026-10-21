@@ -19,7 +19,7 @@ Delegate every step and unit to one Sonnet subagent (Agent tool, `model: sonnet`
 - "Tonight" = since 03:00 America/Los_Angeles today. A POC was **greenlit tonight** when its project was created tonight (its `Greenlit:` line is today).
 
 ## Part A: tonight's new POC (runs before build tickets)
-`NIGHTLY.md` runs one of these per run, before any build ticket, until a POC has been greenlit tonight. Each step ends with a comment on the Idea Lab project (`save_comment` with `projectId`) whose first line starts with `New POC pipeline:` so later runs can count tonight's attempts.
+`NIGHTLY.md` runs one of these per run, before any build ticket, until a POC has been greenlit tonight. Each step ends with a comment on the Idea Lab project (`save_comment` with `projectId`) whose first line starts with `New POC pipeline:` so later runs can count tonight's attempts. Count attempts from those comments (and from Idea Lab issues validated or created tonight), but always take the **limits** (validations and ideation passes per night) from this file as it reads now, never from an earlier comment: limits change, and a comment's "of max N" or "last allowed" is stale the moment they do. Write counts without a maximum, e.g. `validation 5 tonight`, never `5 of max 6`.
 
 ### A1. Start tonight's POC
 **Condition:** no POC was greenlit tonight and Idea Lab has an In Review idea.
