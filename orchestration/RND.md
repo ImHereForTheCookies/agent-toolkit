@@ -36,9 +36,7 @@ Then create, in order: the Linear project (team ROB, label `POC`, name = slug, d
 **Condition:** no POC was greenlit tonight, Idea Lab has no In Review idea and no Backlog candidate, and fewer than **4** ideation passes ran tonight.
 **Do:** subagent with `RESEARCH_BRIEF.md`, mode **ideate**, asking for 3-5 candidates (it reads `LESSONS.md` for what kinds of ideas worked or failed).
 
-**Best-of-night fallback:** when no POC was greenlit tonight, Idea Lab has no In Review idea, and either 8 validations have run tonight or the limits are reached, take tonight's highest-scoring killed idea that passed every hard gate and scored at least **60** (health first when within 5 points, per A1). Set it to In Review with a comment `Greenlit below the 70 bar as tonight's best (<score>/100)`, and the next run greenlights it through A1 as usual. Robert wants a new POC every night, so a solid-but-imperfect idea beats none; the night summary must say it was below the bar.
-
-**No POC tonight:** when no Part A step's condition holds, nothing was greenlit tonight, and the fallback found no killed idea scoring 60+ with every gate passed, tonight has no new POC. Post one `New POC pipeline: no POC tonight` comment on Idea Lab listing the ideas killed tonight with their scores, report it in the night summary, and carry on with build tickets and Part B. Do not post it twice in one night.
+**No POC tonight:** when no Part A step's condition holds and nothing was greenlit tonight (no idea reached 70 within tonight's limits), tonight has no new POC. Never greenlight an idea below 70 (Robert's rule, 2026-10-21). Post one `New POC pipeline: no POC tonight` comment on Idea Lab listing the ideas killed tonight with their scores, report it in the night summary, and carry on with build tickets and Part B. Do not post it twice in one night.
 
 ## Part B: after build tickets, in priority order
 

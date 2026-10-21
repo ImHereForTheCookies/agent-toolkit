@@ -112,3 +112,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (Robert asked where pacelog's report was and whether it came from idealab.ai)
 - Outcome: validate mode overwrote the issue description and dropped ideation's `## Source` line, so a report never said where its idea came from. RESEARCH_BRIEF validate now keeps `## Source`, and for idealab.ai ideas links and folds in idealab's own brief.
 - Next step: none.
+
+## 2026-10-21 - Best-of-night fallback dropped; pacelog canceled
+- Ticket: none (Robert's call after reading pacelog's report)
+- Outcome: the fallback greenlit pacelog at 67/100, a niche idea its own validation called a kill. Robert canceled pacelog (P-ROB-4, ROB-52, ROB-55..88) and dropped the fallback: RND.md now never greenlights below 70, and a night with no 70+ idea has no new POC.
+- Next step: tonight's run ideates fresh, with the free-competitor check from PR #25.
