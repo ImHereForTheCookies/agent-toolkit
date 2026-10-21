@@ -102,3 +102,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (fix for the test run Robert asked me to watch)
 - Outcome: after PR #23 raised the caps, chained runs kept copying "of max 6" from earlier Idea Lab comments. RND.md Part A now says to count attempts from comments but take limits only from the file, and to write counts without a maximum.
 - Next step: confirm the next step after pacelog keeps validating (bpdiary) instead of declaring no POC tonight.
+
+## 2026-10-21 - Best-of-night fallback; ideation checks free competitors
+- Ticket: none (fix for the test run Robert asked me to watch: a new POC every night)
+- Outcome: the test run killed 7 of 7 ideas (56-67/100), mostly because free offline apps already existed and many evidence pages were unfetchable. RND.md Part A: after 8 validations (or the limits) with no 70+ idea, the best killed idea scoring 60+ with all hard gates passed goes to In Review, marked below the bar, and is greenlit. RESEARCH_BRIEF ideate drops candidates that a free, well-reviewed offline app already covers.
+- Next step: check whether tonight's fallback POC builds and evaluates well enough to keep the 60 floor.
