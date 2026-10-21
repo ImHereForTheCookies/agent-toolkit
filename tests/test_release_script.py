@@ -34,20 +34,22 @@ def make_repo(tmp_path, verify_ok=True):
 
 
 def release(work, folder, slug):
-    return subprocess.run(["bash", str(SCRIPT), str(work), folder, slug],
+    return subprocess.run(["bash", str(SCRIPT), str(work), folder, slug,
+                           "--notes", str(work.parent / "notes.md")],
                           capture_output=True, text=True,
                           env={**os.environ, "RELEASE_SKIP_FETCH": "1",
                                "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t",
                                "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"})
 
 
-def test_first_release_tags_and_moves_branch(tmp_path):
+def test_first_release_creates_version_branch_and_moves_branch(tmp_path):
     work, remote = make_repo(tmp_path)
     r = release(work, "pocs/demo", "demo")
     assert r.returncode == 0, r.stderr
     head = git(work, "rev-parse", "HEAD")
-    assert git(remote, "rev-parse", "refs/tags/demo-v1^{commit}") == head
+    assert git(remote, "rev-parse", "refs/heads/release/demo-v1") == head
     assert git(remote, "rev-parse", "refs/heads/release/demo") == head
+    assert git(remote, "tag", "-l") == ""  # releases never push tags
 
 
 def test_no_changes_means_nothing_to_release(tmp_path):
@@ -67,16 +69,18 @@ def test_second_release_fast_forwards(tmp_path):
     r = release(work, "pocs/demo", "demo")
     assert r.returncode == 0, r.stderr
     head = git(work, "rev-parse", "HEAD")
-    assert git(remote, "rev-parse", "refs/tags/demo-v2^{commit}") == head
+    v1 = git(remote, "rev-parse", "refs/heads/release/demo-v1")
+    assert v1 != head  # old versions stay where they were cut
+    assert git(remote, "rev-parse", "refs/heads/release/demo-v2") == head
     assert git(remote, "rev-parse", "refs/heads/release/demo") == head
-    assert "feature two" in git(remote, "tag", "-l", "-n20", "demo-v2")
+    assert "feature two" in r.stdout + (work.parent / "notes.md").read_text()
 
 
 def test_failed_verify_cuts_nothing(tmp_path):
     work, remote = make_repo(tmp_path, verify_ok=False)
     r = release(work, "pocs/demo", "demo")
     assert r.returncode != 0
-    assert git(remote, "tag", "-l") == ""
+    assert git(remote, "branch", "--list", "release/*") == ""
 
 
 def test_root_project_ignores_pocs_changes(tmp_path):
@@ -90,6 +94,30 @@ def test_root_project_ignores_pocs_changes(tmp_path):
     assert release(work, ".", "rootapp").returncode == 3
 
 
-def test_script_never_force_pushes():
+def test_repairs_release_branch_when_second_push_was_lost(tmp_path):
+    work, remote = make_repo(tmp_path)
+    release(work, "pocs/demo", "demo")
+    head = git(work, "rev-parse", "HEAD")
+    # Simulate a cut whose release/<slug> push failed after the version branch landed.
+    (work / "pocs/demo/app.js").write_text("v2\n")
+    git(work, "commit", "-qam", "feature two")
+    v2 = git(work, "rev-parse", "HEAD")
+    git(work, "push", "-q", "origin", f"{v2}:refs/heads/release/demo-v2")
+    assert git(remote, "rev-parse", "refs/heads/release/demo") == head
+    r = release(work, "pocs/demo", "demo")
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert git(remote, "rev-parse", "refs/heads/release/demo") == v2
+
+
+def test_other_slug_with_same_prefix_is_ignored(tmp_path):
+    work, remote = make_repo(tmp_path)
+    git(work, "push", "-q", "origin", "HEAD:refs/heads/release/demo-veg-v7")
+    r = release(work, "pocs/demo", "demo")
+    assert r.returncode == 0, r.stderr
+    assert git(remote, "rev-parse", "refs/heads/release/demo-v1")
+
+
+def test_script_never_force_pushes_or_tags():
     text = SCRIPT.read_text(encoding="utf-8")
     assert "--force" not in text and "push -f" not in text and "+refs" not in text
+    assert "refs/tags" not in text and "git tag" not in text
