@@ -107,3 +107,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (fix for the test run Robert asked me to watch: a new POC every night)
 - Outcome: the test run killed 7 of 7 ideas (56-67/100), mostly because free offline apps already existed and many evidence pages were unfetchable. RND.md Part A: after 8 validations (or the limits) with no 70+ idea, the best killed idea scoring 60+ with all hard gates passed goes to In Review, marked below the bar, and is greenlit. RESEARCH_BRIEF ideate drops candidates that a free, well-reviewed offline app already covers.
 - Next step: check whether tonight's fallback POC builds and evaluates well enough to keep the 60 floor.
+
+## 2026-10-21 - Validation keeps the idea's source
+- Ticket: none (Robert asked where pacelog's report was and whether it came from idealab.ai)
+- Outcome: validate mode overwrote the issue description and dropped ideation's `## Source` line, so a report never said where its idea came from. RESEARCH_BRIEF validate now keeps `## Source`, and for idealab.ai ideas links and folds in idealab's own brief.
+- Next step: none.

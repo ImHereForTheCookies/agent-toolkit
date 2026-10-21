@@ -43,9 +43,11 @@ An app a specific group of people would actually use and tell others about, with
    | 15 | Reachable audience | 3+ named communities where the target users gather and where sharing a free tool you built is allowed (rule summarized + link to the rules page) |
    | 10 | Buildable MVP | MVP within about a week of nightly builds (up to about 50 tickets), no native-only APIs, testable in Playwright |
    | 10 | Return or share hook | A concrete reason users come back weekly or show it to someone |
-5. Replace the issue description with the report (keep the original pitch at the top):
+5. Replace the issue description with the report (keep the original pitch and the original `## Source` section at the top, unchanged). If the source is an idealab.ai idea, open its brief and fold its useful parts into the report (its market notes and "why now" go under Evidence as a lead, marked unverified until you confirm them from primary sources), and keep the link so Robert can read idealab's own summary:
    ```
    ## Pitch
+   ## Source
+   <your own search, or the idealab.ai idea link>
    ## Verdict
    <score>/100 - <greenlight | kill> - <one-line reason>   (hard gate failures named here)
    ## Scores
