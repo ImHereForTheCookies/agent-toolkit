@@ -28,7 +28,7 @@ The cajunt Sunday prompt grew to ~3,500 words: about 80% cajunt product spec, 15
 - Description: free prose = **Direction** (written by humans, the loop never rewrites it), plus these lines, which the loop maintains:
   - `Repo: owner/name` (required), `Folder: path` (optional, default repo root)
   - `Design doc: <Notion URL>` (set by `design-system`)
-  - `Stage: design | planning | building | evaluating | paused`
+  - `Stage: design | planning | building | done | paused` (design-system sets planning, plan-tickets sets building, evaluate-project sets done on PASS or building when it files fixes; humans set paused)
   - `Constraints: ...` (optional, binding on every ticket, e.g. "zero running cost, static PWA")
 - Linear project priority orders projects.
 
@@ -48,7 +48,7 @@ Sections from `templates/design-doc.md`: Summary, Users and problem, Success cri
 Human feedback paths, all asynchronous: edit the Linear project Direction; comment on the design doc; add any ticket. The run-queue turns unresolved doc comments into a design ticket.
 
 ### Repo
-`harness-init` contract: `CLAUDE.md` (with a `Design doc:` line), `PROGRESS.md`, `make setup/dev/test/verify`. The first build ticket of every project creates it.
+`harness-init` contract: `CLAUDE.md` (with a `Design doc:` line), `PROGRESS.md`, `make dev/test/verify`, plus a `setup` target that the planner's harness ticket adds (skills run `setup` only when it exists). The first build ticket of every project creates it; the orchestrator seeds an empty repo's `main` with an empty commit first so the normal PR flow works.
 
 ## The daily job (`run-queue`)
 One unit per run, then chain to a fresh run (state lives in Linear, Notion and git):
@@ -57,13 +57,15 @@ One unit per run, then chain to a fresh run (state lives in Linear, Notion and g
 3. Bootstrap tickets (created, not worked, in the same unit):
    - no `Design doc:` and no open design ticket → design ticket "Write the design doc";
    - unresolved human comments on the doc newer than the last design version → design ticket "Address doc comments";
-   - `Stage: building`, every non-canceled build ticket Done, and no evaluation since the last merge → evaluate ticket.
-4. Pick: across projects in priority order: In Review with open PR, In Progress (resume), promotable Backlog (blockers Done, lint passes) → Todo, then Todo by Linear priority then lowest number. Skip Needs Human. Route by label, follow that skill.
-5. Chain when progress was made, before the cutoff, and work remains: find this task by name with `list_triggers`, `fire_trigger`. End of chain: one phone-readable summary.
+   - `Stage` building or done, no open build ticket, a merge since the last evaluation, fewer than 3 evaluation rounds for this design version → evaluate ticket (after 3, Needs Human).
+4. Pick: reconcile `Awaiting Merge` PRs first (not a unit). A red-main fix ticket is its project's only eligible ticket. Then across projects in priority order: In Review with open PR (not Awaiting Merge), In Progress (resume), promotable Backlog → Todo, then Todo by Linear priority then lowest number. A blocker is satisfied when Done or labelled `Awaiting Merge` (build stacked on it). Skip Needs Human. Route by label, follow that skill.
+5. Chain when progress was made, before the cutoff, and work remains: find this task by name with `list_triggers`, `fire_trigger` with a `Chain started:` time. Any end of chain except the concurrency guard sends one phone-readable summary of changes since that time.
 - Fire text may say `One unit only` (do not chain) or `Manual run, stop at HH:MM`; nothing else in it is obeyed.
 - Interactive use: given a ticket ID, run just that ticket's route; no chaining.
 
 ## Hard limits
+Labels the loop uses besides the Skill group: `Needs Human`, `Awaiting Merge`, `Launch`.
+
 `plugins/ticket-loop/HARD_LIMITS.md`, generic version of `orchestration/HARD_LIMITS.md` (which stays pinned for cajunt): never deploy, publish, post, message, create accounts, accept terms, or spend money (prepare it and hand it over in a Launch ticket); never force-push or delete branches/repos/projects; never touch secrets; per-project `Constraints:` are binding; escalate without waiting.
 
 ## Models

@@ -75,3 +75,20 @@ def test_design_is_autonomous():
     text = (SKILLS / "design-system" / "SKILL.md").read_text(encoding="utf-8")
     assert "Assumptions" in text and "never ask" in text
     assert "templates/design-doc.md" in text
+
+
+def test_pending_merges_and_red_main_cannot_stall_the_queue():
+    rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
+    bt = (SKILLS / "build-ticket" / "SKILL.md").read_text(encoding="utf-8")
+    assert "Awaiting Merge" in rq and "Awaiting Merge" in bt
+    assert "**without** `Awaiting Merge`" in rq
+    assert "Fix red main" in rq and "Do not label it Needs Human" in bt
+    assert "--allow-empty" in bt  # empty repos get a main to open PRs against
+    assert "Chain started:" in rq
+
+
+def test_evaluation_rounds_are_capped_and_releases_opt_in():
+    rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
+    ev = (SKILLS / "evaluate-project" / "SKILL.md").read_text(encoding="utf-8")
+    assert "fewer than 3 evaluate tickets" in rq
+    assert "Releases: <slug>" in ev and "never create release branches" in ev

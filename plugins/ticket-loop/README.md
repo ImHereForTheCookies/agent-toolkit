@@ -4,7 +4,7 @@ One general, unattended job for building apps with agents. Linear holds the work
 
 ## Set up a project (once)
 1. GitHub: create an empty repo for the app.
-2. Linear: create a project with the project label `Agent` and a description from `templates/project-description.md` (Direction + `Repo:` line). Create the issue label group `Skill` (single-select) with `design`, `plan`, `build`, `evaluate`, and the label `Needs Human` if your team lacks it.
+2. Linear: create a project with the project label `Agent` and a description from `templates/project-description.md` (Direction + `Repo:` line). Create the issue label group `Skill` (single-select) with `design`, `plan`, `build`, `evaluate`, plus the labels `Needs Human`, `Awaiting Merge` and `Launch` if your team lacks them. Never put `Agent` on a project another loop already runs (for example the cajunt POC projects).
 3. Notion: one page to hold design docs (your "Notion home"); connect the Notion and Linear connectors to Claude.
 4. That's it: the next run creates the design ticket itself.
 

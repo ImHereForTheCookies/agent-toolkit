@@ -9,4 +9,4 @@ Each Linear ticket carries one label from the **Skill** label group. `run-queue`
 | build | build-ticket | Reviewed, QA'd, merged PR and an evidence comment |
 | evaluate | evaluate-project | Graded evaluation in the doc, plus build or design tickets |
 
-No Skill label: `build` if the description passes `scripts/lint_ticket.py`, otherwise `plan`.
+No Skill label: `build` if the description passes `$TOOLKIT/scripts/lint_ticket.py`, otherwise `plan`.

@@ -13,23 +13,27 @@ You orchestrate; Sonnet subagents implement, review and QA. You never write feat
 - What this skill adds: separate QA that uses the app, Linear evidence, auto-merge and stacking.
 
 ## Inputs
-Ticket ID, Repo (cloned at `~/work/<name>`), project folder, Design doc URL, Constraints, Models (default `sonnet`, effort high). Every subagent prompt includes: `Repo path: ~/work/<name>`, `Project folder: <folder>`, `TOOLKIT=<path>`, `Design doc: <url>`, `Constraints: <text>`.
+Ticket ID, Repo, repo path, project folder, Design doc URL, Constraints, Models (default `sonnet`, effort high). Every subagent prompt includes: `Repo path: <repo path>`, `Project folder: <folder>`, `TOOLKIT=<path>`, `Design doc: <url>`, `Constraints: <text>`. "Setup" below means `make -C <folder> setup` only if that target exists (`make -C <folder> -n setup >/dev/null 2>&1`).
+
+## 0. Base branch
+- **Empty repo** (no `origin/main`): seed it first so the normal PR flow works: in the repo path, `git checkout -q -b main && git commit -q --allow-empty -m "Initial commit" && git push -q origin main`. Base = `main`.
+- Otherwise base = the branch of the ticket's newest blocker labelled `Awaiting Merge` (the top of that stack), else `main`.
 
 ## Steps
-A. **Implement.** Subagent: "Read and follow `$TOOLKIT/orchestration/IMPLEMENTER_BRIEF.md`. Ticket <ID>. Base branch: <main or stack parent>." Empty repo: the harness ticket commits straight to the first commit of `main` as the brief says. Reply `ESCALATE:` → escalate (below), move on.
-B. **Review.** A *different* subagent: "Read and follow `$TOOLKIT/orchestration/REVIEWER_BRIEF.md`. Ticket <ID>, branch <b>, PR <url>, repo, project folder. Also check the change respects the Constraints." Review its own diff only (`git diff <base>...<head>`).
+A. **Implement.** Subagent: "Read and follow `$TOOLKIT/orchestration/IMPLEMENTER_BRIEF.md` for ticket <ID>, with these overrides, which win over the brief: the base branch is `<base>`: in step 2 run `git fetch -q origin && git checkout -q -B <base> origin/<base>` and the baseline verify on it; create your branch from it; in step 7 open the PR with base `<base>`<, and make the first body line `**Stacked on #<parent PR>; merge after it.**` when base is not main>. Run setup before verify (skip it if the target doesn't exist)." Reply `ESCALATE:` → escalate (below), move on.
+B. **Review.** A *different* subagent: "Read and follow `$TOOLKIT/orchestration/REVIEWER_BRIEF.md`. Ticket <ID>, branch <b>, PR <url>, repo, project folder. Override: diff against the base, `git diff origin/<base>...<b>`, not origin/main. Also check the change respects the Constraints."
 C. **QA** (after review PASS). A separate subagent: "Read and follow `$TOOLKIT/plugins/agentic-workflow/skills/qa-ticket/SKILL.md` for ticket <ID>, branch <b>, repo path <project folder>." For taste checkpoints, attach its screenshot paths to the PR and Linear comments.
-D. **Merge** only on review PASS and QA PASS (or SKIPPED with a reason): write verdict + QA report to a file; from the repo run `$TOOLKIT/orchestration/ghpr.sh comment <b> <file>` then `$TOOLKIT/orchestration/ghpr.sh merge <b>`. Linear: evidence comment per `linear-tickets`, state Done.
-   - **FAIL** (review or QA): one fresh implementer with "Fix these findings: ...", then review and QA again. Second FAIL → escalate, leave the PR open.
-   - **Merge denied or impossible:** not an escalation. Comment the verdict on the PR, set the ticket In Review with `**Review PASS, QA PASS, waiting on merge**` (PR link, head sha), and stack the next ticket on this branch.
-E. **After a merge:** `git -C <repo> fetch -q origin && git -C <repo> checkout -q -B main origin/main`, `make -C <folder> setup verify`. Red main → create a `build` ticket "Fix red main: <failure>" (Todo, Urgent), label it Needs Human, and start nothing else in this project this chain.
+D. **Merge** only on review PASS and QA PASS (or SKIPPED with a reason). Write verdict + QA report to a file; from the repo run `$TOOLKIT/orchestration/ghpr.sh comment <b> <file>`; then, if base is `main`, `$TOOLKIT/orchestration/ghpr.sh merge <b>`. Merged → evidence comment per `linear-tickets`, state Done.
+   - **FAIL** (review or QA): one fresh implementer with the same overrides plus "Fix these findings: ...", then review and QA again. Second FAIL → escalate, leave the PR open.
+   - **Base is not main, or the merge is denied or impossible:** not an escalation. Leave the ticket In Review, add the label `Awaiting Merge`, comment `**Review PASS, QA PASS, waiting on merge**` (PR link, head sha, base). run-queue then treats it as a satisfied blocker and never re-picks it.
+E. **After a merge:** `git -C <repo> fetch -q origin && git -C <repo> checkout -q -B main origin/main`, setup, `make -C <folder> verify`. Red main → create a ticket "Fix red main: <failure>" (label `build`, Todo, priority Urgent, failure log in the description, written to pass the linter). Do not label it Needs Human: run-queue makes it the project's only eligible ticket until it is Done.
 
 ## Stacking (merges denied unattended)
-1. Base for a new ticket = the branch of its newest pending-merge blocker, else the top of the stack, else `main`. The PR body starts `**Stacked on #<parent>; merge after it.**`.
-2. Reconcile first in every run: a pending-merge ticket whose PR is merged → Done with evidence; retarget its child PR to `main` with `gh api -X PATCH repos/<repo>/pulls/<n> -f base=main`.
-3. Before reviewing a stacked child, confirm the parent head is unchanged; if it moved, `git merge <parent>` into the child (never force-push) and re-review.
-4. Cap: 8 open stacked PRs per repo. At the cap, stop building in that project and name the bottom PR to merge in the end-of-chain summary.
-5. Try merging the bottom-most reviewed PR first; if denied once, do not retry or work around it this run.
+1. Stack tip = the newest `Awaiting Merge` ticket in the repo. A new ticket whose blocker is pending builds on that blocker's branch (step 0).
+2. **Reconcile** (run-queue does this every run): for each `Awaiting Merge` ticket, check its PR. Merged → remove the label, post the evidence comment, set Done, and retarget any child PR whose base was its branch: `gh api -X PATCH repos/<repo>/pulls/<n> -f base=main`. Its base became `main` and it is unmerged → try `ghpr.sh merge` once (bottom of the stack first); success → same as merged. Closed without merge → remove the label, comment, label Needs Human.
+3. Before reviewing a stacked child, confirm the parent head equals the base sha the child was built on; if it moved, `git merge origin/<parent>` into the child (never force-push) and re-review.
+4. Cap: 8 open `Awaiting Merge` PRs per repo. At the cap, build nothing new in that project; the end-of-chain summary names the bottom PR to merge.
+5. A merge denied once is not retried or worked around in the same run.
 
 ## Escalation
 Per `$TOOLKIT/plugins/agentic-workflow/skills/human-in-the-loop/SKILL.md` (six triggers; label Needs Human + comment; never wait). Denied merges and taste are not escalations.

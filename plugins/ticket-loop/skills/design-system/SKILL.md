@@ -26,7 +26,7 @@ Ticket ID, Linear project (Direction, `Constraints:`, `Design doc:`), Notion hom
    - nothing contradicts `Constraints:` or the hard limits (no paid services, deploys or accounts unless Constraints allow them);
    - the architecture names units with one purpose and an interface each.
 6. **Publish to Notion.**
-   - New: create the page under Notion home, titled `<Project name> - System design`, body = the draft. Put `Design doc: <page URL>` on the Linear project (patch that line; add it if missing) and set `Stage: planning`.
+   - New: first search Notion home for a page titled `<Project name> - System design` (a crashed earlier run may have created it); reuse it if found. Otherwise create the page under Notion home, titled `<Project name> - System design`, body = the draft. Put `Design doc: <page URL>` on the Linear project (patch that line; add it if missing) and set `Stage: planning`.
    - Revision: replace the changed sections, bump the version in the title line, append the Change log entry. For every comment you handled, reply on it ("Handled in v<N>: <what changed>", or why you kept the original, citing the evidence) and resolve it.
 7. **Queue planning.** Create a `plan` ticket in the same project, state Todo: "Plan from design doc v<N>" with the doc URL and, for revisions, the Change log entry. Set `Stage: planning`.
 8. **Close:** comment on the design ticket (doc link, version, top assumptions, plan ticket ID) and set it Done.
