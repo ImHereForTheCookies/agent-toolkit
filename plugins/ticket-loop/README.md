@@ -15,6 +15,7 @@ One general, unattended job for building apps with agents. Linear holds the work
 ## Steer it
 - Change what gets built: edit the Linear project's Direction, or comment on the design doc. The next run files a design ticket and revises the doc, then re-plans.
 - Add work: create a ticket with a Skill label (or none: rough ideas get planned, spec'd tickets get built).
+- Work a ticket yourself: assign it to yourself first. The loop only picks unassigned tickets, so it won't collide with you; unassign it to hand it back.
 - Stop a project: set its status to Paused, or `Stage: paused`.
 
 ## Add a kind of work

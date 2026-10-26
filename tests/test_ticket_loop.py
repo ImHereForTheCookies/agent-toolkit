@@ -85,6 +85,7 @@ def test_pending_merges_and_red_main_cannot_stall_the_queue():
     assert "Fix red main" in rq and "Do not label it Needs Human" in bt
     assert "--allow-empty" in bt  # empty repos get a main to open PRs against
     assert "Chain started:" in rq
+    assert "any ticket with an assignee" in rq  # humans working by hand are never collided with
 
 
 def test_evaluation_rounds_are_capped_and_releases_opt_in():

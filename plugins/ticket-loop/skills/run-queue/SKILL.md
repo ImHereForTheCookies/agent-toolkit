@@ -42,7 +42,7 @@ Per project in map order. **Red main first:** if a project has an open ticket ti
 2. Ticket In Progress without Needs Human (an interrupted run; resume).
 3. Backlog ticket whose blockers are satisfied → promote to Todo. `build` tickets must pass `python3 $TOOLKIT/scripts/lint_ticket.py <file>` (else label Needs Human with the lint output). An **unlabelled** ticket that fails lint gets the `plan` label and is promoted (rough idea → planner). Promotion is not a unit; keep picking.
 4. Todo ticket whose blockers are satisfied, by Linear priority (Urgent first, None last), then lowest number.
-A blocker is **satisfied** when it is Done, or In Review labelled `Awaiting Merge` (the ticket is then built stacked on it). Skip tickets labelled Needs Human or Launch, and Canceled or Duplicate ones.
+A blocker is **satisfied** when it is Done, or In Review labelled `Awaiting Merge` (the ticket is then built stacked on it). Skip tickets labelled Needs Human or Launch, Canceled or Duplicate ones, and **any ticket with an assignee**: a person is working it by hand. The loop works unassigned tickets only and never assigns itself. In interactive mode the person's own ticket is the exception.
 
 **Route:** read `$TOOLKIT/plugins/ticket-loop/ROUTES.md`, find the ticket's Skill label, and read and follow that skill for this ticket, passing: ticket ID, project, Repo, repo path, project folder (`<repo path>/<Folder or .>`), Design doc URL, Constraints, Notion home, Models. No Skill label → `build` if the description passes the linter, else add `plan` and route to planning. A label with no route → Needs Human ("no skill for label X; create one with new-skill") and pick again.
 
