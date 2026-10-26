@@ -12,12 +12,15 @@ Who uses it, in what situation, what they do today instead, and what hurts. Cite
 3-6 observable outcomes for v1 ("a first-time user writes and finds an entry within 60 seconds on a phone"), each checkable by the evaluator.
 
 ## Scope
-- **v1:** numbered list of user-visible capabilities, each one sentence ("A user can ...").
+- **v1:** requirements with stable IDs, one sentence each: `R1. A user can ...` (cite findings that drove them: `(F: <finding title>)`). Never renumber; retire an ID instead of reusing it.
 - **Later:** worth doing after v1.
 - **Never (for now):** explicitly excluded, with a reason.
 
 ## Assumptions
-Table: # | Assumption | Confidence (high/medium/low) | Why | What changes if wrong. Every decision made without a human goes here. End with: "Disagree? Comment on the row; the next run revises the doc."
+Table: A# | Assumption | Confidence (high/medium/low) | Why | What changes if wrong | Evidence (finding links or research ticket). Every decision made without a human goes here. End with: "Disagree? Comment on the row; the next run revises the doc."
+
+## Research and evidence
+Table: Finding (link) | Source type | What it changed (R-IDs, A#) | Decision (incorporated / rejected, why). Also: open research questions and their tickets, and any research only humans can do (interview guides, surveys to run), written so a person can pick it up.
 
 ## Approaches considered
 2-3 options with trade-offs and the one chosen (and why). Keep it short.

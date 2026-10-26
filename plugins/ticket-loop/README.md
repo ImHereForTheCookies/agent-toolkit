@@ -4,7 +4,7 @@ One general, unattended job for building apps with agents. Linear holds the work
 
 ## Set up a project (once)
 1. GitHub: create an empty repo for the app.
-2. Linear: create a project with the project label `Agent` and a description from `templates/project-description.md` (Direction + `Repo:` line). Create the issue label group `Skill` (single-select) with `design`, `plan`, `build`, `evaluate`, plus the labels `Needs Human`, `Awaiting Merge` and `Launch` if your team lacks them. Never put `Agent` on a project another loop already runs (for example the cajunt POC projects).
+2. Linear: create a project with the project label `Agent` and a description from `templates/project-description.md` (Direction + `Repo:` line). Create the issue label group `Skill` (single-select) with `design`, `plan`, `build`, `research`, `evaluate`, plus the labels `Needs Human`, `Awaiting Merge` and `Launch` if your team lacks them. Never put `Agent` on a project another loop already runs (for example the cajunt POC projects).
 3. Notion: one page to hold design docs (your "Notion home"); connect the Notion and Linear connectors to Claude.
 4. That's it: the next run creates the design ticket itself.
 
@@ -13,6 +13,7 @@ One general, unattended job for building apps with agents. Linear holds the work
 - **By hand:** install this marketplace (`/plugin marketplace add ImHereForTheCookies/agent-toolkit`, then `/plugin install ticket-loop@agent-toolkit`) and ask Claude to run the ticket queue, or to work one ticket ("work ROB-42 with the ticket loop").
 
 ## Steer it
+- Feed in research: add a row to the project's research findings database in Notion (linked on the `Research:` line). The next run revises the design doc from it, and the planner turns changed requirements into tickets. Rows are kept even when rejected, with the reason.
 - Change what gets built: edit the Linear project's Direction, or comment on the design doc. The next run files a design ticket and revises the doc, then re-plans.
 - Add work: create a ticket with a Skill label (or none: rough ideas get planned, spec'd tickets get built).
 - Work a ticket yourself: assign it to yourself first. The loop only picks unassigned tickets, so it won't collide with you; unassign it to hand it back.

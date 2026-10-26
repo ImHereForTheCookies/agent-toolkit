@@ -28,6 +28,7 @@ The cajunt Sunday prompt grew to ~3,500 words: about 80% cajunt product spec, 15
 - Description: free prose = **Direction** (written by humans, the loop never rewrites it), plus these lines, which the loop maintains:
   - `Repo: owner/name` (required), `Folder: path` (optional, default repo root)
   - `Design doc: <Notion URL>` (set by `design-system`)
+  - `Research: <Notion database URL>` (findings database, created with the first design doc)
   - `Stage: design | planning | building | done | paused` (design-system sets planning, plan-tickets sets building, evaluate-project sets done on PASS or building when it files fixes; humans set paused)
   - `Constraints: ...` (optional, binding on every ticket, e.g. "zero running cost, static PWA")
 - Linear project priority orders projects.
@@ -38,6 +39,7 @@ The cajunt Sunday prompt grew to ~3,500 words: about 80% cajunt product spec, 15
 | design | `design-system` | Notion design doc (new or revised version), then a plan ticket |
 | plan | `plan-tickets` | Build tickets in Linear + Plan section in the doc |
 | build | `build-ticket` | A reviewed, QA'd, merged PR |
+| research | `research-question` | Findings rows (Status New) in the research database |
 | evaluate | `evaluate-project` | A graded evaluation against the doc, plus fix or design tickets |
 
 `plugins/ticket-loop/ROUTES.md` is the source of truth; a test checks every route points at an existing skill. A ticket with no Skill label is routed `build` if it passes `lint_ticket.py`, else `plan` (the planner turns a rough idea into spec'd tickets).
@@ -49,6 +51,17 @@ Human feedback paths, all asynchronous: edit the Linear project Direction; comme
 
 ### Repo
 `harness-init` contract: `CLAUDE.md` (with a `Design doc:` line), `PROGRESS.md`, `make dev/test/verify`, plus a `setup` target that the planner's harness ticket adds (skills run `setup` only when it exists). The first build ticket of every project creates it; the orchestrator seeds an empty repo's `main` with an empty commit first so the normal PR flow works.
+
+### Research findings → requirements (added 2026-10-25, Robert: "focus this project on research")
+Building is cheap; knowing what to build is the bottleneck. So evidence has a first-class path into requirements:
+- **Findings database** (Notion, `templates/research-findings.md`): anyone adds a row (finding, evidence link, source type, confidence). Status starts `New`.
+- **Bootstrap:** any `New` row → a design ticket "Incorporate research findings".
+- **Design revision:** every `New` finding is incorporated (changes a requirement `R<n>` or assumption `A<n>`, cited both ways) or rejected with a reason; its Status, Design version and Requirements are updated. Human primary research outranks agent desk research, which outranks bare assumptions.
+- **Research tickets:** each design version files up to 3 `research` tickets for the riskiest low-confidence assumptions. `research-question` answers them with public evidence as `New` rows, and writes interview/survey guides as `Needs human research` rows for what only people can learn.
+- **Traceability:** finding → R-ID → ticket (tickets name the R-IDs they implement), so a changed requirement flows into re-planning.
+
+### Modular tickets (added 2026-10-25)
+Merges can be denied in unattended runs, so the plan avoids needing them: after the harness and a skeleton that defines extension points, every ticket is a self-contained module branched from `main`, wired in through a registry, touching its own files. Blockers name only harness, skeleton or interface tickets. Run-queue prefers independent tickets and stacks only when nothing independent is left.
 
 ## The daily job (`run-queue`)
 One unit per run, then chain to a fresh run (state lives in Linear, Notion and git):

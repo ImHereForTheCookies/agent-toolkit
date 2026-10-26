@@ -18,7 +18,7 @@ def _routes():
 
 
 def test_core_routes_exist():
-    assert {"design", "plan", "build", "evaluate"} <= set(_routes())
+    assert {"design", "plan", "build", "research", "evaluate"} <= set(_routes())
 
 
 def test_every_route_points_at_a_skill():
@@ -93,3 +93,21 @@ def test_evaluation_rounds_are_capped_and_releases_opt_in():
     ev = (SKILLS / "evaluate-project" / "SKILL.md").read_text(encoding="utf-8")
     assert "fewer than 3 evaluate tickets" in rq
     assert "Releases: <slug>" in ev and "never create release branches" in ev
+
+
+def test_research_findings_flow_into_requirements():
+    rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
+    ds = (SKILLS / "design-system" / "SKILL.md").read_text(encoding="utf-8")
+    rs = (SKILLS / "research-question" / "SKILL.md").read_text(encoding="utf-8")
+    tpl = (PLUGIN / "templates" / "design-doc.md").read_text(encoding="utf-8")
+    assert "Incorporate research findings" in rq
+    assert "Incorporated" in ds and "Rejected" in ds and "research` tickets" in ds
+    assert "Needs human research" in rs and "never post" in rs
+    assert "## Research and evidence" in tpl and "R1." in tpl
+
+
+def test_plans_are_modular_so_merges_never_block():
+    pl = (SKILLS / "plan-tickets" / "SKILL.md").read_text(encoding="utf-8")
+    rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
+    assert "Modular by default" in pl and "registry" in pl
+    assert "Prefer independent work" in rq

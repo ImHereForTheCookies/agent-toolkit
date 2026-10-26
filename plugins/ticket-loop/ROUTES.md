@@ -7,6 +7,7 @@ Each Linear ticket carries one label from the **Skill** label group. `run-queue`
 | design | design-system | Notion design doc (new version), then a plan ticket |
 | plan | plan-tickets | Linted build tickets in Linear and the doc's Plan section |
 | build | build-ticket | Reviewed, QA'd, merged PR and an evidence comment |
+| research | research-question | Findings in the project's research database (Status New), which the next design revision incorporates |
 | evaluate | evaluate-project | Graded evaluation in the doc, plus build or design tickets |
 
 No Skill label: `build` if the description passes `$TOOLKIT/scripts/lint_ticket.py`, otherwise `plan`.
