@@ -132,3 +132,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (review finding on PR #18, stacked on #17)
 - Outcome: `orchestration/RND.md` unit 4 treats the retro as done when `orchestration/retros/????-??-??-<slug>.md` (exact slug) exists on `origin/main` or on the head branch of an open `waiting on merge` retro PR (only the Linear `Retro: done` line is retried); unit 10 counts an open waiting research PR as opened tonight. `orchestration/NIGHTLY.md` rule 7 states the same check for retro, research and loop-change units, so chained runs cannot open repeat stacked PRs up to the cap. HARD_LIMITS.md and all gates untouched.
 - Next step: confirm that a denied retro merge yields one waiting PR and later runs skip the subagent.
+
+## 2026-10-30 - Settings come from a Notion page, not the repo
+- Ticket: none (direct request from the owner: tools usable by anyone in any setup)
+- Outcome: PR #31 removed personal and fixed values from `plugins/*` (work dir, active window, timezone and stop time are optional config; no default cutoff). `orchestration/` now uses `{{KEY}}` placeholders for team, repos, work dir, trigger id, owner name, caps and thresholds, read from a Notion settings page named as `Settings page` in the scheduled prompt; `orchestration/SETTINGS.md` lists keys and defaults; a test checks placeholders are documented and no personal values remain. `HARD_LIMITS.md` untouched.
+- Next step: add `Settings page: <url>` to the scheduled task prompt, then watch one night read the page.
