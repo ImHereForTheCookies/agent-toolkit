@@ -10,7 +10,7 @@ One database per project, linked from the Linear project's `Research:` line. Peo
 | Source type | select | adder | User interview, Survey, Observation, Analytics, Paper, Competitor review, Desk research |
 | Confidence | select | adder | High, Medium, Low |
 | Implication | text | adder (optional) | What it might mean for the product. On rejection, the designer's reason goes here |
-| Status | select | adder sets `New`; designer updates | New, Incorporated, Rejected, Needs human research |
+| Status | select | adder sets `New`; designer updates | New, Incorporated, Rejected, Needs human research, Future version (exploratory research, `research-library.md`; the design skill ignores it) |
 | Design version | text | designer | Doc version that handled it |
 | Requirements | text | designer | R-IDs / assumption numbers it changed |
 

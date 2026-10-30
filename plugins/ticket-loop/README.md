@@ -4,7 +4,7 @@ One general, unattended job for building apps with agents. Linear holds the work
 
 ## Set up a project (once)
 1. GitHub: create an empty repo for the app.
-2. Linear: create a project with the project label `Agent` and a description from `templates/project-description.md` (Direction + `Repo:` line). Create the issue label group `Skill` (single-select) with `design`, `plan`, `build`, `research`, `evaluate`, plus the labels `Needs Human`, `Awaiting Merge` and `Launch` if your team lacks them. Never put `Agent` on a project another loop already runs (for example the cajunt POC projects).
+2. Linear: create a project with the project label `Agent` and a description from `templates/project-description.md` (Direction + `Repo:` line). Create the issue label groups `Skill` (single-select) with `design`, `plan`, `build`, `research`, `evaluate`, and `Model` (single-select) with `haiku-low`, `sonnet-medium`, `sonnet-high`, `opus-high`, plus the labels `Needs Human`, `Awaiting Merge` and `Launch` if your team lacks them. Never put `Agent` on a project another loop already runs (for example the cajunt POC projects).
 3. Notion: one page to hold design docs (your "Notion home"); connect the Notion and Linear connectors to Claude.
 4. That's it: the next run creates the design ticket itself.
 
@@ -18,6 +18,15 @@ One general, unattended job for building apps with agents. Linear holds the work
 - Add work: create a ticket with a Skill label (or none: rough ideas get planned, spec'd tickets get built).
 - Work a ticket yourself: assign it to yourself first. The loop only picks unassigned tickets, so it won't collide with you; unassign it to hand it back.
 - Stop a project: set its status to Paused, or `Stage: paused`.
+
+## Models and stages
+Each ticket carries a **Model** label (`haiku-low`, `sonnet-medium`, `sonnet-high`, `opus-high`) set when the ticket is created, or estimated when it is picked if missing (`MODELS.md`). Skills run in stages: building explores on a small model and writes a brief, implements at the ticket's tier, then reviews and QAs on fixed models. Research gathers sub-questions in parallel, then synthesizes and checks citations. Design drafts, then gets a fresh critique. A fix round raises the tier by one step. Create the label group `Model` (single-select) with those four labels.
+
+## Review and improve it
+Give the loop a `Run log:` (a Notion page, `templates/run-log.md`) and schedule a second task from `templates/review-prompt.md` about 15 minutes before the loop. It runs `review-runs`: reads last night's run log, Linear and PRs, and makes at most 3 small, evidence-backed fixes to skills, templates or the loop's prompt, leaning toward no change. Shared fixes land here as PRs so everyone benefits.
+
+## Explore beyond the current version
+Tickets with `Track: exploratory` write readable pages into a Notion research library and file their own follow-up questions (`templates/research-library.md`), without changing the current design. Set `Research priority: fallback` in the loop's prompt to run research only when no other work is ready.
 
 ## Add a kind of work
 Use the `new-skill` skill: it searches existing plugin marketplaces first, then writes a skill that delegates to the best plugin where one fits.
