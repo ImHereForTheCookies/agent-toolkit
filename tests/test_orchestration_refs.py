@@ -89,3 +89,20 @@ def test_releases_are_branches_not_tags():
         text = (ORCH / name).read_text(encoding="utf-8")
         assert "`<slug>-vN` tag" not in text and "release tag" not in text, name
     assert "release/<slug>-vN" in (ORCH / "RND.md").read_text(encoding="utf-8")
+
+
+def test_settings_placeholders_are_documented_and_no_personal_values():
+    import re
+    settings = (ORCH / "SETTINGS.md").read_text()
+    documented = set(re.findall(r"^\| `([A-Z_]+)` \|", settings, re.M)) | {"POC_DIR", "TOOLKIT_DIR"}
+    for path in ORCH.glob("*.md"):
+        if path.name == "SETTINGS.md":
+            continue
+        text = path.read_text()
+        for key in re.findall(r"\{\{([A-Z_]+)\}\}", text):
+            assert key in documented, f"{path.name} uses undocumented setting {key}"
+    for name in ["NIGHTLY.md", "RND.md", "GROWTH_BRIEF.md", "LAUNCH_BRIEF.md",
+                 "RESEARCH_BRIEF.md", "RETRO_BRIEF.md", "PRODUCT_EVAL_BRIEF.md"]:
+        text = (ORCH / name).read_text()
+        for personal in ["ImHereForTheCookies", "trig_0", "~/work", "Robert"]:
+            assert personal not in text, f"{name} still hard-codes {personal}"

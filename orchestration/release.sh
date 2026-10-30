@@ -3,7 +3,7 @@
 # release/<slug>-vN at that commit, and move the release/<slug> branch forward to it.
 # Releases are branches, not tags: cloud sessions may only push branches (their
 # GitHub proxy refuses tag pushes), so a version is a branch that is never moved again.
-# Never force-pushes, never moves a release backward, never deploys (a host Robert
+# Never force-pushes, never moves a release backward, never deploys (a host the owner
 # configures may watch release/<slug>).
 #
 # Usage (from anywhere):  release.sh <repo> <folder> <slug> [--notes FILE]
