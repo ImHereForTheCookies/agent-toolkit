@@ -117,3 +117,8 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (Robert's call after reading pacelog's report)
 - Outcome: the fallback greenlit pacelog at 67/100, a niche idea its own validation called a kill. Robert canceled pacelog (P-ROB-4, ROB-52, ROB-55..88) and dropped the fallback: RND.md now never greenlights below 70, and a night with no 70+ idea has no new POC.
 - Next step: tonight's run ideates fresh, with the free-competitor check from PR #25.
+
+## 2026-10-29 - Nightly self-review, run log, exploratory research library
+- Ticket: none (Robert: a review job before the nightly build that fixes unclear parts of code or prompts, leaning to no change; and a recursive, human-readable research track as fallback work)
+- Outcome: new `review-runs` skill and `templates/review-prompt.md`; `run-queue` takes optional `Run log` (entries per unit, `templates/run-log.md`) and `Research priority: fallback`; `research-question` gains an exploratory track (`Track: exploratory` → `templates/research-library.md`: readable Notion pages, findings Status `Future version`, up to 3 follow-up tickets, depth limit 3). Found why the daily task stalled on 2026-10-29: it reads the ticket-loop plugin from `main`, which lacks it until PR #28 merges.
+- Next step: after the first review night, check that it changed nothing without repeated evidence.

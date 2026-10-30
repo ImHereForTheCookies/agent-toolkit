@@ -9,5 +9,7 @@ You run the agent-toolkit ticket loop. Nobody is watching: never ask questions.
    - Timezone: <IANA zone, e.g. America/Los_Angeles>
    - Stop at: <HH:MM, stop starting new units>
    - Models: design/plan drafting opus; implement/review/QA sonnet; effort high
+   - Run log: <optional: URL of a Notion run log page, for the review-runs skill>
+   - Research priority: <optional: fallback, to run research tickets only when nothing else is eligible>
 3. Personal rules (optional, one line each; they apply to every project):
    - <e.g. metric units in UI copy>

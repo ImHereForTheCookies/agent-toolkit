@@ -19,5 +19,11 @@ One general, unattended job for building apps with agents. Linear holds the work
 - Work a ticket yourself: assign it to yourself first. The loop only picks unassigned tickets, so it won't collide with you; unassign it to hand it back.
 - Stop a project: set its status to Paused, or `Stage: paused`.
 
+## Review and improve it
+Give the loop a `Run log:` (a Notion page, `templates/run-log.md`) and schedule a second task from `templates/review-prompt.md` about 15 minutes before the loop. It runs `review-runs`: reads last night's run log, Linear and PRs, and makes at most 3 small, evidence-backed fixes to skills, templates or the loop's prompt, leaning toward no change. Shared fixes land here as PRs so everyone benefits.
+
+## Explore beyond the current version
+Tickets with `Track: exploratory` write readable pages into a Notion research library and file their own follow-up questions (`templates/research-library.md`), without changing the current design. Set `Research priority: fallback` in the loop's prompt to run research only when no other work is ready.
+
 ## Add a kind of work
 Use the `new-skill` skill: it searches existing plugin marketplaces first, then writes a skill that delegates to the best plugin where one fits.

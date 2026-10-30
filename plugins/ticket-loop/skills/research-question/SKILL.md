@@ -12,6 +12,10 @@ Output is **findings rows**, not a report nobody reads: each row is one claim wi
 - **Notion plugin** research-documentation skill (if installed): fine for structuring the evidence page.
 - What this skill adds: the question comes from a design assumption, results land as typed rows the design loop consumes, and the "humans only" boundary.
 
+## Two tracks
+- **Assumption research** (default): tests a design assumption; steps below.
+- **Exploratory research**: the ticket has a line `Track: exploratory`. Follow `$TOOLKIT/plugins/ticket-loop/templates/research-library.md` instead of steps 3-5: it publishes a readable page in the project's research library, records findings with Status `Future version`, and files its own follow-up questions. Steps 1-2 and the Rules still apply.
+
 ## Inputs
 Ticket ID, project, Design doc URL, Research database URL, Constraints, Models. Load `select:mcp__Notion__notion-fetch,mcp__Notion__notion-query-data-sources,mcp__Notion__notion-create-pages,mcp__Notion__notion-update-page` plus WebSearch and WebFetch.
 

@@ -111,3 +111,22 @@ def test_plans_are_modular_so_merges_never_block():
     rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
     assert "Modular by default" in pl and "registry" in pl
     assert "Prefer independent work" in rq
+
+
+def test_review_runs_is_conservative_and_wired():
+    rr = (SKILLS / "review-runs" / "SKILL.md").read_text(encoding="utf-8")
+    rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
+    assert "**no change**" in rr and "At most **3 changes**" in rr
+    assert "HARD_LIMITS.md" in rr and "never change" in rr
+    assert "Independent check" in rr
+    assert "Run log" in rq and "templates/run-log.md" in rq
+    review_prompt = (PLUGIN / "templates" / "review-prompt.md").read_text(encoding="utf-8")
+    assert "review-runs/SKILL.md" in review_prompt and len(review_prompt.splitlines()) <= 20
+
+
+def test_exploratory_research_never_changes_the_current_design():
+    rs = (SKILLS / "research-question" / "SKILL.md").read_text(encoding="utf-8")
+    lib = (PLUGIN / "templates" / "research-library.md").read_text(encoding="utf-8")
+    assert "Track: exploratory" in rs and "templates/research-library.md" in rs
+    assert "Future version" in lib and "never `New`" in lib
+    assert "Research depth:" in lib and "at most **3**" in lib
