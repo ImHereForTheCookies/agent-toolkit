@@ -13,7 +13,7 @@ Per-ticket review and QA already checked each piece. You judge the **product**: 
 - `$TOOLKIT/orchestration/PRODUCT_EVAL_BRIEF.md` is the POC-specific ancestor of this skill; this one grades against the design doc instead of a fixed PWA checklist.
 
 ## Inputs
-Ticket ID, project, Repo, project folder, Design doc URL, Constraints, Models. Run the evaluation in one subagent (model `sonnet`, effort high) that follows this skill and replies in at most 8 lines; you then do steps 4-5.
+Ticket ID, project, Repo, project folder, Design doc URL, Constraints, Tier, Models. Run the evaluation in one subagent (the ticket's tier, default `sonnet-high`) that follows this skill and replies in at most 8 lines; you then do steps 4-5.
 
 ## Steps
 1. **Prepare.** Fetch the design doc: Success criteria, v1 Scope, Key flows, Testing and quality bar, Constraints. Check out `main`, run `make -C <folder> setup` if that target exists (`make -C <folder> -n setup`), start the app the way its `CLAUDE.md` says, with state in a temp dir.

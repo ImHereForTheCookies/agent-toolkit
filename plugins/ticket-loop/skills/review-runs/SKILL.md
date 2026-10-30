@@ -33,6 +33,7 @@ List each friction point with its evidence (run log entry, ticket, PR, error tex
 - **Change** only when all of these hold: it happened in 2 or more units or nights, or it stopped or stalled a unit outright; the evidence shows the cause, not just the symptom; and a small edit to an instruction would plausibly have prevented it.
 - **No change** for one-off environment events (usage limits, network blips, an outage), for things the model handled well anyway, for taste, and whenever you are unsure. Add the item to **Watching** with its evidence. Drop a Watching item after 7 nights without a repeat.
 - Do not undo or reverse a change made in the last 7 nights unless the evidence shows that change caused a failure. Flip-flopping is worse than either version.
+- Model tiers: compare each unit's `Model` label with its outcome. A tier that keeps failing review, or a tier above `sonnet-medium` that keeps passing first time on small tickets, is evidence for adjusting the rubric in `$TOOLKIT/plugins/ticket-loop/MODELS.md` (same bar as any other change).
 - At most **3 changes** per review. Pick the ones with the largest cost in lost work.
 
 ## 3. Choose where each fix lives

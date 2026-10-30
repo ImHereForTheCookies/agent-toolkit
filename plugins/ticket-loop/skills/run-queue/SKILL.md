@@ -12,7 +12,7 @@ You are the **orchestrator**. One run does exactly one unit of work, then hands 
 - Linear mechanics (states, claiming, evidence, escalation): follow `$TOOLKIT/plugins/linear-workflow/skills/linear-tickets/SKILL.md`; do not reinvent them here.
 
 ## Inputs (from the scheduled prompt, or ask the person once if interactive)
-`Linear team`, `Project label` (default `Agent`), `Notion home` (page URL for design docs), `Scheduled task name`, `Timezone`, `Stop at` (HH:MM, stop starting units), optional `Models`, optional `Run log` (Notion page URL, see `$TOOLKIT/plugins/ticket-loop/templates/run-log.md`), optional `Research priority: fallback`, optional personal rules. `TOOLKIT` = an agent-toolkit checkout (the scheduled prompt clones it). Obey `$TOOLKIT/plugins/ticket-loop/HARD_LIMITS.md` in every unit.
+`Linear team`, `Project label` (default `Agent`), `Notion home` (page URL for design docs), `Scheduled task name`, `Timezone`, `Stop at` (HH:MM, stop starting units), optional `Models` (an override of `$TOOLKIT/plugins/ticket-loop/MODELS.md`), optional `Run log` (Notion page URL, see `$TOOLKIT/plugins/ticket-loop/templates/run-log.md`), optional `Research priority: fallback`, optional personal rules. `TOOLKIT` = an agent-toolkit checkout (the scheduled prompt clones it). Obey `$TOOLKIT/plugins/ticket-loop/HARD_LIMITS.md` in every unit.
 
 **Interactive mode:** given a ticket ID, run step 1 (tools only), step 2 for that ticket's project only, then route that ticket (step 4 "Route"), report, and stop: no other picks, no chaining, no summary message.
 
@@ -31,7 +31,7 @@ You are the **orchestrator**. One run does exactly one unit of work, then hands 
 **Reconcile (every run, every mapped project, not a unit):** follow "Stacking" item 2 in `$TOOLKIT/plugins/ticket-loop/skills/build-ticket/SKILL.md` for tickets labelled `Awaiting Merge`.
 
 ## 3. Bootstrap tickets
-Create these (team = Linear team, project = that project, state Todo, one Skill label) only if no open ticket with the same label and purpose exists. Creating them is not a unit; continue to step 4 in the same run.
+Create these (team = Linear team, project = that project, state Todo, one Skill label and the Model label `$TOOLKIT/plugins/ticket-loop/MODELS.md` gives bootstrap tickets) only if no open ticket with the same label and purpose exists. Creating them is not a unit; continue to step 4 in the same run.
 - No `Design doc:` value → `design`: "Write the design doc" (description: "Turn the project Direction into the design doc. Skill: design-system.").
 - Design doc has unresolved comments by a person, newer than the doc's last Change log entry → `design`: "Address design doc comments" (list the comment links).
 - The project's `Research:` database has findings with Status `New` → `design`: "Incorporate research findings" (list them). Query it with `notion-query-data-sources`.
@@ -43,11 +43,13 @@ Per project in map order. **Red main first:** if a project has an open ticket ti
 2. Ticket In Progress without Needs Human (an interrupted run; resume).
 3. Backlog ticket whose blockers are satisfied → promote to Todo. `build` tickets must pass `python3 $TOOLKIT/scripts/lint_ticket.py <file>` (else label Needs Human with the lint output). An **unlabelled** ticket that fails lint gets the `plan` label and is promoted (rough idea → planner). Promotion is not a unit; keep picking.
 4. Todo ticket whose blockers are satisfied, by Linear priority (Urgent first, None last), then lowest number. **Prefer independent work:** a ticket whose blockers are all Done (built from `main`) beats one that would have to stack on an `Awaiting Merge` branch; stack only when no independent ticket is left in any project.
-**Research as fallback** (only with `Research priority: fallback`): a Backlog or Todo `research` ticket is picked only when no other ticket is eligible in any mapped project; build work blocked at the Awaiting Merge cap counts as not eligible. An interrupted research ticket (In Progress or In Review) always resumes at its normal place.
+**Research as fallback** (only with `Research priority: fallback`): a Backlog or Todo `research` ticket with priority Medium, Low or none is picked only when no other ticket is eligible in any mapped project (a person who sets one to Urgent or High makes it ordinary work, ordered by priority like any ticket; tickets the loop creates for research stay Low); build work blocked at the Awaiting Merge cap counts as not eligible. An interrupted research ticket (In Progress or In Review) always resumes at its normal place.
 
 A blocker is **satisfied** when it is Done, or In Review labelled `Awaiting Merge` (the ticket is then built stacked on it). Skip tickets labelled Needs Human or Launch, Canceled or Duplicate ones, and **any ticket with an assignee**: a person is working it by hand. The loop works unassigned tickets only and never assigns itself. In interactive mode the person's own ticket is the exception.
 
-**Route:** read `$TOOLKIT/plugins/ticket-loop/ROUTES.md`, find the ticket's Skill label, and read and follow that skill for this ticket, passing: ticket ID, project, Repo, repo path, project folder (`<repo path>/<Folder or .>`), Design doc URL, Research database URL, Constraints, Notion home, Models. No Skill label → `build` if the description passes the linter, else add `plan` and route to planning. A label with no route → Needs Human ("no skill for label X; create one with new-skill") and pick again.
+**Tier:** read the ticket's `Model` label (`$TOOLKIT/plugins/ticket-loop/MODELS.md`). None (a ticket made before tiers, or by a person) → estimate it with that file's rubric and write it as that file's "Writing the label" says, add the `Model:` line to the description, then continue.
+
+**Route:** read `$TOOLKIT/plugins/ticket-loop/ROUTES.md`, find the ticket's Skill label, and read and follow that skill for this ticket, passing: ticket ID, project, Repo, repo path, project folder (`<repo path>/<Folder or .>`), Design doc URL, Research database URL, Constraints, Notion home, Tier, Models. No Skill label → `build` if the description passes the linter, else add `plan` and route to planning. A label with no route → Needs Human ("no skill for label X; create one with new-skill") and pick again.
 
 **Run log** (only with `Run log`): after the unit, and when a run ends early on an error, add an entry at the top of the night's heading on that page (the night is the date of `Chain started` in `Timezone`) in the format of `$TOOLKIT/plugins/ticket-loop/templates/run-log.md`. Short and factual: it is the evidence the `review-runs` skill works from.
 
