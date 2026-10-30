@@ -12,7 +12,7 @@ You are the **orchestrator**. One run does exactly one unit of work, then hands 
 - Linear mechanics (states, claiming, evidence, escalation): follow `$TOOLKIT/plugins/linear-workflow/skills/linear-tickets/SKILL.md`; do not reinvent them here.
 
 ## Inputs (from the scheduled prompt, or ask the person once if interactive)
-`Linear team`, `Project label` (default `Agent`), `Notion home` (page URL for design docs), `Scheduled task name`, `Timezone`, `Stop at` (HH:MM, stop starting units), optional `Models`, optional `Run log` (Notion page URL, see `$TOOLKIT/plugins/ticket-loop/templates/run-log.md`), optional `Research priority: fallback`, optional personal rules. `TOOLKIT` = an agent-toolkit checkout (the scheduled prompt clones it). Obey `$TOOLKIT/plugins/ticket-loop/HARD_LIMITS.md` in every unit.
+`Linear team`, `Project label` (default `Agent`), `Notion home` (page URL for design docs), `Scheduled task name`, `Timezone`, `Stop at` (HH:MM, stop starting units), optional `Models` (an override of `$TOOLKIT/plugins/ticket-loop/MODELS.md`), optional `Run log` (Notion page URL, see `$TOOLKIT/plugins/ticket-loop/templates/run-log.md`), optional `Research priority: fallback`, optional personal rules. `TOOLKIT` = an agent-toolkit checkout (the scheduled prompt clones it). Obey `$TOOLKIT/plugins/ticket-loop/HARD_LIMITS.md` in every unit.
 
 **Interactive mode:** given a ticket ID, run step 1 (tools only), step 2 for that ticket's project only, then route that ticket (step 4 "Route"), report, and stop: no other picks, no chaining, no summary message.
 
@@ -47,7 +47,9 @@ Per project in map order. **Red main first:** if a project has an open ticket ti
 
 A blocker is **satisfied** when it is Done, or In Review labelled `Awaiting Merge` (the ticket is then built stacked on it). Skip tickets labelled Needs Human or Launch, Canceled or Duplicate ones, and **any ticket with an assignee**: a person is working it by hand. The loop works unassigned tickets only and never assigns itself. In interactive mode the person's own ticket is the exception.
 
-**Route:** read `$TOOLKIT/plugins/ticket-loop/ROUTES.md`, find the ticket's Skill label, and read and follow that skill for this ticket, passing: ticket ID, project, Repo, repo path, project folder (`<repo path>/<Folder or .>`), Design doc URL, Research database URL, Constraints, Notion home, Models. No Skill label → `build` if the description passes the linter, else add `plan` and route to planning. A label with no route → Needs Human ("no skill for label X; create one with new-skill") and pick again.
+**Tier:** read the ticket's `Model` label (`$TOOLKIT/plugins/ticket-loop/MODELS.md`). None → estimate it with that file's rubric, add the label and the `Model:` line to the description, then continue. Never change a ticket's tier except the one-step raise for a fix round.
+
+**Route:** read `$TOOLKIT/plugins/ticket-loop/ROUTES.md`, find the ticket's Skill label, and read and follow that skill for this ticket, passing: ticket ID, project, Repo, repo path, project folder (`<repo path>/<Folder or .>`), Design doc URL, Research database URL, Constraints, Notion home, Tier, Models. No Skill label → `build` if the description passes the linter, else add `plan` and route to planning. A label with no route → Needs Human ("no skill for label X; create one with new-skill") and pick again.
 
 **Run log** (only with `Run log`): after the unit, and when a run ends early on an error, add an entry at the top of the night's heading on that page (the night is the date of `Chain started` in `Timezone`) in the format of `$TOOLKIT/plugins/ticket-loop/templates/run-log.md`. Short and factual: it is the evidence the `review-runs` skill works from.
 

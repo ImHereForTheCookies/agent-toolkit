@@ -17,11 +17,11 @@ Output is **findings rows**, not a report nobody reads: each row is one claim wi
 - **Exploratory research**: the ticket has a line `Track: exploratory`. Follow `$TOOLKIT/plugins/ticket-loop/templates/research-library.md` instead of steps 3-5: it publishes a readable page in the project's research library, records findings with Status `Future version`, and files its own follow-up questions. Steps 1-2 and the Rules still apply.
 
 ## Inputs
-Ticket ID, project, Design doc URL, Research database URL, Constraints, Models. Load `select:mcp__Notion__notion-fetch,mcp__Notion__notion-query-data-sources,mcp__Notion__notion-create-pages,mcp__Notion__notion-update-page` plus WebSearch and WebFetch.
+Ticket ID, project, Design doc URL, Research database URL, Constraints, Tier, Models. Load `select:mcp__Notion__notion-fetch,mcp__Notion__notion-query-data-sources,mcp__Notion__notion-create-pages,mcp__Notion__notion-update-page` plus WebSearch and WebFetch.
 
 ## Steps
 1. Claim the ticket (In Progress). Read the question, the assumption it tests (A# in the doc) and what evidence would change the design. Query the database for existing rows on the topic so you don't duplicate them.
-2. **Investigate** in one subagent (model `sonnet`, effort high), which writes notes to `~/work/research/<ticket>.md` and replies in at most 10 lines:
+2. **Investigate** in two stages (models per `$TOOLKIT/plugins/ticket-loop/MODELS.md`). First split the question into 2-4 sub-questions. **Gather:** one subagent per sub-question, in parallel (`sonnet`, effort medium), each writing raw notes with sources to `~/work/research/<ticket>-<n>.md` and replying in at most 5 lines. **Synthesize:** one subagent at the ticket's tier reads those notes (not the web, except to fill a gap a note names), writes `~/work/research/<ticket>.md` and replies in at most 10 lines. Both stages follow these rules:
    - primary sources first: real users in their own words (forums, app-store reviews, issue trackers), peer-reviewed papers, official statistics; listicles and affiliate pages only to find names;
    - aim for 3 independent sources per claim; older than 2 years counts half; note disagreement instead of averaging it away;
    - paraphrase; at most one short quote per source; link everything;

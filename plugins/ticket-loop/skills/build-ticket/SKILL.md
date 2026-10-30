@@ -5,7 +5,7 @@ description: Use when a Linear ticket labelled build (or an unlabelled ticket th
 
 # Build one ticket through merge
 
-You orchestrate; Sonnet subagents implement, review and QA. You never write feature code.
+You orchestrate; subagents explore, implement, review and QA, each on the model `$TOOLKIT/plugins/ticket-loop/MODELS.md` gives its stage. You never write feature code.
 
 ## Prefer existing plugins
 - **superpowers**: implementers follow `test-driven-development`, `writing-plans` (for their own step list) and `verification-before-completion` when available; reviewers may use `requesting-code-review`'s checklist. Never `brainstorming` or questions: the ticket is the approved spec.
@@ -13,18 +13,19 @@ You orchestrate; Sonnet subagents implement, review and QA. You never write feat
 - What this skill adds: separate QA that uses the app, Linear evidence, auto-merge and stacking.
 
 ## Inputs
-Ticket ID, Repo, repo path, project folder, Design doc URL, Constraints, Models (default `sonnet`, effort high). Every subagent prompt includes: `Repo path: <repo path>`, `Project folder: <folder>`, `TOOLKIT=<path>`, `Design doc: <url>`, `Constraints: <text>`. "Setup" below means `make -C <folder> setup` only if that target exists (`make -C <folder> -n setup >/dev/null 2>&1`).
+Ticket ID, Repo, repo path, project folder, Design doc URL, Constraints, Tier, Models (an override). Every subagent prompt includes: `Repo path: <repo path>`, `Project folder: <folder>`, `TOOLKIT=<path>`, `Design doc: <url>`, `Constraints: <text>`. "Setup" below means `make -C <folder> setup` only if that target exists (`make -C <folder> -n setup >/dev/null 2>&1`).
 
 ## 0. Base branch
 - **Empty repo** (no `origin/main`): seed it first so the normal PR flow works: in the repo path, `git checkout -q -b main && git commit -q --allow-empty -m "Initial commit" && git push -q origin main`. Base = `main`.
 - Otherwise base = the branch of the ticket's newest blocker labelled `Awaiting Merge` (the top of that stack), else `main`.
 
 ## Steps
-A. **Implement.** Subagent: "Read and follow `$TOOLKIT/orchestration/IMPLEMENTER_BRIEF.md` for ticket <ID>, with these overrides, which win over the brief: the base branch is `<base>`: in step 2 run `git fetch -q origin && git checkout -q -B <base> origin/<base>` and the baseline verify on it; create your branch from it; in step 7 open the PR with base `<base>`<, and make the first body line `**Stacked on #<parent PR>; merge after it.**` when base is not main>. Run setup before verify (skip it if the target doesn't exist)." Reply `ESCALATE:` → escalate (below), move on.
-B. **Review.** A *different* subagent: "Read and follow `$TOOLKIT/orchestration/REVIEWER_BRIEF.md`. Ticket <ID>, branch <b>, PR <url>, repo, project folder. Override: diff against the base, `git diff origin/<base>...<b>`, not origin/main. Also check the change respects the Constraints."
-C. **QA** (after review PASS). A separate subagent: "Read and follow `$TOOLKIT/plugins/agentic-workflow/skills/qa-ticket/SKILL.md` for ticket <ID>, branch <b>, repo path <project folder>." For taste checkpoints, attach its screenshot paths to the PR and Linear comments.
+A0. **Explore** (read-only; explore-stage model). Subagent: "Ticket <ID> in <repo path>, base `<base>`. Do not edit anything. Write `~/work/briefs/<ID>.md`, at most 80 lines: the files and functions this ticket touches or calls (paths and signatures), the existing patterns to copy (one example each), the test files and commands that cover them, and anything in CLAUDE.md, PROGRESS.md or recent commits that constrains the change. Use `$TOOLKIT/plugins/code-navigation/skills/navigate-codebase/SKILL.md` if the repo is large. Reply in 3 lines." Empty repo (the harness ticket) → skip.
+A. **Implement** (the ticket's tier). Subagent: "Read `~/work/briefs/<ID>.md` first and trust it for orientation; open other files only when the brief doesn't cover something. Read and follow `$TOOLKIT/orchestration/IMPLEMENTER_BRIEF.md` for ticket <ID>, with these overrides, which win over the brief: the base branch is `<base>`: in step 2 run `git fetch -q origin && git checkout -q -B <base> origin/<base>` and the baseline verify on it; create your branch from it; in step 7 open the PR with base `<base>`<, and make the first body line `**Stacked on #<parent PR>; merge after it.**` when base is not main>. Run setup before verify (skip it if the target doesn't exist)." Reply `ESCALATE:` → escalate (below), move on.
+B. **Review** (review-stage model). A *different* subagent: "Read and follow `$TOOLKIT/orchestration/REVIEWER_BRIEF.md`. Ticket <ID>, branch <b>, PR <url>, repo, project folder. Override: diff against the base, `git diff origin/<base>...<b>`, not origin/main. Also check the change respects the Constraints."
+C. **QA** (after review PASS; QA-stage model). A separate subagent: "Read and follow `$TOOLKIT/plugins/agentic-workflow/skills/qa-ticket/SKILL.md` for ticket <ID>, branch <b>, repo path <project folder>." For taste checkpoints, attach its screenshot paths to the PR and Linear comments.
 D. **Merge** only on review PASS and QA PASS (or SKIPPED with a reason). Write verdict + QA report to a file; from the repo run `$TOOLKIT/orchestration/ghpr.sh comment <b> <file>`; then, if base is `main`, `$TOOLKIT/orchestration/ghpr.sh merge <b>`. Merged → evidence comment per `linear-tickets`, state Done.
-   - **FAIL** (review or QA): one fresh implementer with the same overrides plus "Fix these findings: ...", then review and QA again. Second FAIL → escalate, leave the PR open.
+   - **FAIL** (review or QA): raise the ticket's `Model` label one tier (`opus-high` stays), then one fresh implementer at that tier with the same overrides plus "Fix these findings: ...", then review and QA again. Second FAIL → escalate, leave the PR open.
    - **Base is not main, or the merge is denied or impossible:** not an escalation. Leave the ticket In Review, add the label `Awaiting Merge`, comment `**Review PASS, QA PASS, waiting on merge**` (PR link, head sha, base, and `Base sha: <sha of origin/<base> the branch was built on>`). run-queue then treats it as a satisfied blocker and never re-picks it.
 E. **After a merge:** `git -C <repo> fetch -q origin && git -C <repo> checkout -q -B main origin/main`, setup, `make -C <folder> verify`. Red main → create a ticket "Fix red main: <failure>" (label `build`, Todo, priority Urgent, failure log in the description, written to pass the linter). Do not label it Needs Human: run-queue makes it the project's only eligible ticket until it is Done.
 

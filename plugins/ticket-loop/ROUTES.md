@@ -10,4 +10,6 @@ Each Linear ticket carries one label from the **Skill** label group. `run-queue`
 | research | research-question | Findings in the project's research database (Status New), which the next design revision incorporates |
 | evaluate | evaluate-project | Graded evaluation in the doc, plus build or design tickets |
 
+Each ticket also carries one **Model** label (`MODELS.md`): the model and effort for the skill's main stage. Each skill runs its other stages on the cheaper defaults listed there.
+
 No Skill label: `build` if the description passes `$TOOLKIT/scripts/lint_ticket.py`, otherwise `plan`.

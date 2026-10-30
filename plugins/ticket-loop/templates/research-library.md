@@ -22,6 +22,8 @@ As research-question step 2, plus:
 - Laws, regulations and product facts: current official sources, dated.
 
 ## Write the page (the main output)
+The synthesize stage writes it. Then a **citation check** (`sonnet`, effort medium, a fresh subagent) opens each linked source and flags any claim the source does not support or any evidence tag that is too strong; fix or soften those before publishing.
+
 A child of the theme page, titled with the topic in plain words, for a smart reader with no background in the field, on a phone: short paragraphs, plain words, examples, about 1,200 to 2,500 words. Outline:
 1. **At a glance**: 3 to 5 bullets a reader could stop after.
 2. **Why this matters for the app**.
@@ -43,7 +45,7 @@ When a topic splits into distinct parts that each deserve an explanation (one tr
 ## Follow-ups (the library grows itself)
 1. From the Open questions, pick at most **3** that matter most for the app and that no library page or research ticket in the project (any state; search titles) already covers.
 2. File none, marking them "not filed: depth limit" or "not filed: queue full", when this ticket's `Research depth:` is 3 or more (a missing line counts as 1), or when the project already has 20 or more open exploratory tickets.
-3. Otherwise create each as a `research` ticket: same project, priority Low, state Todo, related to this ticket, with the ticket contract above, depth + 1.
+3. Otherwise create each as a `research` ticket: same project, priority Low, state Todo, related to this ticket, with the ticket contract above, depth + 1, and a `Model` label per `$TOOLKIT/plugins/ticket-loop/MODELS.md` (`opus-high` only for a whole-topic synthesis).
 
 ## Close
 Add the page to its theme's **Pages** list (one line on what it covers) and to the top of **Recently added**. Comment on the ticket: page link, one-line answer, confidence, rows added, follow-ups filed. Set it Done.

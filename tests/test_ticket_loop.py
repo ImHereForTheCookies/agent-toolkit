@@ -130,3 +130,26 @@ def test_exploratory_research_never_changes_the_current_design():
     assert "Track: exploratory" in rs and "templates/research-library.md" in rs
     assert "Future version" in lib and "never `New`" in lib
     assert "Research depth:" in lib and "at most **3**" in lib
+
+
+TIERS = ("haiku-low", "sonnet-medium", "sonnet-high", "opus-high")
+
+
+def test_model_tiers_are_defined_and_used():
+    models = (PLUGIN / "MODELS.md").read_text(encoding="utf-8")
+    for tier in TIERS:
+        assert f"`{tier}`" in models
+    rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
+    assert "`Model` label" in rq and "estimate it" in rq
+    for skill in ("build-ticket", "plan-tickets", "design-system", "research-question", "evaluate-project"):
+        text = (SKILLS / skill / "SKILL.md").read_text(encoding="utf-8")
+        assert "tier" in text, f"{skill} ignores the ticket's tier"
+
+
+def test_skills_run_in_cheap_then_expensive_stages():
+    bt = (SKILLS / "build-ticket" / "SKILL.md").read_text(encoding="utf-8")
+    rs = (SKILLS / "research-question" / "SKILL.md").read_text(encoding="utf-8")
+    ds = (SKILLS / "design-system" / "SKILL.md").read_text(encoding="utf-8")
+    assert "**Explore**" in bt and "~/work/briefs/" in bt and "raise the ticket's `Model` label" in bt
+    assert "**Gather:**" in rs and "**Synthesize:**" in rs
+    assert "**Critique**" in ds and "has not seen the drafting conversation" in ds
