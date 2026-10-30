@@ -72,7 +72,53 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Outcome: `orchestration/retros/2026-10-20-cajunt.md` (metrics, three sinks, what went well). Three changes, logged in `LESSONS.md`: decompose-project coverage table (also in the RND.md decomposer prompt), product-eval feature checklist with no un-ticketed findings (fix-ticket cap 6 to 8), and an explicit eval round number in RND.md unit 1. No old lessons were adoptable for review (seed rules only), none reverted. HARD_LIMITS.md untouched.
 - Next step: when the next POC finishes round 1 eval, compare its Spec coverage failures and eval-added ticket count with cajunt's (2 core failures, 6 tickets) and set the three rules to kept or revert.
 
+## 2026-10-21 - New POC every night; releases as branches
+- Ticket: none (direct request from Robert after the 2026-10-21 night built cajunt fixes but started no POC)
+- Cause found: (1) RND.md unit 5 only started a POC when no other POC was `building`/`evaluating`, and cajunt sat in `evaluating`; (2) Idea Lab was empty and ideate/validate ranked below release cut and launch kit; (3) the `cajunt-v1` release cut failed with HTTP 403 (cloud sessions may only push branches, never tags), and the next unit was the same release cut, so the chain stopped at 04:54.
+- Outcome: `RND.md` split into Part A (start tonight's POC, validate, ideate; runs before any build ticket until a POC is greenlit tonight; caps of 6 validations and 2 ideation passes per night) and Part B (eval, release cut, launch kit, retro, grow, speculative features with no nightly cap, reserve stocking, process research). No cap on POCs in progress or on launch kits waiting. A `Release cut failed` comment skips that POC's release for the rest of the night. `release.sh` now creates a frozen `release/<slug>-vN` branch and fast-forwards `release/<slug>`, never tags, and repairs a cut whose second push was lost; tests updated (8 cases). `HARD_LIMITS.md` rule 6 reworded for branch releases and hash re-pinned at Robert's request. `NIGHTLY.md`, `PRODUCT_EVAL_BRIEF.md`, `LAUNCH_BRIEF.md`, `LESSONS.md`, `CLAUDE.md` updated.
+- Next step: tonight's run should cut cajunt's first release as `release/cajunt-v1` and start a new POC from Part A.
+
+## 2026-10-21 - idealab.ai as an ideation lead source; manual daytime runs
+- Ticket: none (direct request from Robert)
+- Outcome: `RESEARCH_BRIEF.md` ideate mode may seed candidates from idealab.ai (no login; filtered for low capital, solo, fast time to market, client-side fit) and records the idea's source; AI-generated idea databases never count as demand evidence. `NIGHTLY.md` gains a manual daytime run: fire text `Manual run requested by Robert, stop at HH:MM` replaces the 08:30 cutoff for that chain (or `..., no stop time` removes it, running until the usage limit) and is passed on when chaining.
+- Next step: daytime test run to confirm Part A greenlights a POC and cajunt's first release cuts as `release/cajunt-v1`.
+
+## 2026-10-21 - Idea scope: week-long MVPs, health preferred
+- Ticket: none (direct request from Robert)
+- Outcome: `RESEARCH_BRIEF.md` accepts any idea whose MVP fits about a week of nightly builds (10-25 tickets; zero-cost client-side rule unchanged), prefers health ideas (with the existing hard gates on medical advice), and browses idealab.ai without its capital/team/time filters. `RND.md` A1 planner and decomposer size the MVP for about a week (8-20 features, 10-25 tickets, core loop first); a health idea within 5 points of the top score wins greenlight.
+- Next step: watch the test run's ideation for health candidates.
+
+## 2026-10-21 - MVP size up to about 50 tickets
+- Ticket: none (direct request from Robert: 10-25 tickets undersized a week of building)
+- Outcome: RESEARCH_BRIEF and RND.md A1 size an MVP at up to about 50 tickets (features as many as needed, core loop first). Measured pace for reference: 14-25 min per ticket sequentially (2026-10-20: 11 tickets 03:15-05:50; 2026-10-21: 4 tickets 03:00-04:41).
+- Next step: parallel builds across POC folders if Robert wants 50 tickets a night.
+
+## 2026-10-21 - More validation tries per night
+- Ticket: none (Robert asked to fix the test run if it gets stuck)
+- Outcome: RND.md Part A caps raised to 12 validations and 4 ideation passes per night (unit 7 shares them). The test run's first 3 validations were all killed (63, 65, 56/100) at about 9 min each.
+- Next step: see whether a later candidate (health-leaning ideation pass 2) reaches 70.
+
+## 2026-10-21 - Part A limits come from the runbook, not comments
+- Ticket: none (fix for the test run Robert asked me to watch)
+- Outcome: after PR #23 raised the caps, chained runs kept copying "of max 6" from earlier Idea Lab comments. RND.md Part A now says to count attempts from comments but take limits only from the file, and to write counts without a maximum.
+- Next step: confirm the next step after pacelog keeps validating (bpdiary) instead of declaring no POC tonight.
+
+## 2026-10-21 - Best-of-night fallback; ideation checks free competitors
+- Ticket: none (fix for the test run Robert asked me to watch: a new POC every night)
+- Outcome: the test run killed 7 of 7 ideas (56-67/100), mostly because free offline apps already existed and many evidence pages were unfetchable. RND.md Part A: after 8 validations (or the limits) with no 70+ idea, the best killed idea scoring 60+ with all hard gates passed goes to In Review, marked below the bar, and is greenlit. RESEARCH_BRIEF ideate drops candidates that a free, well-reviewed offline app already covers.
+- Next step: check whether tonight's fallback POC builds and evaluates well enough to keep the 60 floor.
+
+## 2026-10-21 - Validation keeps the idea's source
+- Ticket: none (Robert asked where pacelog's report was and whether it came from idealab.ai)
+- Outcome: validate mode overwrote the issue description and dropped ideation's `## Source` line, so a report never said where its idea came from. RESEARCH_BRIEF validate now keeps `## Source`, and for idealab.ai ideas links and folds in idealab's own brief.
+- Next step: none.
+
+## 2026-10-21 - Best-of-night fallback dropped; pacelog canceled
+- Ticket: none (Robert's call after reading pacelog's report)
+- Outcome: the fallback greenlit pacelog at 67/100, a niche idea its own validation called a kill. Robert canceled pacelog (P-ROB-4, ROB-52, ROB-55..88) and dropped the fallback: RND.md now never greenlights below 70, and a night with no 70+ idea has no new POC.
+- Next step: tonight's run ideates fresh, with the free-competitor check from PR #25.
+
 ## 2026-10-20 - Loop continuity: 09:00 cutoff, git-backed idempotence, discovery reserve
 - Ticket: none (direct request from Robert, with evidence from the 2026-10-20 night)
-- Outcome: `orchestration/NIGHTLY.md`: morning cutoff 0830 -> 0900 PT (night about six hours; the 9 AM job-application task overlaps and shares the usage limit, accepted by Robert); a refused Linear write is retried once, then recorded as a project comment or in the end-of-run summary, and the chain continues while the unit's git artifact exists; the "No eligible ticket" paragraph states that units 7, 8 and 5 form a self-feeding discovery loop. `orchestration/RND.md`: intro says the same; unit 4 is false when `orchestration/retros/*-<slug>.md` already exists on main (only the Linear line is retried); units 7/8 reserve targets raised to fewer than 4 In Review / fewer than 5 Backlog; units 9 and 10 now require 4+ validated ideas. Unit 5's launch-queue limit (2) and unit 9's cap (2 per night) unchanged. HARD_LIMITS.md and all review/QA/eval gates untouched. Three LESSONS.md lines (status: watch).
+- Outcome: `orchestration/NIGHTLY.md`: morning cutoff 0830 -> 0900 PT (night about six hours; the 9 AM job-application task overlaps and shares the usage limit, accepted by Robert); a refused Linear write is retried once, then recorded as a project comment or in the end-of-run summary, and the chain continues while the unit's git artifact exists; the "No eligible ticket" paragraph states that Part B unit 7 plus Part A form a self-feeding discovery loop. `orchestration/RND.md`: intro says the same; unit 4 is false when `orchestration/retros/*-<slug>.md` already exists on main (only the Linear line is retried); unit 7 (validate or ideate, merged on main) keeps going until 4 validated ideas are in reserve (was 2); process research (unit 8) waits for 4+ validated ideas or tonight's validation/ideation limits. Merged with main's Part A/Part B rewrite (PR #17 conflict resolution): the 5-Backlog target no longer exists because unit 7 validates any Backlog candidate before ideating, and speculative features (unit 6) keep main's no-cap, no-reserve-condition rule. HARD_LIMITS.md and all review/QA/eval gates untouched. Three LESSONS.md lines (status: watch).
 - Next step: check on the next night that the chain runs past 0830, no retro repeats after a refused Linear write, and the Idea Lab holds 4+ validated ideas.

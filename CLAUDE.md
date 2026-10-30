@@ -1,13 +1,14 @@
 # agent-toolkit (repo guide for agents)
 
 This repo is a Claude Code plugin marketplace (`agent-toolkit`) by Robert Meyer.
-It lists four plugins that later tickets fill with skills, agents and hooks.
+It lists five plugins (skills, agents and hooks).
 
 ## Layout
 - `.claude-plugin/marketplace.json` - marketplace manifest, lists the plugins
 - `plugins/<name>/.claude-plugin/plugin.json` - one manifest per plugin
 - `plugins/<name>/README.md` - one-paragraph purpose of the plugin
-- Plugins: `agentic-workflow`, `code-navigation`, `linear-workflow`, `project-template`
+- Plugins: `agentic-workflow`, `code-navigation`, `linear-workflow`, `project-template`, `ticket-loop`
+- `plugins/ticket-loop/` - the general daily job: `run-queue` routes Linear tickets by Skill label (`ROUTES.md`) to `design-system`, `plan-tickets`, `build-ticket`, `evaluate-project`; `new-skill` adds kinds of work (marketplace search first); `HARD_LIMITS.md`, `templates/` (scheduled prompt, project description, design doc). Spec: `docs/specs/2026-10-25-ticket-loop-design.md`. `orchestration/` stays as-is for the cajunt tasks.
 - `plugins/code-navigation/scripts/repo_map.py` - symbol index writer (`docs/symbols.md`); skill `navigate-codebase`
 - `plugins/linear-workflow/skills/linear-tickets/SKILL.md` + `.mcp.json` - Linear status mapping, claiming, evidence and escalation; Linear MCP for headless runs
 - `plugins/agentic-workflow/skills/human-in-the-loop/SKILL.md` - the six escalation triggers, comment template, reviewer guard
@@ -18,7 +19,7 @@ It lists four plugins that later tickets fill with skills, agents and hooks.
 - `tests/` - pytest tests (`test_*.py`)
 - `fixtures/demo-project/` - small FastAPI + SQLite app, sample tickets and `fixtures/seeded-bug.patch` for testing the toolkit (`scripts/check_seeded_bug.sh`)
 - `.github/workflows/ci.yml` - runs `make verify` on push and PR
-- `orchestration/` - nightly runbook (`NIGHTLY.md`: build first, then one unit per run from `RND.md`), `release.sh` (tag + fast-forward `release/<slug>` after the release gate), `HARD_LIMITS.md` (protected, hash-pinned), implementer/reviewer briefs, R&D briefs (`RESEARCH_BRIEF.md`, `GROWTH_BRIEF.md`, `LAUNCH_BRIEF.md`), REST PR helper `ghpr.sh`
+- `orchestration/` - nightly runbook (`NIGHTLY.md`: build first, then one unit per run from `RND.md`), `release.sh` (frozen `release/<slug>-vN` branch + fast-forward `release/<slug>` after the release gate; no tags), `HARD_LIMITS.md` (protected, hash-pinned), implementer/reviewer briefs, R&D briefs (`RESEARCH_BRIEF.md`, `GROWTH_BRIEF.md`, `LAUNCH_BRIEF.md`), REST PR helper `ghpr.sh`
 - `PROGRESS.md` - append-only session log
 
 ## Commands
