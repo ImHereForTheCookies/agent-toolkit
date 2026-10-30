@@ -5,7 +5,7 @@ description: Use when an agent needs to find Ready work in Linear, claim a ticke
 
 # Working Linear tickets the same way every time
 
-Inputs: a **team** key and a **project** name. The examples use team `ROB`, project `agent-toolkit`. Tickets follow the contract in the `ticket-spec` skill (agentic-workflow plugin).
+Inputs: a **team** key and a **project** name. Examples use placeholders; substitute your own team key and project. Tickets follow the contract in the `ticket-spec` skill (agentic-workflow plugin).
 
 ## Tools
 
