@@ -117,7 +117,7 @@ def test_review_runs_is_conservative_and_wired():
     rr = (SKILLS / "review-runs" / "SKILL.md").read_text(encoding="utf-8")
     rq = (SKILLS / "run-queue" / "SKILL.md").read_text(encoding="utf-8")
     assert "**no change**" in rr and "At most **3 changes**" in rr
-    assert "HARD_LIMITS.md" in rr and "never change" in rr
+    assert "HARD_LIMITS.md" in rr and "Human-review only" in rr and "never merge it" in rr
     assert "Independent check" in rr
     assert "Run log" in rq and "templates/run-log.md" in rq
     review_prompt = (PLUGIN / "templates" / "review-prompt.md").read_text(encoding="utf-8")

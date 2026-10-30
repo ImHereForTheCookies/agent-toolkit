@@ -35,14 +35,14 @@ A child of the theme page, titled with the topic in plain words, for a smart rea
 10. **Start here**: the 3 best sources to go deeper, approachable to expert.
 11. **Sources**.
 
-When a topic splits into distinct parts that each deserve an explanation (one tradition, model or component each), give each part a child page in the same outline, shorter, and link siblings to each other. Research only people can do gets a **Research guide for humans** section and one `Needs human research` row.
+When a topic splits into distinct parts that each deserve an explanation (one tradition, model or component each), give each part a child page in the same outline, shorter, and link siblings to each other. Research only people can do gets a **Research guide for humans** section and one `Needs human research` row; people add their results as `Future version` rows, not `New`.
 
 ## Findings rows
 1 to 5 rows: one claim each, honest Source type and Confidence, Evidence = the page URL, Implication = what it might mean for a future version, Status **Future version**.
 
 ## Follow-ups (the library grows itself)
 1. From the Open questions, pick at most **3** that matter most for the app and that no library page or research ticket in the project (any state; search titles) already covers.
-2. `Research depth:` 3 or more → file none; mark them "not filed: depth limit".
+2. File none, marking them "not filed: depth limit" or "not filed: queue full", when this ticket's `Research depth:` is 3 or more (a missing line counts as 1), or when the project already has 20 or more open exploratory tickets.
 3. Otherwise create each as a `research` ticket: same project, priority Low, state Todo, related to this ticket, with the ticket contract above, depth + 1.
 
 ## Close

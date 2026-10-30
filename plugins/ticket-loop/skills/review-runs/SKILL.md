@@ -18,7 +18,7 @@ Scheduled runs cannot read each other's conversations. Your evidence is what the
 `Run log` (Notion page URL), `Loop task name` (the ticket loop's scheduled task), `Linear team`, `Project label`, `Timezone`, optional `Toolkit branch` (the branch the loop runs from, default `main`), optional personal rules. `TOOLKIT` = an agent-toolkit checkout of that branch. Obey `$TOOLKIT/plugins/ticket-loop/HARD_LIMITS.md`.
 
 ## 1. Gather evidence (window: since the last review entry on the run log, else the last 24 hours)
-1. Load tools in one call: `select:mcp__Notion__notion-fetch,mcp__Notion__notion-update-page,mcp__Linear__list_projects,mcp__Linear__list_issues,mcp__Linear__get_issue,mcp__Linear__list_comments,mcp__claude-code-remote__list_triggers,mcp__claude-code-remote__update_trigger,SendUserMessage`.
+1. Load tools in one call: `select:mcp__Notion__notion-fetch,mcp__Notion__notion-update-page,mcp__Linear__list_projects,mcp__Linear__list_issues,mcp__Linear__get_issue,mcp__Linear__list_comments,mcp__Linear__save_issue,mcp__Linear__save_comment,mcp__claude-code-remote__list_triggers,mcp__claude-code-remote__update_trigger,SendUserMessage`.
 2. **Run log:** the entries in the window, plus the Reviews section (past changes and the Watching list).
 3. **Scheduled task status:** `list_triggers`; for the loop task note `last_run` status and `failure_reason` (usage limit, failure) and how long it ran.
 4. **Linear:** for projects with the project label, tickets updated in the window: state changes, `Needs Human` escalations and their questions, evaluate verdicts, tickets that went In Progress and never finished, repeated reviewer or QA failures in comments.
@@ -39,7 +39,7 @@ List each friction point with its evidence (run log entry, ticket, PR, error tex
 - **Shared** (would help anyone running the toolkit): edit the skill, template, brief or script in agent-toolkit. Prefer clarifying or deleting text over adding rules. Generalize from the incident: never name a person, project, ticket or private URL in shared files.
 - **Personal** (only this person's setup): the loop's scheduled prompt, via `update_trigger`. Keep its personal rules few. If a personal rule has become useful to everyone, move it into the toolkit and delete it from the prompt in the same review.
 - **One project**: a PR to that project's `CLAUDE.md`, or a Linear ticket. Never rewrite a project's Direction (the human prose in its Linear description).
-- **HARD_LIMITS.md** and anything that would weaken review, QA, tests or safety: never change. Open a PR, leave it unmerged, and name it in the message for a human.
+- **Human-review only**: `HARD_LIMITS.md`, this skill, `templates/review-prompt.md`, `templates/run-log.md`, and anything that would weaken review, QA, tests or safety. Never change these yourself: open a PR, never merge it, and name it in the message for a human.
 
 ## 4. Make each change
 1. Toolkit: branch `review/<YYYY-MM-DD>-<slug>` from the `Toolkit branch`, edit, `make verify` must pass, add a `PROGRESS.md` entry (what was observed, the change, how to tell next week if it worked).
@@ -53,5 +53,4 @@ List each friction point with its evidence (run log entry, ticket, PR, error tex
 
 ## Rules
 - Never edit app code, tickets' acceptance criteria, or design docs: those belong to the loop's own skills.
-- Never start or fire the loop, and never touch other scheduled tasks.
-- Finish before the loop's start time if you can; a review that runs late still never edits the loop's prompt once the loop has started.
+- Never start or fire the loop. The only scheduled-task change allowed is the loop's prompt text (step 4.4): never its schedule, repositories, model or enabled state, and never any other task.

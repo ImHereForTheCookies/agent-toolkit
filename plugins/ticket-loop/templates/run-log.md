@@ -12,7 +12,7 @@ Page body:
 (newest first; one heading per night: ## YYYY-MM-DD)
 ```
 
-Each loop unit adds one entry at the top of tonight's heading, 3 to 6 short lines:
+A night is the date, in the loop's timezone, on which its chain started. Each loop unit adds one entry at the top of its night's heading, 3 to 6 short lines:
 
 - **Unit:** ticket ID, Skill label, outcome (Done, Awaiting Merge, Needs Human, cut off, failed)
 - **Friction:** anything that cost time or went wrong: a failing command and its error, a retry, an unclear or contradictory instruction, a missing tool or permission, a step that turned out useless. "none" when there was none.
