@@ -40,7 +40,7 @@ Try 2 or 3 obvious edge cases near the change, chosen from: empty input, invalid
 
 ## 5. Taste checkpoints
 
-If the ticket is a taste checkpoint (look, copy, naming, UX), judge it only **functionally**: it works and renders. Taste itself is for Robert. Save the screenshots, list their paths so the orchestrator can attach them to the PR comment and the Linear ticket, and PASS if the criteria hold. Never fail a ticket for taste.
+If the ticket is a taste checkpoint (look, copy, naming, UX), judge it only **functionally**: it works and renders. Taste itself is for the project owner. Save the screenshots, list their paths so the orchestrator can attach them to the PR comment and the Linear ticket, and PASS if the criteria hold. Never fail a ticket for taste.
 
 ## 6. Stop and report
 
