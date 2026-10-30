@@ -4,7 +4,9 @@
 
 **Target:** every night starts a brand-new POC: research and validate an idea, have a planner write the product spec, break it into tickets, then build it to a working app (product evaluation → release → launch kit → retro follow on the next runs or nights). There is no limit on how many POCs are in progress at once: POCs from earlier nights keep getting built and evaluated after tonight's POC has had its turn. Time and tokens left over go to adding the next best feature to existing POCs, then to keeping validated ideas in reserve, then to improving the loop itself.
 
-**Always a deployable version.** Every POC that has passed product evaluation has a release: a frozen branch `release/<slug>-vN` per version and a moving branch `release/<slug>`, both at the last commit that passed the release gate (`make verify`, `make build`, and a release check of the whole app). Releases are branches, not git tags, because the scheduled session may only push branches (its GitHub connection refuses tag pushes; never work around that). A version branch is never moved after it is created. Work keeps landing on `main`; `release/<slug>` only moves forward, and only when a new increment passes the gate. Robert hosts from `release/<slug>`, never from `main`, so whatever is mid-build never reaches users. A POC that isn't finished when the usage limit or the cutoff hits simply continues on a later night.
+**The discovery loop feeds itself.** When no ticket is eligible and no higher unit holds, Part B unit 7 keeps the Idea Lab stocked (it validates a Backlog candidate, or ideates when there is none) until 4 validated ideas are in reserve, and Part A turns a validated idea into the next POC. The reserve target sits above what Part A consumes (one idea per night), so discovery does not stall.
+
+**Always a deployable version.** Every POC that has passed product evaluation has a release: a frozen branch `release/<slug>-vN` per version and a moving branch `release/<slug>`, both at the last commit that passed the release gate (`make verify`, `make build`, and a release check of the whole app). Releases are branches, not git tags, because the scheduled session may only push branches (its GitHub connection refuses tag pushes; never work around that). A version branch is never moved after it is created. Work keeps landing on `main`; `release/<slug>` only moves forward, and only when a new increment passes the gate. Robert hosts from `release/<slug>`, never from `main`, so whatever is mid-build never reaches users. A POC that isn't finished when the usage limit hits simply continues on a later night.
 
 **What pre-launch validation can and can't do.** Desk research (complaint mining, competitor reviews) is a cheap filter for whether the *problem* is real. It cannot show that people want *this* app; LLM "synthetic users" are not evidence of demand either (they flatten and stereotype real preferences). The real test is launching, which only Robert can do. So: research filters ideas, a skeptical evaluator playing the target user checks the product works and makes sense, and grow passes after launch use real feedback only.
 
@@ -56,7 +58,7 @@ Then create, in order: the Linear project (team ROB, label `POC`, name = slug, d
 **Do:** subagent with `$TOOLKIT/orchestration/LAUNCH_BRIEF.md`. Then set `Stage: kit ready`.
 
 ### 4. Retro
-**Condition:** a POC that reached `kit ready` or `parked` and has `Retro: not run`.
+**Condition:** a POC that reached `kit ready` or `parked` and has `Retro: not run`, and no retro file `orchestration/retros/????-??-??-<slug>.md` (exact slug, so a slug that ends another slug does not match) exists on agent-toolkit `origin/main` **or** on the head branch of an open `waiting on merge` retro PR (check with `git ls-tree --name-only origin/<branch> orchestration/retros/` after `git fetch`, or `ghpr.sh url <branch>`; see NIGHTLY.md stacking rule 7). If such a file exists, the retro is done: skip the subagent and only retry the Linear update `Retro: not run` -> `Retro: done` (a refused write or an unmerged retro PR must never make a retro run twice).
 **Do:** subagent with `$TOOLKIT/orchestration/RETRO_BRIEF.md` for that project. It writes `orchestration/retros/<date>-<slug>.md`, updates `orchestration/LESSONS.md`, and opens at most one PR to agent-toolkit with up to 3 evidence-backed process changes. Take that PR through review (`REVIEWER_BRIEF.md`, plus: "This changes the loop itself. FAIL it if it touches `HARD_LIMITS.md`, weakens any review/QA/eval gate, or lacks retro evidence for a change.") and merge it via `ghpr.sh` (run from `~/work/agent-toolkit`). No QA step for process PRs. Set `Retro: done`. Changes take effect from the next chained run, which re-clones the toolkit.
 
 ### 5. Grow a launched POC from real feedback
@@ -64,15 +66,15 @@ Then create, in order: the Linear project (team ROB, label `POC`, name = slug, d
 **Do:** subagent with `$TOOLKIT/orchestration/GROWTH_BRIEF.md`. Real feedback outranks research. Feedback-driven tickets always outrank speculative ones (unit 6).
 
 ### 6. Speculative next-best feature (leftovers)
-**Condition:** some POC has a finished evaluation (`Eval: pass`, or a round-2+ `fail` on non-core criteria only), `Stage` is not `parked`, and it has no open tickets (Todo, In Progress, In Review, or Backlog without Needs Human; Launch issues don't count). There is no nightly cap: this keeps going until tokens or the cutoff run out. Pick the eligible POC with the fewest Speculative tickets filed tonight; tie → the one greenlit most recently.
+**Condition:** some POC has a finished evaluation (`Eval: pass`, or a round-2+ `fail` on non-core criteria only), `Stage` is not `parked`, and it has no open tickets (Todo, In Progress, In Review, or Backlog without Needs Human; Launch issues don't count). There is no nightly cap: this keeps going until tokens run out. Pick the eligible POC with the fewest Speculative tickets filed tonight; tie → the one greenlit most recently.
 **Do:** subagent with `$TOOLKIT/orchestration/GROWTH_BRIEF.md`, mode **speculative**. It files exactly one ticket labelled `Speculative`, which the next runs build through the normal implement → review → QA → merge flow; the release-cut unit then puts it through the release check before it can reach `release/<slug>`. A speculative feature that fails the release check twice is reverted on `main` by a fix ticket rather than patched further.
 
 ### 7. Keep the idea reserve stocked
-**Condition:** Idea Lab has fewer than 2 In Review ideas, and fewer than 12 validations and 4 ideation passes ran tonight (Part A's included).
+**Condition:** Idea Lab has fewer than **4** In Review ideas, and fewer than 12 validations and 4 ideation passes ran tonight (Part A's included).
 **Do:** if Idea Lab has a Backlog candidate, validate the oldest one exactly as in A2; otherwise ideate as in A3. This lets tomorrow night greenlight straight away.
 
 ### 8. Process research (leftovers)
-**Condition:** none of the above holds and no process-research PR was opened tonight.
+**Condition:** none of the above holds, the reserve has 4+ validated ideas (or tonight's validation and ideation limits are reached), and no process-research PR was opened tonight (an open `waiting on merge` research PR counts as opened; it is not repeated, see NIGHTLY.md stacking rule 7).
 **Do:** subagent with `$TOOLKIT/orchestration/RETRO_BRIEF.md`, mode **research**: look across all retros for the weakest metric and research one concrete fix (published harness/eval practices, agent-building case studies, validation methods), then open one PR through the same review as unit 4. If there are no retros yet, end the night instead.
 
 When no unit's condition holds, the night is done.
