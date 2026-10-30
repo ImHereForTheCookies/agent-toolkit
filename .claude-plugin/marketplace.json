@@ -24,6 +24,11 @@
       "name": "project-template",
       "source": "./plugins/project-template",
       "description": "Scaffolds a new project repo that loads this toolkit."
+    },
+    {
+      "name": "ticket-loop",
+      "source": "./plugins/ticket-loop",
+      "description": "One general job that works Linear tickets by Skill label: design docs in Notion, plans in Linear, reviewed and merged PRs in GitHub, evaluations. Fully automated; humans steer."
     }
   ]
 }

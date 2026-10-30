@@ -1,0 +1,16 @@
+{
+  "name": "ticket-loop",
+  "description": "One general job that works Linear tickets in priority order and routes each by its Skill label: design (Notion design doc), plan (Linear tickets), build (reviewed, QA'd, merged PRs), evaluate. Fully automated; humans steer by editing direction and commenting.",
+  "author": {
+    "name": "Robert Meyer"
+  },
+  "homepage": "https://github.com/ImHereForTheCookies/agent-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "linear",
+    "notion",
+    "orchestration",
+    "scheduled",
+    "autonomous"
+  ]
+}
