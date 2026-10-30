@@ -45,7 +45,7 @@ Comment template (replace the angle-bracket parts; use real bullets and newlines
 * Default if no answer: <what you would do, so the human can just say "yes">
 ```
 
-For row 4 (follow-up ticket) use a short comment on the original ticket instead: "Out of scope, filed as ROB-nn: <title>". For row 6, post the screenshots or sample output and the line "Taste checkpoint: merged with defaults, please review".
+For row 4 (follow-up ticket) use a short comment on the original ticket instead: "Out of scope, filed as <TEAM>-nn: <title>". For row 6, post the screenshots or sample output and the line "Taste checkpoint: merged with defaults, please review".
 
 ## After escalating
 

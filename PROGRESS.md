@@ -117,3 +117,23 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (Robert's call after reading pacelog's report)
 - Outcome: the fallback greenlit pacelog at 67/100, a niche idea its own validation called a kill. Robert canceled pacelog (P-ROB-4, ROB-52, ROB-55..88) and dropped the fallback: RND.md now never greenlights below 70, and a night with no 70+ idea has no new POC.
 - Next step: tonight's run ideates fresh, with the free-competitor check from PR #25.
+
+## 2026-10-20 - Loop continuity: git-backed idempotence, discovery reserve
+- Ticket: none (direct request from Robert, with evidence from the 2026-10-20 night)
+- Outcome: `orchestration/NIGHTLY.md`: a refused Linear write is retried once, then recorded as a project comment or in the end-of-run summary, and the chain continues while the unit's git artifact exists; the "No eligible ticket" paragraph states that Part B unit 7 plus Part A form a self-feeding discovery loop. `orchestration/RND.md`: intro says the same; unit 4 is false when `orchestration/retros/*-<slug>.md` already exists on main (only the Linear line is retried); unit 7 (validate or ideate, merged on main) keeps going until 4 validated ideas are in reserve (was 2); process research (unit 8) waits for 4+ validated ideas or tonight's validation/ideation limits. Merged with main's Part A/Part B rewrite (PR #17 conflict resolution): the 5-Backlog target no longer exists because unit 7 validates any Backlog candidate before ideating, and speculative features (unit 6) keep main's no-cap, no-reserve-condition rule. HARD_LIMITS.md and all review/QA/eval gates untouched. Three LESSONS.md lines (status: watch).
+- Next step: check on the next night that no retro repeats after a refused Linear write, and the Idea Lab holds 4+ validated ideas.
+
+## 2026-10-20 - Loop: no morning cutoff, stack process PRs
+- Ticket: none (direct request from Robert; stacked on PR #17)
+- Outcome: `orchestration/NIGHTLY.md`: the morning cutoff (0900, 'before 1500', chaining-rule step, reconcile-at-cutoff, intro and one-liner mentions) is removed; nights end only when nothing is eligible, the usage limit hits, or a hard failure; 60-minute concurrency guard kept; the 9 AM job-application task may overlap (accepted). 'Stacking when merges are blocked' now also covers retro, research and loop-change PRs to agent-toolkit (rule 7: waiting on merge, branch from newest pending process PR, cap 8, PushNotification). `orchestration/RND.md`: cutoff mention removed. HARD_LIMITS.md and all review/QA/eval gates untouched. Two LESSONS.md lines (status: watch).
+- Next step: check that a night runs until nothing is eligible or the usage limit, and that a denied process-PR merge stacks instead of stopping.
+
+## 2026-10-20 - Loop: process PRs not repeated while waiting on merge
+- Ticket: none (review finding on PR #18, stacked on #17)
+- Outcome: `orchestration/RND.md` unit 4 treats the retro as done when `orchestration/retros/????-??-??-<slug>.md` (exact slug) exists on `origin/main` or on the head branch of an open `waiting on merge` retro PR (only the Linear `Retro: done` line is retried); unit 10 counts an open waiting research PR as opened tonight. `orchestration/NIGHTLY.md` rule 7 states the same check for retro, research and loop-change units, so chained runs cannot open repeat stacked PRs up to the cap. HARD_LIMITS.md and all gates untouched.
+- Next step: confirm that a denied retro merge yields one waiting PR and later runs skip the subagent.
+
+## 2026-10-30 - Settings come from a Notion page, not the repo
+- Ticket: none (direct request from the owner: tools usable by anyone in any setup)
+- Outcome: PR #31 removed personal and fixed values from `plugins/*` (work dir, active window, timezone and stop time are optional config; no default cutoff). `orchestration/` now uses `{{KEY}}` placeholders for team, repos, work dir, trigger id, owner name, caps and thresholds, read from a Notion settings page named as `Settings page` in the scheduled prompt; `orchestration/SETTINGS.md` lists keys and defaults; a test checks placeholders are documented and no personal values remain. `HARD_LIMITS.md` untouched.
+- Next step: add `Settings page: <url>` to the scheduled task prompt, then watch one night read the page.
