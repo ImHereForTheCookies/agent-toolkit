@@ -13,7 +13,7 @@ Output: one Notion page per project, written for humans who drop in when curious
 - What this skill adds: the autonomous assumption log, the fixed doc template, version and change log, and the hand-off to `plan-tickets`.
 
 ## Inputs
-Ticket ID, Linear project (Direction, `Constraints:`, `Design doc:`, `Research:`), Notion home URL, the repo (may be empty), Models. Load: `select:mcp__Notion__notion-fetch,mcp__Notion__notion-query-data-sources,mcp__Notion__notion-create-database,mcp__Notion__notion-search,mcp__Notion__notion-create-pages,mcp__Notion__notion-update-page,mcp__Notion__notion-get-comments,mcp__Notion__notion-create-comment,mcp__Notion__notion-set-discussion-resolved` plus the Linear tools from `run-queue`.
+Ticket ID, Linear project (Direction, `Constraints:`, `Design doc:`, `Research:`), Notion home URL, the repo (may be empty), Tier, Models. Load: `select:mcp__Notion__notion-fetch,mcp__Notion__notion-query-data-sources,mcp__Notion__notion-create-database,mcp__Notion__notion-search,mcp__Notion__notion-create-pages,mcp__Notion__notion-update-page,mcp__Notion__notion-get-comments,mcp__Notion__notion-create-comment,mcp__Notion__notion-set-discussion-resolved` plus the Linear tools from `run-queue`.
 
 ## Steps
 1. **Claim:** ticket In Progress.

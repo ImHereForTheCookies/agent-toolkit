@@ -150,6 +150,6 @@ def test_skills_run_in_cheap_then_expensive_stages():
     bt = (SKILLS / "build-ticket" / "SKILL.md").read_text(encoding="utf-8")
     rs = (SKILLS / "research-question" / "SKILL.md").read_text(encoding="utf-8")
     ds = (SKILLS / "design-system" / "SKILL.md").read_text(encoding="utf-8")
-    assert "**Explore**" in bt and "~/work/briefs/" in bt and "raise the ticket's `Model` label" in bt
+    assert "**Explore**" in bt and "~/work/briefs/" in bt and "one tier above the ticket" in bt
     assert "**Gather:**" in rs and "**Synthesize:**" in rs
     assert "**Critique**" in ds and "has not seen the drafting conversation" in ds

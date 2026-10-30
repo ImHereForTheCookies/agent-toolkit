@@ -31,7 +31,7 @@ You are the **orchestrator**. One run does exactly one unit of work, then hands 
 **Reconcile (every run, every mapped project, not a unit):** follow "Stacking" item 2 in `$TOOLKIT/plugins/ticket-loop/skills/build-ticket/SKILL.md` for tickets labelled `Awaiting Merge`.
 
 ## 3. Bootstrap tickets
-Create these (team = Linear team, project = that project, state Todo, one Skill label) only if no open ticket with the same label and purpose exists. Creating them is not a unit; continue to step 4 in the same run.
+Create these (team = Linear team, project = that project, state Todo, one Skill label and the Model label `$TOOLKIT/plugins/ticket-loop/MODELS.md` gives bootstrap tickets) only if no open ticket with the same label and purpose exists. Creating them is not a unit; continue to step 4 in the same run.
 - No `Design doc:` value → `design`: "Write the design doc" (description: "Turn the project Direction into the design doc. Skill: design-system.").
 - Design doc has unresolved comments by a person, newer than the doc's last Change log entry → `design`: "Address design doc comments" (list the comment links).
 - The project's `Research:` database has findings with Status `New` → `design`: "Incorporate research findings" (list them). Query it with `notion-query-data-sources`.
@@ -47,7 +47,7 @@ Per project in map order. **Red main first:** if a project has an open ticket ti
 
 A blocker is **satisfied** when it is Done, or In Review labelled `Awaiting Merge` (the ticket is then built stacked on it). Skip tickets labelled Needs Human or Launch, Canceled or Duplicate ones, and **any ticket with an assignee**: a person is working it by hand. The loop works unassigned tickets only and never assigns itself. In interactive mode the person's own ticket is the exception.
 
-**Tier:** read the ticket's `Model` label (`$TOOLKIT/plugins/ticket-loop/MODELS.md`). None → estimate it with that file's rubric, add the label and the `Model:` line to the description, then continue. Never change a ticket's tier except the one-step raise for a fix round.
+**Tier:** read the ticket's `Model` label (`$TOOLKIT/plugins/ticket-loop/MODELS.md`). None (a ticket made before tiers, or by a person) → estimate it with that file's rubric and write it as that file's "Writing the label" says, add the `Model:` line to the description, then continue.
 
 **Route:** read `$TOOLKIT/plugins/ticket-loop/ROUTES.md`, find the ticket's Skill label, and read and follow that skill for this ticket, passing: ticket ID, project, Repo, repo path, project folder (`<repo path>/<Folder or .>`), Design doc URL, Research database URL, Constraints, Notion home, Tier, Models. No Skill label → `build` if the description passes the linter, else add `plan` and route to planning. A label with no route → Needs Human ("no skill for label X; create one with new-skill") and pick again.
 

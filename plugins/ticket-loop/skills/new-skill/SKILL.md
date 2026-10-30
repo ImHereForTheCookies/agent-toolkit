@@ -25,6 +25,6 @@ A new kind of work = a Linear Skill label + a skill folder + a row in `ROUTES.md
    - sections: `## Prefer existing plugins` (from step 1, with install commands), `## Inputs` (what run-queue passes), `## Steps`, `## Rules`;
    - unattended: never ask questions; decide and record assumptions, or escalate per human-in-the-loop; obey `$TOOLKIT/plugins/ticket-loop/HARD_LIMITS.md`;
    - under 150 lines; long material goes in `references/`.
-4. **Register:** add a row to `plugins/ticket-loop/ROUTES.md`. Note in the PR that a Linear label with the same name must exist in the Skill group (run-queue escalates unknown labels).
+4. **Register:** add a row to `plugins/ticket-loop/ROUTES.md`, and a default tier and stage rows for the new label to `plugins/ticket-loop/MODELS.md`. Note in the PR that a Linear label with the same name must exist in the Skill group (run-queue escalates unknown labels).
 5. **Test:** `make verify` (frontmatter, routes and path tests run automatically). Where behaviour matters, add a scenario to `tests/test_ticket_loop.py` or an eval.
 6. **Ship through a PR** with an independent reviewer, like any ticket. The PR body includes the Prior art table so humans can see why the skill exists.

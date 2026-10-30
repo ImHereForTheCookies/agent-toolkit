@@ -9,6 +9,7 @@ Output is **findings rows**, not a report nobody reads: each row is one claim wi
 
 ## Prefer existing plugins
 - **deep-research** (Anthropic skill, if available in the session): use it for broad multi-source questions, then convert its conclusions into findings rows.
+- **superpowers `dispatching-parallel-agents`**: follow it for the parallel gather stage (independent sub-questions, no shared state).
 - **Notion plugin** research-documentation skill (if installed): fine for structuring the evidence page.
 - What this skill adds: the question comes from a design assumption, results land as typed rows the design loop consumes, and the "humans only" boundary.
 
