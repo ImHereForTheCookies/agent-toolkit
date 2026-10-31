@@ -137,3 +137,9 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (direct request from the owner: tools usable by anyone in any setup)
 - Outcome: PR #31 removed personal and fixed values from `plugins/*` (work dir, active window, timezone and stop time are optional config; no default cutoff). `orchestration/` now uses `{{KEY}}` placeholders for team, repos, work dir, trigger id, owner name, caps and thresholds, read from a Notion settings page named as `Settings page` in the scheduled prompt; `orchestration/SETTINGS.md` lists keys and defaults; a test checks placeholders are documented and no personal values remain. `HARD_LIMITS.md` untouched.
 - Next step: add `Settings page: <url>` to the scheduled task prompt, then watch one night read the page.
+
+## 2026-10-31 - Reconcile checks a merged stack PR actually reached main
+- Ticket: none (nightly review-runs)
+- Observed: a person merged a whole stack of five Awaiting Merge PRs within 30 seconds, bottom first. Only the bottom PR targeted `main`; the other four merged into their parents' branches, which had already merged, so their code never reached `main`. Linear's GitHub integration still set all the tickets Done, and reconcile's "Merged → Done" rule agreed, so later tickets would build from a `main` without that code. Two parallel loop sessions each opened a catch-up PR by hand. The same thing happened to two stacked PRs on this repo the same afternoon.
+- Change: build-ticket Stacking item 2: "merged" means the PR's head commit is on `main`. Merged but not on `main` → keep `Awaiting Merge`, set the ticket back to In Review, and keep exactly one landing PR open from the top merged branch into `main`; the next reconcile after it merges finishes the tickets.
+- How to tell it worked: after a top-down stack merge, run-log entries show tickets back In Review with one landing PR, and no ticket built from a `main` that lacks its blocker's code.
