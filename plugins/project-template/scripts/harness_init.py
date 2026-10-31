@@ -5,15 +5,18 @@ Copies the templates (CLAUDE.md, PROGRESS.md, Makefile, .claude/settings.json)
 into <dir>, substituting {{PROJECT_NAME}}, and runs `git init` if <dir> is not
 already a git repo or inside one (a folder in a monorepo, e.g. cajunt/pocs/<slug>). Existing files are never overwritten unless --force.
 
-Usage: harness_init.py <dir> [--name NAME] [--force]
+Usage: harness_init.py <dir> [--name NAME] [--toolkit-repo OWNER/NAME] [--force]
 """
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 TEMPLATES = Path(__file__).resolve().parent.parent / "templates"
 PLACEHOLDER = "{{PROJECT_NAME}}"
+TOOLKIT_PLACEHOLDER = "{{TOOLKIT_REPO}}"
+DEFAULT_TOOLKIT_REPO = "ImHereForTheCookies/agent-toolkit"
 
 
 def template_files():
@@ -30,7 +33,7 @@ def _inside_work_tree(path):
     return probe.returncode == 0 and probe.stdout.strip() == "true"
 
 
-def init(target, name=None, force=False):
+def init(target, name=None, force=False, toolkit_repo=None):
     """Create the harness files in target. Returns (created, overwritten, skipped, git_inited)."""
     target = Path(target).resolve()
     target.mkdir(parents=True, exist_ok=True)
@@ -44,6 +47,7 @@ def init(target, name=None, force=False):
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
         text = (TEMPLATES / rel).read_text(encoding="utf-8").replace(PLACEHOLDER, name)
+        text = text.replace(TOOLKIT_PLACEHOLDER, toolkit_repo or DEFAULT_TOOLKIT_REPO)
         dest.write_text(text, encoding="utf-8")
         (overwritten if existed else created).append(str(rel))
     git_inited = False
@@ -57,10 +61,11 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("dir", help="project directory (created if missing)")
     ap.add_argument("--name", help="project name (default: the directory name)")
+    ap.add_argument("--toolkit-repo", default=os.environ.get("AGENT_TOOLKIT_REPO"), help="owner/name of the agent-toolkit marketplace to register (default: $AGENT_TOOLKIT_REPO or %s)" % DEFAULT_TOOLKIT_REPO)
     ap.add_argument("--force", action="store_true", help="overwrite existing files")
     args = ap.parse_args(argv)
     try:
-        created, overwritten, skipped, git_inited = init(args.dir, args.name, args.force)
+        created, overwritten, skipped, git_inited = init(args.dir, args.name, args.force, args.toolkit_repo)
     except (OSError, subprocess.CalledProcessError) as exc:
         print(f"harness_init: {exc}", file=sys.stderr)
         return 1

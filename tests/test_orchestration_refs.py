@@ -46,7 +46,7 @@ def test_research_briefs_never_post():
 
 
 # Pinned so the self-improving retro loop cannot rewrite the hard limits.
-# Only Robert updates this hash, after reading the change himself.
+# Only a maintainer updates this hash, after reading the change themselves (see CONTRIBUTING.md).
 HARD_LIMITS_SHA256 = "875b87d7939c4e4af233ad2bb68f24eaf8842c6d9409bcb3a1ea56688c8d3479"
 
 
@@ -55,7 +55,7 @@ def test_hard_limits_unchanged():
     digest = hashlib.sha256((ORCH / "HARD_LIMITS.md").read_bytes()).hexdigest()
     assert digest == HARD_LIMITS_SHA256, (
         "orchestration/HARD_LIMITS.md changed. Process PRs may not touch it; "
-        "if Robert changed it on purpose, he updates HARD_LIMITS_SHA256."
+        "if a maintainer changed it on purpose, they update HARD_LIMITS_SHA256 (see CONTRIBUTING.md)."
     )
 
 
@@ -69,7 +69,7 @@ def test_retro_loop_is_fenced():
 
 def test_release_cut_is_gated():
     rnd = (ORCH / "RND.md").read_text(encoding="utf-8")
-    assert "$TOOLKIT/orchestration/release.sh" in rnd
+    assert "$TOOLKIT/plugins/ticket-loop/scripts/release.sh" in rnd
     assert "release check" in rnd and "RELEASE: BLOCKED" in rnd
     launch = (ORCH / "LAUNCH_BRIEF.md").read_text(encoding="utf-8")
     assert "release/<slug>" in launch and "never `main`" in launch

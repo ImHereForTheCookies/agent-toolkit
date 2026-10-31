@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / "plugins/project-template/scripts/harness_init.py"
 FILES = ["CLAUDE.md", "PROGRESS.md", "Makefile", ".claude/settings.json"]
-PLUGINS = ["agentic-workflow", "code-navigation", "linear-workflow", "project-template"]
+PLUGINS = ["agentic-workflow", "code-navigation", "linear-workflow", "project-template", "ticket-loop"]
 
 
 def run(*args):
@@ -42,6 +42,12 @@ def test_settings(tmp_path):
         "agent-toolkit": {"source": {"source": "github", "repo": "ImHereForTheCookies/agent-toolkit"}}
     }
     assert s["enabledPlugins"] == {f"{p}@agent-toolkit": True for p in PLUGINS}
+
+
+def test_settings_use_given_toolkit_repo(tmp_path):
+    run(tmp_path, "--toolkit-repo", "someone/their-fork")
+    s = json.loads((tmp_path / ".claude/settings.json").read_text())
+    assert s["extraKnownMarketplaces"]["agent-toolkit"]["source"]["repo"] == "someone/their-fork"
 
 
 def test_idempotent(tmp_path):

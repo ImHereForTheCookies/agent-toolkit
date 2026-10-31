@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "scripts" / "check_ticket_graph.py"
+SCRIPT = ROOT / "plugins" / "agentic-workflow" / "scripts" / "check_ticket_graph.py"
 
 _spec = importlib.util.spec_from_file_location("check_ticket_graph", SCRIPT)
 graph = importlib.util.module_from_spec(_spec)

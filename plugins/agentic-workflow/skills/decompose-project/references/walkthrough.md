@@ -41,4 +41,4 @@ CAJ-4 only needs the repo, so it can run in parallel with CAJ-2 and CAJ-3. CAJ-5
 Everything else is `none`.
 
 ## 6. Gate
-`python3 scripts/lint_ticket.py examples/cajunt/tickets/*.md` and `python3 scripts/check_ticket_graph.py examples/cajunt/tickets`. Both are part of `make verify`.
+`python3 "${CLAUDE_PLUGIN_ROOT}/scripts/lint_ticket.py" examples/cajunt/tickets/*.md` and `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/check_ticket_graph.py" examples/cajunt/tickets`. Both are part of `make verify`.

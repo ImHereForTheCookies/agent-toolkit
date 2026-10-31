@@ -31,7 +31,7 @@ fi
 
 # --- extra steps (added by later tickets) ---
 
-# --- Step 4: lint every tickets/**/*.md against the ticket contract (ROB-6) ---
+# --- Step 4: lint every tickets/**/*.md against the ticket contract ---
 step "4. lint tickets (tickets/**/*.md)"
 ticket_files=()
 while IFS= read -r f; do
@@ -39,32 +39,32 @@ while IFS= read -r f; do
 done < <(find . \( -name .git -o -name node_modules \) -prune -o \
   -type f -name '*.md' -path '*/tickets/*' -print | sort)
 if [ "${#ticket_files[@]}" -gt 0 ]; then
-  python3 scripts/lint_ticket.py "${ticket_files[@]}"
+  python3 plugins/agentic-workflow/scripts/lint_ticket.py "${ticket_files[@]}"
   echo "linted ${#ticket_files[@]} ticket file(s)"
 else
   echo "no tickets/ markdown files; skipping"
 fi
 
-# --- Step 5: fixture project verifies on its own (ROB-7) ---
+# --- Step 5: fixture project verifies on its own ---
 step "5. fixture: make -C fixtures/demo-project verify"
 make -C fixtures/demo-project verify
 
-# --- Step 6: seeded bug is caught by exactly one named test (ROB-7) ---
+# --- Step 6: seeded bug is caught by exactly one named test ---
 step "6. fixture: seeded bug is detected"
 bash scripts/check_seeded_bug.sh
 
-# --- Step 7: example tickets form a DAG with no missing blockers (ROB-8) ---
+# --- Step 7: example tickets form a DAG with no missing blockers ---
 step "7. ticket graph (examples/cajunt/tickets)"
-python3 scripts/check_ticket_graph.py examples/cajunt/tickets
+python3 plugins/agentic-workflow/scripts/check_ticket_graph.py examples/cajunt/tickets
 
-# --- Step 8: harness-init produces a repo whose make verify runs (ROB-9) ---
+# --- Step 8: harness-init produces a repo whose make verify runs ---
 step "8. harness-init smoke (empty dir -> make verify)"
 harness_tmp="$(mktemp -d)"
 python3 plugins/project-template/scripts/harness_init.py "$harness_tmp/proj"
 make -C "$harness_tmp/proj" verify
 rm -rf "$harness_tmp"
 
-# --- Step 9: repo_map.py maps the fixture project (ROB-10) ---
+# --- Step 9: repo_map.py maps the fixture project ---
 step "9. repo_map.py on fixtures/demo-project"
 map_tmp="$(mktemp -d)"
 python3 plugins/code-navigation/scripts/repo_map.py fixtures/demo-project --out "$map_tmp/symbols.md"

@@ -8,7 +8,7 @@ description: Use when the ticket loop needs a new kind of work (a new Skill labe
 A new kind of work = a Linear Skill label + a skill folder + a row in `ROUTES.md`. Most of the value is in step 1: if a good plugin already does it, the skill is a thin pointer to that plugin plus the loop glue.
 
 ## Prefer existing plugins
-- **superpowers `writing-skills`** (if available): follow it for writing and pressure-testing the SKILL.md itself.
+- **superpowers `writing-skills`** (required plugin): follow it for writing and pressure-testing the SKILL.md itself.
 - **skill-creator** (Anthropic, if available): use it for evals when the skill's output quality can be measured.
 
 ## Steps

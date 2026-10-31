@@ -61,9 +61,9 @@ If a criterion can only be judged by looking, set Escalation to `taste-checkpoin
 From the toolkit repo:
 
 ```
-python3 scripts/lint_ticket.py <file> [<file> ...]
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/lint_ticket.py" <file> [<file> ...]
 ```
 
 It exits non-zero and prints `FILE: problem` for missing sections, criteria without `checked by:` and an invalid Escalation value. **It is the gate before a ticket is marked Ready**: do not move a ticket to Ready, or create it in Linear as Ready, while it reports problems. Passing the linter shows the form is right; you still own whether the criteria are the right ones.
 
-For tickets forming a set, also run `python3 scripts/check_ticket_graph.py <dir>` to catch unknown blockers and cycles.
+For tickets forming a set, also run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/check_ticket_graph.py" <dir>` to catch unknown blockers and cycles.
