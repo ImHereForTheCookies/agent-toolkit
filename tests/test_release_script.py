@@ -1,10 +1,10 @@
-"""orchestration/release.sh against a throwaway repo with a local bare remote."""
+"""plugins/ticket-loop/scripts/release.sh against a throwaway repo with a local bare remote."""
 import os
 import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "orchestration" / "release.sh"
+SCRIPT = ROOT / "plugins" / "ticket-loop" / "scripts" / "release.sh"
 GIT_ENV = ["-c", "user.name=t", "-c", "user.email=t@t"]
 
 

@@ -8,7 +8,7 @@ description: Use when a Linear ticket labelled design asks for a project's syste
 Output: one Notion page per project, written for humans who drop in when curious, and complete enough that the planner needs nothing else. Nobody approves it first. Every open question becomes a written **assumption** that a human can override later by commenting.
 
 ## Prefer existing plugins
-- **superpowers `brainstorming`** (if available): use its *content* (purpose, constraints, success criteria, 2-3 approaches with a recommendation, architecture, components, data flow, error handling, testing, units with one clear purpose and clean interfaces). Do **not** run its question-and-approval flow: nobody is there to answer. Where it would ask, you decide and write an assumption.
+- **superpowers `brainstorming`** (required plugin): use its *content* (purpose, constraints, success criteria, 2-3 approaches with a recommendation, architecture, components, data flow, error handling, testing, units with one clear purpose and clean interfaces). Do **not** run its question-and-approval flow: nobody is there to answer. Where it would ask, you decide and write an assumption.
 - **Notion plugin** (`makenotion/claude-code-notion-plugin`, if installed): its research-documentation skill is a fine guide for the research subsection. Page writes still follow this skill.
 - What this skill adds: the autonomous assumption log, the fixed doc template, version and change log, and the hand-off to `plan-tickets`.
 

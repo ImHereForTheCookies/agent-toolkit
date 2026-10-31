@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "scripts" / "lint_ticket.py"
+SCRIPT = ROOT / "plugins" / "agentic-workflow" / "scripts" / "lint_ticket.py"
 
 _spec = importlib.util.spec_from_file_location("lint_ticket", SCRIPT)
 lint_ticket = importlib.util.module_from_spec(_spec)

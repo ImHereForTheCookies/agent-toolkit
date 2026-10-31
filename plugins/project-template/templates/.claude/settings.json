@@ -3,7 +3,7 @@
     "agent-toolkit": {
       "source": {
         "source": "github",
-        "repo": "ImHereForTheCookies/agent-toolkit"
+        "repo": "{{TOOLKIT_REPO}}"
       }
     }
   },
@@ -11,6 +11,7 @@
     "agentic-workflow@agent-toolkit": true,
     "code-navigation@agent-toolkit": true,
     "linear-workflow@agent-toolkit": true,
-    "project-template@agent-toolkit": true
+    "project-template@agent-toolkit": true,
+    "ticket-loop@agent-toolkit": true
   }
 }

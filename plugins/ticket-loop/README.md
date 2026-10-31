@@ -21,3 +21,5 @@ One general, unattended job for building apps with agents. Linear holds the work
 
 ## Add a kind of work
 Use the `new-skill` skill: it searches existing plugin marketplaces first, then writes a skill that delegates to the best plugin where one fits.
+
+Requires: Linear and Notion connectors; superpowers plugin; git, gh, python3; the agentic-workflow, linear-workflow and project-template plugins. Optional: claude-code-remote connector (chaining/scheduling). Full list: `REQUIREMENTS.md` at the repo root.

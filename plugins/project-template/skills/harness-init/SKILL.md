@@ -40,7 +40,7 @@ the git status. Report that list to the user.
 | `CLAUDE.md` | Stack, Commands, Architecture decisions, Gotchas, Workflow (under 60 lines) |
 | `PROGRESS.md` | Append-only session log |
 | `Makefile` | `dev`, `test`, `e2e`, `verify` (= test then e2e) and `symbols` |
-| `.claude/settings.json` | Registers `ImHereForTheCookies/agent-toolkit` and enables its four plugins |
+| `.claude/settings.json` | Registers the agent-toolkit marketplace (`--toolkit-repo`, default upstream) and enables its five plugins |
 
 ## Fill in afterwards
 

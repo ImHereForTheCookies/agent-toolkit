@@ -34,7 +34,7 @@ Verdict: **PASS** only if every criterion passes (or is `N/A` as allowed above).
   Screenshots: <paths>
   Top 3 things a real user would hit first: <...>
   ```
-- On FAIL in round 1: file one fix ticket per distinct problem (at most 8; merge only items on the same screen), following `$TOOLKIT/plugins/agentic-workflow/skills/ticket-spec/SKILL.md`, linted with `python3 $TOOLKIT/scripts/lint_ticket.py`, milestone `Eval fixes`, Todo. Each ticket names the failing criterion and the exact reproduction. Every `reachable: no` item and every FAIL row in your report must be covered by a ticket; anything you leave out goes in the report as `Not ticketed: <item> (<reason>)`, so nothing found in round 1 can first resurface in round 2.
+- On FAIL in round 1: file one fix ticket per distinct problem (at most 8; merge only items on the same screen), following `$TOOLKIT/plugins/agentic-workflow/skills/ticket-spec/SKILL.md`, linted with `python3 $TOOLKIT/plugins/agentic-workflow/scripts/lint_ticket.py`, milestone `Eval fixes`, Todo. Each ticket names the failing criterion and the exact reproduction. Every `reachable: no` item and every FAIL row in your report must be covered by a ticket; anything you leave out goes in the report as `Not ticketed: <item> (<reason>)`, so nothing found in round 1 can first resurface in round 2.
 - On FAIL in round 2: file nothing new; list what still fails and mark whether any core (*) criterion failed.
 - Taste (colors, wording you'd personally prefer) is never a FAIL; mention it under "Top 3" only if a user would actually stumble on it.
 - Stop the app, leave the repo clean (`git status --short` empty).

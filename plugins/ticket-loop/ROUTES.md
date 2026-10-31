@@ -10,4 +10,4 @@ Each Linear ticket carries one label from the **Skill** label group. `run-queue`
 | research | research-question | Findings in the project's research database (Status New), which the next design revision incorporates |
 | evaluate | evaluate-project | Graded evaluation in the doc, plus build or design tickets |
 
-No Skill label: `build` if the description passes `$TOOLKIT/scripts/lint_ticket.py`, otherwise `plan`.
+No Skill label: `build` if the description passes `$TOOLKIT/plugins/agentic-workflow/scripts/lint_ticket.py`, otherwise `plan`.

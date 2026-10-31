@@ -28,16 +28,16 @@ Label **Needs Human** = escalated. Skip any ticket that has it.
 
 ## Find Ready work
 
-1. `list_issues(project="agent-toolkit", state="Todo", fields=["title","status","labels"])`. Drop tickets labeled Needs Human. Sort the rest by ticket number yourself (lowest first); the tool only orders by createdAt/updatedAt.
+1. `list_issues(project=<project>, state="Todo", fields=["title","status","labels"])`. Drop tickets labeled Needs Human. Sort the rest by ticket number yourself (lowest first); the tool only orders by createdAt/updatedAt.
 2. For each candidate `get_issue(id, includeRelations=true)`. `relations.blockedBy` lists blockers but **not their state**, so call `get_issue(blockerId, fields=["status"])` on each one.
-3. The ticket is workable only when every blocker is `Done`. A blocker in Canceled or Duplicate does not count as Done: escalate (below) instead of working it.
+3. The ticket is workable only when every blocker is satisfied: `Done`, or (only under the ticket-loop plugin) In Review labelled `Awaiting Merge`, in which case the ticket is built stacked on that blocker's branch (see ticket-loop `build-ticket`, Stacking). Without ticket-loop, only `Done` counts. A blocker in Canceled or Duplicate does not count as Done: escalate (below) instead of working it.
 4. Read the whole description. If it is ambiguous or contradicts the code, escalate; do not guess.
 
 ## Promote Backlog to Ready
 
-For each Backlog ticket in the project whose blockers are all Done:
+For each Backlog ticket in the project whose blockers are all satisfied (same rule as above):
 
-1. Save its description to a file and run `python3 $TOOLKIT/scripts/lint_ticket.py <file>` (`$TOOLKIT` is the agent-toolkit checkout; Linear renders bullets as `*`, the linter accepts `-`, `*` and `+`).
+1. Save its description to a file and run the agentic-workflow plugin's `scripts/lint_ticket.py <file>` (in the installed plugin directory, or `$TOOLKIT/plugins/agentic-workflow/scripts/` in a checkout; Linear renders bullets as `*`, the linter accepts `-`, `*` and `+`).
 2. Exit 0: `save_issue(id, state="Todo")`.
 3. Lint failures: escalate with the linter output as the reason and leave it in Backlog.
 
