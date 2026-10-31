@@ -137,3 +137,9 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Ticket: none (direct request from the owner: tools usable by anyone in any setup)
 - Outcome: PR #31 removed personal and fixed values from `plugins/*` (work dir, active window, timezone and stop time are optional config; no default cutoff). `orchestration/` now uses `{{KEY}}` placeholders for team, repos, work dir, trigger id, owner name, caps and thresholds, read from a Notion settings page named as `Settings page` in the scheduled prompt; `orchestration/SETTINGS.md` lists keys and defaults; a test checks placeholders are documented and no personal values remain. `HARD_LIMITS.md` untouched.
 - Next step: add `Settings page: <url>` to the scheduled task prompt, then watch one night read the page.
+
+## 2026-10-31 - Repo clones keep every branch fetchable
+- Ticket: none (nightly review-runs)
+- Observed: three stacked build units over two nights found `origin/<base>` missing after `git fetch origin`, because `git clone --depth 50` implies `--single-branch` (fetch refspec only `main`; none at all for an empty repo). Each unit worked around it by setting `remote.origin.fetch` by hand.
+- Change: run-queue step 2 clones with `--no-single-branch` (checked: sets `+refs/heads/*:refs/remotes/origin/*` for both empty and non-empty repos).
+- How to tell it worked: no run-log entry mentions a missing stack branch or a refspec workaround on the next stacked ticket.
