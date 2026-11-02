@@ -22,7 +22,7 @@ Ticket ID, project, Design doc URL, Research database URL, Constraints, Models. 
    - aim for 3 independent sources per claim; older than 2 years counts half; note disagreement instead of averaging it away;
    - paraphrase; at most one short quote per source; link everything;
    - never post, comment, vote, sign up, message, or survey anyone, and never collect personal data.
-3. **Record findings:** one row per distinct claim (usually 1-5): Finding, Details, Evidence, Source type `Desk research` (or `Paper`, `Competitor review`), honest Confidence, Implication (which R-IDs or A# it bears on), Status `New`.
+3. **Record findings:** one row per distinct claim (usually 1-5), created one row per `notion-create-pages` call (large multi-row calls often fail on malformed JSON): Finding, Details, Evidence, Source type `Desk research` (or `Paper`, `Competitor review`), honest Confidence, Implication (which R-IDs or A# it bears on), Status `New`.
 4. **Research only humans can do** (interviews, usability tests, surveys): add one row with Status `Needs human research`, whose Details hold a ready-to-run guide: who to talk to, 5-8 open questions, what answer would change which requirement. People run it and add their results as `New` rows.
 5. Close: comment on the ticket (rows added with links, one-line answer to the question, confidence) and set it Done. The run-queue bootstrap turns the `New` rows into a design revision.
 
