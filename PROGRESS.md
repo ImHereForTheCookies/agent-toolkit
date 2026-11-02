@@ -143,3 +143,9 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Observed: three stacked build units over two nights found `origin/<base>` missing after `git fetch origin`, because `git clone --depth 50` implies `--single-branch` (fetch refspec only `main`; none at all for an empty repo). Each unit worked around it by setting `remote.origin.fetch` by hand.
 - Change: run-queue step 2 clones with `--no-single-branch` (checked: sets `+refs/heads/*:refs/remotes/origin/*` for both empty and non-empty repos).
 - How to tell it worked: no run-log entry mentions a missing stack branch or a refspec workaround on the next stacked ticket.
+
+## 2026-11-02 - Research findings rows are created one per call
+- Ticket: none (nightly review-runs)
+- Observed: on one night, 5 of 7 research units had a Notion create call fail. Two were large multi-row creates that failed on malformed JSON and worked when retried one row per call, and a third worked when split; one unit's own log suggested the instructions say one row per call. The other two (a stray key, a single malformed call) look unrelated to batch size and are not addressed.
+- Change: research-question step 3 says to create findings rows one per `notion-create-pages` call, with the reason.
+- How to tell it worked: research run-log entries over the next week no longer mention a large or multi-row create that failed and had to be split.
