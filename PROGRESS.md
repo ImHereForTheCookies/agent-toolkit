@@ -128,3 +128,9 @@ Append-only log of work sessions. Add new entries at the bottom; do not edit old
 - Outcome: `plugins/ticket-loop/MODELS.md`: Linear label group `Model` (`haiku-low`, `sonnet-medium`, `sonnet-high`, `opus-high`), a defaults-first rubric, per-stage models, and a one-step raise on a fix round. Ticket creators (plan-tickets, design-system, exploratory follow-ups) set the label. run-queue estimates it when missing and passes the tier. build-ticket gains a read-only explore stage that writes a brief for the implementer. research-question gathers sub-questions in parallel on sonnet-medium, then synthesizes at the tier, and exploratory pages get a citation check. design-system's self-check becomes a fresh critique subagent. The run log records the tier, and review-runs recalibrates from it.
 - Note: a scheduled prompt that still has the old blanket `Models:` line ("...opus; ...sonnet; effort high") flattens every stage. Remove it to use the tiers.
 - Next step: after a week of run logs, check first-pass review rates by tier.
+
+## 2026-11-18 - Review roll-up keeps the run log small
+- Ticket: none (nightly review-runs; human-review PR, not merged by the review)
+- Observed: the run log page overflowed the Notion fetch limit on every loop unit and review since 11/06 (about 62k to 96k characters), so each one read it by slicing a saved file. Nights are already capped at 14, but reviews were never rolled up: on 11/18 the Reviews section was about 54k of 95k characters and grows by about 2.5k every night.
+- Change: review-runs step 5.1 and `templates/run-log.md` keep the 3 newest reviews in full and roll older reviews into one line each, like old nights.
+- How to tell it worked: a week after this lands, the Reviews section stays under about 15k characters and the page stops growing night over night.

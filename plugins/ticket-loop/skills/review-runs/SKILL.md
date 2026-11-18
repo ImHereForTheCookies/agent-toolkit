@@ -49,7 +49,7 @@ List each friction point with its evidence (run log entry, ticket, PR, error tex
 4. Scheduled prompt: change it only if the loop has not started tonight (no run log entry for tonight, and no loop ticket In Progress updated in the last 60 minutes); otherwise defer to the next review and say so.
 
 ## 5. Record and report
-1. On the run log page, add at the top of the **Reviews** section: date; nights reviewed; changes made (PR or prompt edit, one line each with the evidence); considered but not changed, with the reason; the Watching list. Roll run log nights older than 14 days into one summary line each.
+1. On the run log page, add at the top of the **Reviews** section: date; nights reviewed; changes made (PR or prompt edit, one line each with the evidence); considered but not changed, with the reason; the Watching list. Every loop unit reads this page, so keep it small: roll nights older than 14 days into one summary line each, and roll every review except the 3 newest into one line each (date, changes made with PR numbers, or "no change").
 2. Send one `SendUserMessage` only if something changed or needs a human (an unmerged PR, a HARD_LIMITS proposal, a superpowers bug report): at most 6 phone-readable lines, leading with what the person must do. Nothing changed → no message.
 
 ## Rules
