@@ -18,4 +18,4 @@ A night is the date, in the loop's timezone, on which its chain started. Each lo
 - **Friction:** anything that cost time or went wrong: a failing command and its error, a retry, an unclear or contradictory instruction, a missing tool or permission, a step that turned out useless. "none" when there was none.
 - **Guess at cause:** one line, or "unknown"
 
-The review keeps the last 14 nights and rolls older ones into one summary line each.
+The review keeps the last 14 nights and its own 3 newest reviews in full, and rolls older ones into one summary line each.
